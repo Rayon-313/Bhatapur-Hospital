@@ -1,112 +1,113 @@
 "use client";
-
 import { useState, useEffect } from "react";
-// I am using the @/ prefix which matches your jsconfig.json
-import { 
-  getDepartments, 
-  updateDepartment as updateDepartmentAPI, 
-  deleteDepartment as deleteDepartmentAPI 
-} from '@/lib/api/departments';
+import { getDepartments, updateDepartment as updateDepartmentAPI } from '@/lib/api/departments';
 
-export default function DepartmentsPage() {
+export default function AdminDepartments() {
   const [departments, setDepartments] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  
+  // States for Editing
+  const [editingId, setEditingId] = useState(null); 
+  const [editForm, setEditForm] = useState({ name: "", description: "", image: "", headDoctor: "" });
 
   useEffect(() => {
-    const fetchDepartments = async () => {
-      try {
-        setLoading(true);
-        const data = await getDepartments();
-        
-        // Safety: If data is null or not an array, use an empty list instead of crashing
-        if (data && Array.isArray(data)) {
-          setDepartments(data);
-        } else {
-          setDepartments([]);
-        }
-        setError(null);
-      } catch (err) {
-        console.error('Fetch failed:', err);
-        setError("Backend Connection Failed. Is your server running on Port 4000?");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchDepartments();
+    loadDepts();
   }, []);
 
-  // 1. LOADING STATE - Prevents the "Vanish" act
-  if (loading) {
-    return <div style={{ textAlign: 'center', padding: '5rem' }}><h2>Loading Departments...</h2></div>;
-  }
+  const loadDepts = async () => {
+    try {
+      setLoading(true);
+      const data = await getDepartments();
+      if (Array.isArray(data)) setDepartments(data);
+    } catch (err) {
+      console.error("Failed to load departments");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  // 2. ERROR STATE - Instead of a blank screen, it tells you WHY it's failing
-  if (error) {
-    return (
-      <div style={{ textAlign: 'center', padding: '5rem', color: '#ef4444' }}>
-        <h2>{error}</h2>
-        <button 
-          onClick={() => window.location.reload()} 
-          style={{ marginTop: '1rem', padding: '0.5rem 1rem', cursor: 'pointer' }}
-        >
-          Try Again
-        </button>
-      </div>
-    );
-  }
+  const handleEditClick = (dept) => {
+    setEditingId(dept._id);
+    setEditForm({ 
+      name: dept.name, 
+      description: dept.description, 
+      image: dept.image || "", 
+      headDoctor: dept.headDoctor || "" 
+    });
+  };
 
-  // 3. MAIN CONTENT - Only runs if loading is false and error is null
+  const handleSave = async (id) => {
+    try {
+      await updateDepartmentAPI(id, editForm);
+      setEditingId(null);
+      loadDepts(); 
+      alert("Changes saved successfully!");
+    } catch (err) {
+      alert("Error saving changes.");
+    }
+  };
+
+  if (loading) return <div style={styles.centerText}><h2>Loading Admin Panel...</h2></div>;
+
   return (
     <div style={styles.container}>
-      <h2 style={styles.title}>Hospital Departments</h2>
-      <p style={{ textAlign: 'center' }}>Manage your hospital departments here.</p>
-
-      <div style={styles.statsRow}>
-        <span style={styles.badge}>{departments.length} Total Departments</span>
-      </div>
-
+      <h1 style={styles.title}>Department Administration</h1>
+      
       <div style={styles.grid}>
-        {departments.length === 0 ? (
-          <p style={{ textAlign: 'center', width: '100%' }}>No departments found in the database.</p>
-        ) : (
-          departments.map((dept) => (
-            <div key={dept._id || Math.random()} style={styles.card}>
-              <div style={{
-                ...styles.statusDot,
-                backgroundColor: dept.isActive ? '#10b981' : '#ef4444'
-              }}>
-                {dept.isActive ? 'Active' : 'Inactive'}
+        {departments.map((dept) => (
+          <div key={dept._id} style={styles.card}>
+            
+            {editingId === dept._id ? (
+              /* --- EDIT MODE --- */
+              <div style={styles.formGroup}>
+                <h3 style={{ marginBottom: '10px' }}>Edit Details</h3>
+                <input style={styles.input} value={editForm.name} onChange={e => setEditForm({...editForm, name: e.target.value})} placeholder="Department Name" />
+                <input style={styles.input} value={editForm.image} onChange={e => setEditForm({...editForm, image: e.target.value})} placeholder="Image URL (https://...)" />
+                <input style={styles.input} value={editForm.headDoctor} onChange={e => setEditForm({...editForm, headDoctor: e.target.value})} placeholder="Head Doctor" />
+                <textarea style={{...styles.input, height: '80px'}} value={editForm.description} onChange={e => setEditForm({...editForm, description: e.target.value})} placeholder="Description" />
+
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <button onClick={() => handleSave(dept._id)} style={styles.saveBtn}>Save</button>
+                  <button onClick={() => setEditingId(null)} style={styles.cancelBtn}>Cancel</button>
+                </div>
               </div>
-              <div style={{ position: 'relative' }}>
+            ) : (
+              /* --- VIEW MODE --- */
+              <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
                 <img 
                   src={dept.image || 'https://via.placeholder.com/300x150?text=No+Image+Found'} 
                   alt={dept.name}
-                  style={{ width: '89%', height: '160px', objectFit: 'cover', borderRadius: '5px', marginBottom: '15px' }}
+                  style={styles.image}
                 />
+                <h2 style={styles.deptName}>{dept.name}</h2>
+                <p><strong>Head:</strong> {dept.headDoctor || 'Not Assigned'}</p>
+                <p style={styles.descriptionText}>{dept.description}</p>
+                
+                <div style={{ marginTop: 'auto' }}>
+                  <button onClick={() => handleEditClick(dept)} style={styles.editBtn}>
+                    Edit Details
+                  </button>
                 </div>
-              <h3 style={styles.deptName}>{dept.name}</h3>
-              <p><strong>HOD:</strong> {dept.headDoctor || 'N/A'}</p>
-              <p style={styles.description}>{dept.description}</p>
-
-              {/* Add your Toggle/Delete buttons here later if needed */}
-            </div>
-          ))
-        )}
+              </div>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );
 }
 
-// Ensure these styles are at the VERY BOTTOM of your file
 const styles = {
   container: { padding: '2rem', maxWidth: '1200px', margin: '0 auto', fontFamily: 'sans-serif' },
-  title: { textAlign: 'center', color: '#1e40af', fontSize: '2.5rem' },
-  statsRow: { marginBottom: '1.5rem', textAlign: 'right' },
-  badge: { backgroundColor: '#3b82f6', color: 'white', padding: '0.5rem 1rem', borderRadius: '20px' },
-  grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' },
-  card: { padding: '1.5rem', borderRadius: '12px', border: '1px solid #e2e8f0', backgroundColor: 'white', position: 'relative', boxShadow: '0 4px 6px rgba(0,0,0,0.05)' },
-  statusDot: { position: 'absolute', top: '1rem', right: '1rem', color: 'white', padding: '0.2rem 0.6rem', borderRadius: '10px', fontSize: '0.75rem' },
-  deptName: { color: '#1e40af', marginTop: '0' },
-  description: { color: '#64748b', fontSize: '0.9rem', fontStyle: 'italic' },
+  title: { textAlign: 'center', color: '#1e40af', marginBottom: '2rem' },
+  grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' },
+  card: { border: '1px solid #ddd', borderRadius: '12px', padding: '20px', backgroundColor: '#fff', boxShadow: '0 4px 6px rgba(0,0,0,0.05)' },
+  image: { width: '100%', height: '180px', objectFit: 'cover', borderRadius: '8px', marginBottom: '15px' },
+  deptName: { color: '#1e40af', margin: '0 0 10px 0' },
+  descriptionText: { fontSize: '0.9rem', color: '#666', marginBottom: '15px', lineHeight: '1.4' },
+  input: { padding: '10px', borderRadius: '6px', border: '1px solid #ccc', marginBottom: '10px', width: '100%', boxSizing: 'border-box' },
+  saveBtn: { flex: 1, padding: '10px', backgroundColor: '#10b981', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' },
+  cancelBtn: { flex: 1, padding: '10px', backgroundColor: '#6b7280', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' },
+  editBtn: { width: '100%', padding: '10px', backgroundColor: '#3b82f6', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' },
+  centerText: { textAlign: 'center', padding: '100px' }
 };
