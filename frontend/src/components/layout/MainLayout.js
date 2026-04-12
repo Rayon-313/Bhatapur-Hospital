@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { getHomeContent } from "@lib/api/homeContent";
+import { getHomeContent } from "@/lib/api/homeContent";
 import { usePathname } from 'next/navigation';
 
 export default function MainLayout({ children }) {

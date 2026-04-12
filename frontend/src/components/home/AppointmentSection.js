@@ -1,6 +1,6 @@
 "use client";
 
-import { bookAppointment } from '@lib/api/healthPackages';
+import { bookAppointment } from '@/lib/api/healthPackages';
 
 export default function AppointmentSection() {
   const handleSubmit = async (e) => {

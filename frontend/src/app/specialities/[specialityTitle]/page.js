@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { getHomeContent } from '@lib/api/homeContent';
+import { getHomeContent } from '@/lib/api/homeContent';
 import Link from 'next/link';
 
 export default function SpecialityDetailPage() {

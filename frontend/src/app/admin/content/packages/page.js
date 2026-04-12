@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getHealthPackages, createHealthPackage, updateHealthPackage, deleteHealthPackage } from '@lib/api/healthPackages';
+import { getHealthPackages, createHealthPackage, updateHealthPackage, deleteHealthPackage } from '@/lib/api/healthPackages';
 
 export default function EditHealthPackagesPage() {
   const [packages, setPackages] = useState([]);

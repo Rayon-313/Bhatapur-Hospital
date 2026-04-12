@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getQuestions, updateQuestion as updateQuestionAPI, deleteQuestion as deleteQuestionAPI } from '@lib/api/healthPackages';
+import { getQuestions, updateQuestion as updateQuestionAPI, deleteQuestion as deleteQuestionAPI } from '@/lib/api/healthPackages';
 
 export default function QuestionsPage() {
   const [questions, setQuestions] = useState([]);

@@ -1,6 +1,6 @@
 "use client";
 
-import AppointmentSection from "@components/home/AppointmentSection";
+import AppointmentSection from "@/components/home/AppointmentSection";
 
 export default function ContactUsPage() {
   return (

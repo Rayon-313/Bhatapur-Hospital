@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getAppointments, updateAppointmentStatus as updateAppointmentStatusAPI, deleteAppointment as deleteAppointmentAPI } from '@lib/api/healthPackages';
+import { getAppointments, updateAppointmentStatus as updateAppointmentStatusAPI, deleteAppointment as deleteAppointmentAPI } from '@/lib/api/healthPackages';
 
 export default function AppointmentsPage() {
   const [appointments, setAppointments] = useState([]);

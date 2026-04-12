@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { submitQuestion, getFaqs } from '@lib/api/healthPackages';
+import { submitQuestion, getFaqs } from '@/lib/api/healthPackages';
 
 const fallbackFaqs = [
   {

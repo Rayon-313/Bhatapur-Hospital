@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getStories, createStory, updateStory, deleteStory } from '@lib/api/healthPackages';
+import { getStories, createStory, updateStory, deleteStory } from '@/lib/api/healthPackages';
 import styles from './storiesAdmin.module.css';
 
 // Drag and drop helper function

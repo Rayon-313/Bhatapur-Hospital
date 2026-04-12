@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getFaqs, createFaq as createFaqAPI, updateFaq as updateFaqAPI, deleteFaq as deleteFaqAPI } from '@lib/api/healthPackages';
+import { getFaqs, createFaq as createFaqAPI, updateFaq as updateFaqAPI, deleteFaq as deleteFaqAPI } from '@/lib/api/healthPackages';
 
 export default function FaqsPage() {
   const [faqs, setFaqs] = useState([]);

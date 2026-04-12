@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { getStories } from '@lib/api/healthPackages';
+import { getStories } from '@/lib/api/healthPackages';
 import styles from './patientRecovery.module.css';
 
 export default function PatientRecoveryPage() {
