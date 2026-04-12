@@ -28,15 +28,8 @@ app.use(cors({
   credentials: true
 }));
 app.use(express.json());
-
-// Serving static files
 app.use('/videos', express.static(path.join(__dirname, '../frontend/public/videos')));
-
-/**
- * FIX: Updated to point to the actual folder where your Multer saves department images.
- * This ensures the frontend can see the images via http://localhost:4000/images/...
- */
-app.use('/images', express.static(path.join(__dirname, '../../frontend/public/images')));
+app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
 // MongoDB Connection (updated for newer Mongoose versions)
 mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/hospital')

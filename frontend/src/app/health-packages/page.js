@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { getHealthPackages, bookHealthPackage } from '@lib/api/healthPackages';
+import { getHealthPackages, bookHealthPackage } from '@/lib/api/healthPackages';
 
 export default function HealthPackagesPage() {
   const [packages, setPackages] = useState([]);

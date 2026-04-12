@@ -585,3 +585,17 @@ export const deleteStory = async (id) => {
     throw error;
   }
 };
+
+// export const getDepartments = async () => {
+//   try {
+//     const response = await fetch(`${API_BASE_URL}`, {
+//       method: 'GET',
+//       headers: { 'Content-Type': 'application/json' },
+//     });
+//     if (!response.ok) throw new Error(`Fetch failed: ${response.status}`);
+//     return await response.json();
+//   } catch (error) {
+//     console.error('Error fetching departments:', error);
+//     throw error;
+//   }
+// };

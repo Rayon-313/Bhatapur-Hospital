@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { getHomeContent } from '@lib/api/homeContent';
+import { getHomeContent } from '@/lib/api/homeContent';
 
 // Helper function to create URL-friendly service title
 const createUrlFriendlyTitle = (title) => {

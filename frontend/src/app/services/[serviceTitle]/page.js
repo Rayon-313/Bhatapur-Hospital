@@ -3,9 +3,9 @@
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { getHomeContent } from '@lib/api/homeContent';
+import { getHomeContent } from '@/lib/api/homeContent';
 import Link from 'next/link';
-import AppointmentSection from "@components/home/AppointmentSection";
+import AppointmentSection from "@/components/home/AppointmentSection";
 
 export default function ServiceDetailPage() {
   const { serviceTitle } = useParams();

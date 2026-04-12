@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { getHomeContent, saveHomeContent } from "@lib/api/homeContent";
-import { uploadVideo } from "@lib/api/videoUpload";
-import { uploadHomeImage } from "@lib/api/imageUpload";
+import { getHomeContent, saveHomeContent } from "@/lib/api/homeContent";
+import { uploadVideo } from "@/lib/api/videoUpload";
+import { uploadHomeImage } from "@/lib/api/imageUpload";
 
 // Default content (fallback if none in DB)
 const DEFAULT_HOME_CONTENT = {

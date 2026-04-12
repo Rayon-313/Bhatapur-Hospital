@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getBookings, updateBookingStatus as updateBookingStatusAPI, deleteBooking as deleteBookingAPI } from '@lib/api/healthPackages';
+import { getBookings, updateBookingStatus as updateBookingStatusAPI, deleteBooking as deleteBookingAPI } from '@/lib/api/healthPackages';
 
 export default function BookingsPage() {
   const [bookings, setBookings] = useState([]);

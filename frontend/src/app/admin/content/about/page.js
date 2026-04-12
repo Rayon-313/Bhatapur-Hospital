@@ -1,12 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getAboutContent, saveAboutContent } from "@lib/api/aboutContent";
-import { uploadAboutImage } from "@lib/api/imageUpload";
+import { getAboutContent, saveAboutContent } from "@/lib/api/aboutContent";
+import { uploadAboutImage } from "@/lib/api/imageUpload";
 
-// ADD THIS CONSTANT
-const BACKEND_URL = "http://localhost:4000";
-
+// Default about content
 const DEFAULT_ABOUT_CONTENT = {
   missionVision: "Our mission is to provide high quality, patient-centered healthcare services to the community of Bhaktapur and beyond. Our vision is to be a leading healthcare institution recognized for clinical excellence, innovation, and compassionate care.",
   hospitalProfile: "Bhaktapur International Hospital is a multidisciplinary hospital offering a wide range of inpatient and outpatient services, advanced diagnostic facilities, and specialized departments staffed by experienced professionals.",
@@ -37,6 +35,7 @@ export default function EditAboutPage() {
   const [content, setContent] = useState(DEFAULT_ABOUT_CONTENT);
   const [isSaving, setIsSaving] = useState(false);
 
+  // Load content from backend on mount
   useEffect(() => {
     const loadContent = async () => {
       try {
@@ -54,6 +53,7 @@ export default function EditAboutPage() {
   const handleSave = async () => {
     setIsSaving(true);
     try {
+      // Ensure boardOfDirectors and managementTeam are properly structured
       const contentToSave = {
         ...content,
         boardOfDirectors: content.boardOfDirectors.map(director => ({
@@ -103,17 +103,11 @@ export default function EditAboutPage() {
     setContent((prev) => ({ ...prev, [listName]: newList }));
   };
 
-  // Helper to determine image source
-  const getImgSrc = (path, defaultPath) => {
-    if (!path) return defaultPath;
-    if (path.startsWith('/images')) return path; // Local public folder
-    return `${BACKEND_URL}${path}`; // Backend uploads
-  };
-
   return (
     <section className="admin-container">
       <h2>Edit About Page</h2>
 
+      {/* Mission & Vision */}
       <div className="card">
         <h3>Mission & Vision</h3>
         <textarea
@@ -125,17 +119,18 @@ export default function EditAboutPage() {
         />
       </div>
 
+      {/* Hospital Profile */}
       <div className="card">
         <h3>Hospital Profile</h3>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
           <div style={{ textAlign: 'center' }}>
             <img 
-              src={getImgSrc(content.hospitalPhoto, '/images/hospital-default.jpg')} 
+              src={content.hospitalPhoto || '/images/hospital-default.jpg'} 
               alt="Hospital" 
               style={{ width: '100px', height: '100px', objectFit: 'cover', border: '2px solid #ddd' }}
               onError={(e) => {
+                e.target.src = '/images/hospital-default.jpg';
                 e.target.onerror = null;
-                e.target.src = 'https://via.placeholder.com/100?text=Error';
               }}
             />
             <p style={{ marginTop: '0.5rem', fontWeight: 'bold' }}>Hospital Photo</p>
@@ -176,6 +171,7 @@ export default function EditAboutPage() {
         />
       </div>
 
+      {/* Chairman Message */}
       <div className="card">
         <h3>Chairman Message</h3>
         <textarea
@@ -187,17 +183,18 @@ export default function EditAboutPage() {
         />
       </div>
 
+      {/* Chairman Photo and Name */}
       <div className="card">
         <h3>Chairman Photo & Name</h3>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
           <div style={{ textAlign: 'center' }}>
             <img 
-              src={getImgSrc(content.chairmanPhoto, '/images/chairman-default.jpg')} 
+              src={content.chairmanPhoto || '/images/chairman-default.jpg'} 
               alt="Current Chairman" 
               style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #ddd' }}
               onError={(e) => {
+                e.target.src = '/images/chairman-default.jpg';
                 e.target.onerror = null;
-                e.target.src = 'https://via.placeholder.com/100?text=Error';
               }}
             />
             <p style={{ marginTop: '0.5rem', fontWeight: 'bold' }}>{content.chairmanName || 'Chairman Name'}</p>
@@ -242,6 +239,7 @@ export default function EditAboutPage() {
         </div>
       </div>
 
+      {/* Medical Director Message */}
       <div className="card">
         <h3>Medical Director Message</h3>
         <textarea
@@ -253,17 +251,18 @@ export default function EditAboutPage() {
         />
       </div>
 
+      {/* Medical Director Photo and Name */}
       <div className="card">
         <h3>Medical Director Photo & Name</h3>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
           <div style={{ textAlign: 'center' }}>
             <img 
-              src={getImgSrc(content.medicalDirectorPhoto, '/images/medical-director-default.jpg')} 
+              src={content.medicalDirectorPhoto || '/images/medical-director-default.jpg'} 
               alt="Current Medical Director" 
               style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #ddd' }}
               onError={(e) => {
+                e.target.src = '/images/medical-director-default.jpg';
                 e.target.onerror = null;
-                e.target.src = 'https://via.placeholder.com/100?text=Error';
               }}
             />
             <p style={{ marginTop: '0.5rem', fontWeight: 'bold' }}>{content.medicalDirectorName || 'Medical Director Name'}</p>
@@ -308,6 +307,7 @@ export default function EditAboutPage() {
         </div>
       </div>
 
+      {/* Board of Directors */}
       <div className="card">
         <h3>Board of Directors</h3>
         {content.boardOfDirectors.map((director, index) => (
@@ -315,12 +315,12 @@ export default function EditAboutPage() {
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.5rem' }}>
               <div style={{ textAlign: 'center' }}>
                 <img 
-                  src={getImgSrc(director.photo, '/images/director-default.jpg')} 
+                  src={director.photo || '/images/director-default.jpg'} 
                   alt={`Director ${index + 1}`} 
                   style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #ddd' }}
                   onError={(e) => {
+                    e.target.src = '/images/director-default.jpg';
                     e.target.onerror = null;
-                    e.target.src = 'https://via.placeholder.com/100?text=Error';
                   }}
                 />
                 <p style={{ marginTop: '0.25rem', fontWeight: 'bold', fontSize: '0.9rem' }}>{director.name || 'Director Name'}</p>
@@ -388,6 +388,7 @@ export default function EditAboutPage() {
         </button>
       </div>
 
+      {/* Management Team */}
       <div className="card">
         <h3>Management Team</h3>
         {content.managementTeam.map((member, index) => (
@@ -395,12 +396,12 @@ export default function EditAboutPage() {
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.5rem' }}>
               <div style={{ textAlign: 'center' }}>
                 <img 
-                  src={getImgSrc(member.photo, '/images/team-member-default.jpg')} 
+                  src={member.photo || '/images/team-member-default.jpg'} 
                   alt={`Team Member ${index + 1}`} 
                   style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #ddd' }}
                   onError={(e) => {
+                    e.target.src = '/images/team-member-default.jpg';
                     e.target.onerror = null;
-                    e.target.src = 'https://via.placeholder.com/100?text=Error';
                   }}
                 />
                 <p style={{ marginTop: '0.25rem', fontWeight: 'bold', fontSize: '0.9rem' }}>{member.name || 'Team Member Name'}</p>
@@ -468,6 +469,7 @@ export default function EditAboutPage() {
         </button>
       </div>
 
+      {/* Awards */}
       <div className="card">
         <h3>Awards & Recognitions</h3>
         {content.awards.map((award, index) => (
@@ -475,12 +477,12 @@ export default function EditAboutPage() {
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.5rem' }}>
               <div style={{ textAlign: 'center' }}>
                 <img 
-                  src={getImgSrc(award.photo, '/images/award-default.jpg')} 
+                  src={award.photo || '/images/award-default.jpg'} 
                   alt={`Award ${index + 1}`} 
                   style={{ width: '80px', height: '80px', objectFit: 'cover', border: '2px solid #ddd' }}
                   onError={(e) => {
+                    e.target.src = '/images/award-default.jpg';
                     e.target.onerror = null;
-                    e.target.src = 'https://via.placeholder.com/100?text=Error';
                   }}
                 />
               </div>
@@ -562,6 +564,7 @@ export default function EditAboutPage() {
         </button>
       </div>
 
+      {/* Save Button */}
       <div className="mt-md" style={{ textAlign: 'center' }}>
         <button onClick={handleSave} disabled={isSaving} className="save-button">
           {isSaving ? "Saving..." : "Save Changes"}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import AppointmentSection from "@components/home/AppointmentSection";
+import AppointmentSection from "@/components/home/AppointmentSection";
 
 export default function EditContactPage() {
   const [contactInfo, setContactInfo] = useState({

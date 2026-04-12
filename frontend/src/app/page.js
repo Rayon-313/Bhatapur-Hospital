@@ -1,11 +1,11 @@
 // src/app/page.js
 
-import HeroSection from "@components/home/HeroSection";
-import ServicesSection from "@components/home/ServicesSection";
-import WhyChooseUsSection from "@components/home/WhyChooseUsSection";
-import AppointmentSection from "@components/home/AppointmentSection";
+import HeroSection from "@/components/home/HeroSection";
+import ServicesSection from "@/components/home/ServicesSection";
+import WhyChooseUsSection from "@/components/home/WhyChooseUsSection";
+import AppointmentSection from "@/components/home/AppointmentSection";
 
-import { getHomeContent } from "@lib/api/homeContent";
+import { getHomeContent } from "@/lib/api/homeContent";
 
 // Load content from backend
 async function loadHomeContent() {

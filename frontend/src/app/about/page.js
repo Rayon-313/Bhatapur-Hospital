@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import styles from './about.module.css';
-import AppointmentSection from "@components/home/AppointmentSection";
+import AppointmentSection from "@/components/home/AppointmentSection";
 
 export default function AboutPage() {
   const [aboutContent, setAboutContent] = useState(null);
@@ -95,11 +95,11 @@ export default function AboutPage() {
         <div className={styles.messageWithPhoto}>
           <div className={styles.messagePhotoContainer}>
             <img 
-              src={aboutContent?.chairmanPhoto || '/images/1766486271570-1.jpeg'} 
+              src={aboutContent?.chairmanPhoto || '/images/chairman-default.jpg'} 
               alt="Chairman" 
               className={styles.messagePhoto}
               onError={(e) => {
-                e.target.src = '/images/';
+                e.target.src = '/images/chairman-default.jpg';
                 e.target.onerror = null; // Prevents infinite loop if default image also fails
               }}
             />

@@ -1,158 +1,196 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { getDepartments } from '@/lib/api/departments';
+// import { 
+//   getDepartments,
+//   updateDepartment as updateDepartmentAPI,
+//   deleteDepartment as deleteDepartmentAPI
+// } from '@/lib/api/departments';
 
-const BACKEND_URL = "http://localhost:4000";
-
-// Hardcoded List of Departments for "Beauty & Content"
-const STATIC_DEPARTMENTS = [
-  { _id: '1', name: 'Cardiology', description: 'Advanced heart care focusing on diagnosis and treatment of cardiovascular diseases.', icon: '❤️' },
-  { _id: '2', name: 'Neurology', description: 'Expert care for brain and nervous system disorders using the latest medical imaging.', icon: '🧠' },
-  { _id: '3', name: 'Dental Care', description: 'Comprehensive oral health services ranging from routine cleaning to oral surgery.', icon: '🦷' },
-  { _id: '4', name: 'Orthopedics', description: 'Specialized treatment for bone, joint, and muscular injuries and chronic conditions.', icon: '🦴' },
-  { _id: '5', name: 'Ophthalmology', description: 'Precise vision care and surgical solutions for eye-related medical issues.', icon: '👁️' },
-  { _id: '6', name: 'Pediatrics', description: 'Compassionate medical care dedicated to the health and well-being of children.', icon: '🧸' }
-];
-
-function DepartmentsPage() {
+export default function DepartmentsPage() {
   const [departments, setDepartments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    async function loadData() {
+    const fetchDepartments = async () => {
       try {
-        const response = await fetch(`${BACKEND_URL}/api/departments`);
-        if (response.ok) {
-          const data = await response.json();
-          // Merge Backend data with our beautiful static icons if needed
-          setDepartments(data.length > 0 ? data : STATIC_DEPARTMENTS);
-        } else {
-          setDepartments(STATIC_DEPARTMENTS);
-        }
+        const data = await getDepartments();
+        setDepartments(data);
       } catch (err) {
-        setDepartments(STATIC_DEPARTMENTS);
+        console.error('Error fetching departments:', err);
+        setError(err.message);
+        // Fallback to default departments if API fails
+        setDepartments([
+          {
+            _id: 1,
+            name: "Emergency Medicine",
+            description: "Our emergency department provides 24/7 care for urgent medical conditions.",
+            headDoctor: "Dr. Smith",
+            contactNumber: "+1 234 567 8900",
+            email: "emergency@hospital.com",
+            facilities: ["24/7 Care", "Advanced Equipment", "Trauma Center"],
+            services: ["Emergency Care", "Trauma Treatment", "Critical Care"],
+            image: "",
+            order: 0,
+            isActive: true
+          },
+          {
+            _id: 2,
+            name: "Cardiology",
+            description: "Specialized care for heart and cardiovascular conditions.",
+            headDoctor: "Dr. Johnson",
+            contactNumber: "+1 234 567 8901",
+            email: "cardiology@hospital.com",
+            facilities: ["Cardiac ICU", "Cath Lab", "ECG Services"],
+            services: ["Heart Surgery", "Angioplasty", "ECG", "Echocardiogram"],
+            image: "",
+            order: 1,
+            isActive: true
+          },
+          {
+            _id: 3,
+            name: "Orthopedics",
+            description: "Treatment for musculoskeletal conditions and injuries.",
+            headDoctor: "Dr. Williams",
+            contactNumber: "+1 234 567 8902",
+            email: "orthopedics@hospital.com",
+            facilities: ["Surgical Theater", "Physical Therapy", "X-Ray Services"],
+            services: ["Joint Replacement", "Sports Medicine", "Spine Surgery"],
+            image: "",
+            order: 2,
+            isActive: true
+          }
+        ]);
       } finally {
         setLoading(false);
       }
-    }
-    loadData();
+    };
+
+    fetchDepartments();
   }, []);
 
-  return (
-    <div style={styles.container}>
-      {/* Hero Section */}
-      <section style={styles.hero}>
-        <h1 style={styles.title}>Bhaktapur International Hospital</h1>
-        <p style={styles.subtitle}>Our Specialized Medical Departments</p>
-        <div style={styles.underline}></div>
+  if (loading) {
+    return (
+      <section className="section">
+        <h2 className="section-title">Departments</h2>
+        <div className="services-grid">
+          <div className="service-box" style={{ textAlign: 'center', padding: '2rem' }}>
+            Loading departments...
+          </div>
+        </div>
       </section>
+    );
+  }
 
-      {/* Departments Grid */}
-      <div style={styles.grid}>
-        {departments.map((dept) => (
-          <div key={dept._id} style={styles.card}>
-            <div style={styles.iconBox}>
-              {dept.icon || "🏥"}
-            </div>
-            <div style={styles.cardContent}>
-              <h2 style={styles.cardTitle}>{dept.name}</h2>
-              <p style={styles.cardText}>{dept.description}</p>
-              <button style={styles.button}>
-                Book Appointment
-              </button>
-            </div>
+  if (error) {
+    return (
+      <section className="section">
+        <h2 className="section-title">Departments</h2>
+        <div className="services-grid">
+          <div className="service-box" style={{ textAlign: 'center', padding: '2rem', color: '#ef4444' }}>
+            Error loading departments: {error}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section className="section">
+      <h2 className="section-title">Departments</h2>
+      <p className="section-subtitle">
+        We offer a range of departments to cover your healthcare needs.
+      </p>
+      <div className="services-grid">
+      {(departments || []).filter(dept => dept?.isActive).map((dept) => (
+          <div 
+            key={dept._id}
+            className="service-box"
+            style={{ 
+              cursor: 'default',
+              transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+              display: 'flex',
+              flexDirection: 'column',
+              height: '100%',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-6px)';
+              e.currentTarget.style.boxShadow = '0 12px 20px rgba(0, 0, 0, 0.15)';
+              e.currentTarget.style.borderColor = '#0b7ac4';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.05)';
+              e.currentTarget.style.borderColor = 'rgb(229, 231, 235)';
+            }}
+          >
+            {dept.image && (
+              <img
+                src={dept.image} 
+                alt={dept.name}
+                style={{ 
+                  width: '80px', 
+                  height: '80px', 
+                  objectFit: 'cover', 
+                  marginBottom: '1rem', 
+                  borderRadius: '4px', 
+                  display: 'block', 
+                  margin: '0 auto 1rem auto' 
+                }}
+              />
+            )}
+            <h3 style={{ 
+              margin: '0 0 0.75rem 0', 
+              fontSize: '1.2rem', 
+              fontWeight: '600', 
+              color: 'var(--primary-color)',
+              minHeight: '2rem'
+            }}>
+              {dept.name}
+            </h3>
+            <p style={{ 
+              margin: '0', 
+              fontSize: '1rem', 
+              color: 'var(--muted-text)',
+              marginTop: '0.75rem',
+              lineHeight: '1.6',
+              flex: '1'
+            }}>
+              {dept.description}
+            </p>
+            {dept.headDoctor && (
+              <p style={{ 
+                margin: '0.75rem 0 0 0', 
+                fontSize: '0.9rem', 
+                color: 'var(--muted-text)',
+                fontStyle: 'italic'
+              }}>
+                Head: {dept.headDoctor}
+              </p>
+            )}
+            {dept.contactNumber && (
+              <p style={{ 
+                margin: '0.25rem 0 0 0', 
+                fontSize: '0.9rem', 
+                color: 'var(--muted-text)'
+              }}>
+                {dept.contactNumber}
+              </p>
+            )}
+            {dept.email && (
+              <p style={{ 
+                margin: '0.25rem 0 0 0', 
+                fontSize: '0.9rem', 
+                color: 'var(--muted-text)'
+              }}>
+                {dept.email}
+              </p>
+            )}
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 }
-
-// Modern Professional Styles
-const styles = {
-  container: {
-    backgroundColor: '#f4f7f6',
-    minHeight: '100vh',
-    padding: '40px 20px',
-    fontFamily: '"Segoe UI", Roboto, sans-serif'
-  },
-  hero: {
-    textAlign: 'center',
-    marginBottom: '60px'
-  },
-  title: {
-    fontSize: '2.8rem',
-    color: '#1a365d',
-    margin: '0',
-    fontWeight: '800'
-  },
-  subtitle: {
-    fontSize: '1.2rem',
-    color: '#4a5568',
-    marginTop: '10px'
-  },
-  underline: {
-    width: '80px',
-    height: '4px',
-    backgroundColor: '#3182ce',
-    margin: '20px auto',
-    borderRadius: '2px'
-  },
-  grid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-    gap: '30px',
-    maxWidth: '1200px',
-    margin: '0 auto'
-  },
-  card: {
-    backgroundColor: '#fff',
-    borderRadius: '16px',
-    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
-    transition: 'transform 0.3s ease',
-    overflow: 'hidden',
-    border: '1px solid #e2e8f0',
-    display: 'flex',
-    flexDirection: 'column'
-  },
-  iconBox: {
-    height: '120px',
-    background: 'linear-gradient(135deg, #ebf8ff 0%, #bee3f8 100%)',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    fontSize: '3rem'
-  },
-  cardContent: {
-    padding: '24px',
-    flexGrow: 1,
-    display: 'flex',
-    flexDirection: 'column'
-  },
-  cardTitle: {
-    fontSize: '1.5rem',
-    color: '#2d3748',
-    marginBottom: '12px',
-    fontWeight: '700'
-  },
-  cardText: {
-    color: '#718096',
-    lineHeight: '1.6',
-    fontSize: '1rem',
-    marginBottom: '20px',
-    flexGrow: 1
-  },
-  button: {
-    backgroundColor: '#3182ce',
-    color: '#fff',
-    border: 'none',
-    padding: '12px 20px',
-    borderRadius: '8px',
-    fontWeight: '600',
-    cursor: 'pointer',
-    transition: 'background 0.2s',
-    width: '100%'
-  }
-};
-
-export default DepartmentsPage;
