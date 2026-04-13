@@ -14,9 +14,14 @@ const departmentSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
-  contactNumber: {
+    secondaryDoctor: {
     type: String,
     default: ''
+  },
+  contactNumber: {
+    type: String,
+    default: '',
+
   },
   email: {
     type: String,
@@ -28,7 +33,11 @@ const departmentSchema = new mongoose.Schema({
   services: [{
     type: String
   }],
-  image: {
+  image1: {
+    type: String,
+    default: ''
+  },
+  image2: {
     type: String,
     default: ''
   },

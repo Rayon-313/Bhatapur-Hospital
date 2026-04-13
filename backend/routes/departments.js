@@ -48,17 +48,19 @@ router.get('/:id', async (req, res) => {
 // Create a new department
 router.post('/', async (req, res) => {
   try {
-    const { name, description, headDoctor, contactNumber, email, facilities, services, image, order, isActive, detailedContent } = req.body;
+    const { name, description, headDoctor ,secondaryDoctor , contactNumber, email, facilities, services, image1, image2, order, isActive, detailedContent } = req.body;
     
     const newDepartment = new Department({
       name,
       description,
       headDoctor,
+      secondaryDoctor,
       contactNumber,
       email,
       facilities: facilities || [],
       services: services || [],
-      image,
+      image1,
+      image2,
       order,
       isActive,
       detailedContent: detailedContent || {
@@ -82,11 +84,11 @@ router.post('/', async (req, res) => {
 // Update a department
 router.put('/:id', async (req, res) => {
   try {
-    const { name, description, headDoctor, contactNumber, email, facilities, services, image, order, isActive, detailedContent } = req.body;
+    const { name, description, headDoctor,secondaryDoctor , contactNumber, email, facilities, services, image1, image2, order, isActive, detailedContent } = req.body;
     
     const updatedDepartment = await Department.findByIdAndUpdate(
       req.params.id,
-      { name, description, headDoctor, contactNumber, email, facilities, services, image, order, isActive, detailedContent },
+      { name, description, headDoctor,secondaryDoctor , contactNumber, email, facilities, services, image1, image2, order, isActive, detailedContent },
       { new: true, runValidators: true }
     );
     
