@@ -95,6 +95,8 @@ export default function AdminDepartments() {
               <input style={styles.input} placeholder="Name" value={newDept.name} onChange={e => setNewDept({...newDept, name: e.target.value})} />
               <input style={styles.input} placeholder="Image URL" value={newDept.image} onChange={e => setNewDept({...newDept, image: e.target.value})} />
               <input style={styles.input} placeholder="Head Doctor" value={newDept.headDoctor} onChange={e => setNewDept({...newDept, headDoctor: e.target.value})} />
+              <input style={styles.input} placeholder="Image URL" value={newDept.image} onChange={e => setNewDept({...newDept, image: e.target.value})} />
+              <input style={styles.input} placeholder="Doctor" value={newDept.headDoctor} onChange={e => setNewDept({...newDept, headDoctor: e.target.value})} />
               <input style={styles.input} placeholder="Contact Number" value={newDept.contactNumber} onChange={e => setNewDept({...newDept, contactNumber: e.target.value})} />
               <input style={styles.input} placeholder="Email" value={newDept.email} onChange={e => setNewDept({...newDept, email: e.target.value})} />
               <textarea style={{...styles.input, gridColumn: 'span 2'}} placeholder="Description" value={newDept.description} onChange={e => setNewDept({...newDept, description: e.target.value})} />
@@ -120,8 +122,14 @@ export default function AdminDepartments() {
                 
                 <label style={styles.label}>Image URL</label>
                 <input style={styles.input} value={editForm.image} onChange={e => setEditForm({...editForm, image: e.target.value})} />
-                
+
                 <label style={styles.label}>Head Doctor</label>
+                <input style={styles.input} value={editForm.headDoctor} onChange={e => setEditForm({...editForm, headDoctor: e.target.value})} />
+                
+                <label style={styles.label}>Image URL</label>
+                <input style={styles.input} value={editForm.image} onChange={e => setEditForm({...editForm, image: e.target.value})} />
+                
+                <label style={styles.label}>Doctor</label>
                 <input style={styles.input} value={editForm.headDoctor} onChange={e => setEditForm({...editForm, headDoctor: e.target.value})} />
                 
                 <label style={styles.label}>Contact Number</label>
@@ -141,6 +149,7 @@ export default function AdminDepartments() {
             ) : (
               /* --- VIEW MODE --- */
               <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                <img src={dept.image || 'https://via.placeholder.com/300x150'} style={styles.image} alt="" />
                 <img src={dept.image || 'https://via.placeholder.com/300x150'} style={styles.image} alt="" />
                 <h2 style={styles.deptName}>{dept.name}</h2>
                 <p><strong>Head:</strong> {dept.headDoctor || 'Not Assigned'}</p>
