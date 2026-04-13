@@ -55,8 +55,8 @@ export default function AdminDepartments() {
   // --- EDIT LOGIC ---
   const handleEditClick = (dept) => {
     setEditingId(dept._id);
-    setEditForm({ 
-      name: dept.name, 
+    setEditForm({
+      name: dept.name,
       description: dept.description, 
       image: dept.image || "", 
       headDoctor: dept.headDoctor || "",
