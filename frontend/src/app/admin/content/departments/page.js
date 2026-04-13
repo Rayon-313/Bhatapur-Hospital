@@ -2,24 +2,23 @@
 import { useState, useEffect } from "react";
 import { 
   getDepartments, 
-  updateDepartment as updateDepartmentAPI, 
-  createDepartment as createDepartmentAPI 
+  updateDepartment as updateDepartmentAPI,
+  createDepartment as createDepartmentAPI,
+  deleteDepartment as deleteDepartmentAPI
 } from '@/lib/api/departments';
 
 export default function AdminDepartments() {
   const [departments, setDepartments] = useState([]);
   const [loading, setLoading] = useState(true);
   
-  // State for Editing existing
   const [editingId, setEditingId] = useState(null); 
   const [editForm, setEditForm] = useState({ 
-    name: "", description: "", image1: "", image2: "", headDoctor: "", secondaryDoctor: "", contactNumber: "", email: "" 
+    name: "", description: "", image1: "", image2: "", headDoctor: "", secondaryDoctor: "", contactNumber: "", email: "", facilities: [], services: []
   });
 
-  // State for Adding new
   const [showAddForm, setShowAddForm] = useState(false);
   const [newDept, setNewDept] = useState({ 
-    name: "", description: "", image1: "", image2: "", headDoctor: "", secondaryDoctor: "", contactNumber: "", email: "" 
+    name: "", description: "", image1: "", image2: "", headDoctor: "", secondaryDoctor: "", contactNumber: "", email: ""
   });
 
   useEffect(() => {
@@ -38,12 +37,20 @@ export default function AdminDepartments() {
     }
   };
 
+  // --- EMAIL VERIFICATION HELPER ---
+  const isValidEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
+
   // --- ADD NEW LOGIC ---
   const handleCreate = async () => {
     if (!newDept.name) return alert("Department name is required!");
-    //validate to ensure images and doctor are different
-    if (newDept.image1=== newDeot.image2 && newDept.image1 !=="") return alert("Please use two different image");
-    if (newDept.headDocter === newDept.secondaryDoctor && newDept.headDoctor !=="") return alert("please use two different doctor");
+    if (newDept.email && !isValidEmail(newDept.email)) return alert("Please enter a valid email address!");
+    
+    if (newDept.image1 === newDept.image2 && newDept.image1 !== "") return alert("Please use two different image");
+    if (newDept.headDoctor === newDept.secondaryDoctor && newDept.headDoctor !== "") return alert("please use two different doctor");
+    
     try {
       await createDepartmentAPI(newDept);
       setNewDept({ name: "", description: "", image1: "", image2: "", headDoctor: "", secondaryDoctor: "", contactNumber: "", email: "" });
@@ -52,6 +59,19 @@ export default function AdminDepartments() {
       alert("New department added!");
     } catch (err) {
       alert("Error adding department.");
+    }
+  };
+
+  // --- DELETE LOGIC ---
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this department? This action cannot be undone.")) {
+      try {
+        await deleteDepartmentAPI(id);
+        loadDepts();
+        alert("Department deleted successfully");
+      } catch (err) {
+        alert("Error deleting department");
+      }
     }
   };
 
@@ -71,7 +91,9 @@ export default function AdminDepartments() {
   };
 
   const handleSave = async (id) => {
-    if (editForm.headDoctor === editForm.secondaryDoctor) return alert("Please use two different doctor");
+    if (editForm.email && !isValidEmail(editForm.email)) return alert("Please enter a valid email address!");
+    if (editForm.headDoctor === editForm.secondaryDoctor && editForm.headDoctor !== "") return alert("Please use two different doctor");
+    
     try {
       await updateDepartmentAPI(id, editForm);
       setEditingId(null);
@@ -88,7 +110,6 @@ export default function AdminDepartments() {
     <div style={styles.container}>
       <h1 style={styles.title}>Department Administration</h1>
 
-      {/* --- ADD NEW DEPARTMENT SECTION --- */}
       <div style={styles.addSection}>
         {!showAddForm ? (
           <button onClick={() => setShowAddForm(true)} style={styles.addNewBtn}>
@@ -157,21 +178,10 @@ export default function AdminDepartments() {
                 </div>
 
                 <label style={styles.label}>Contact Number</label>
-                <input style={styles.input} placeholder="Contact Number (97/98...)" value={newDept.contactNumber} 
-                onChange={e => {
-                  const val = e.target.value;
-                  if (/^\d*$/.test(val) && val.length <= 10) {
-                    if (val.length >= 2) {
-                      const prefix = val.substring(0, 2);
-                      if (prefix === '97' || prefix === '98') setNewDept({...newDept, contactNumber: val});
-                    } else if (val === '' || val === '9') {
-                      setNewDept({...newDept, contactNumber: val});
-                    }
-                  }
-                }}/>
+                <input style={styles.input} value={editForm.contactNumber} onChange={e => setEditForm({...editForm, contactNumber: e.target.value})} />
 
                 <label style={styles.label}>Email</label>
-                <input style={{...styles.input, gridColumn: 'span 2'}} placeholder="Email" value={newDept.email} onChange={e => setNewDept({...newDept, email: e.target.value})} />
+                <input style={styles.input} value={editForm.email} onChange={e => setEditForm({...editForm, email: e.target.value})} />
 
                 <label style={styles.label}>Description</label>
                 <textarea style={{...styles.input, height: '60px'}} value={editForm.description} onChange={e => setEditForm({...editForm, description: e.target.value})} />
@@ -184,14 +194,15 @@ export default function AdminDepartments() {
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
                 <div style={{ display: 'flex', gap: '5px', marginBottom: '10px' }}>
-                   <img src={dept.image1 || 'https://via.placeholder.com/150'} style={{...styles.image, width: '50%', height: '120px'}} alt="" />
-                   <img src={dept.image2 || 'https://via.placeholder.com/150'} style={{...styles.image, width: '50%', height: '120px'}} alt="" />
+                  <img src={dept.image1 || 'https://via.placeholder.com/150'} style={{...styles.image, width: '50%', height: '120px'}} alt="" />
+                  <img src={dept.image2 || 'https://via.placeholder.com/150'} style={{...styles.image, width: '50%', height: '120px'}} alt="" />
                 </div>
                 <h2 style={styles.deptName}>{dept.name}</h2>
                 <p><strong>Doctors:</strong> {dept.headDoctor} & {dept.secondaryDoctor || 'None'}</p>
                 <p style={styles.descriptionText}>{dept.description}</p>
-                <div style={{ marginTop: 'auto' }}>
+                <div style={{ marginTop: 'auto', display: 'flex', gap: '10px' }}>
                   <button onClick={() => handleEditClick(dept)} style={styles.editBtn}>Edit Details</button>
+                  <button onClick={() => handleDelete(dept._id)} style={styles.deleteBtn}>Delete</button>
                 </div>
               </div>
             )}
@@ -218,6 +229,7 @@ const styles = {
   addNewBtn: { padding: '12px 24px', backgroundColor: '#1e40af', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' },
   saveBtn: { flex: 1, padding: '10px', backgroundColor: '#10b981', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' },
   cancelBtn: { flex: 1, padding: '10px', backgroundColor: '#6b7280', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' },
-  editBtn: { width: '100%', padding: '10px', backgroundColor: '#3b82f6', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' },
+  editBtn: { flex: 1, padding: '10px', backgroundColor: '#3b82f6', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' },
+  deleteBtn: { flex: 1, padding: '10px', backgroundColor: '#ef4444', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' },
   centerText: { textAlign: 'center', padding: '100px' }
 };
