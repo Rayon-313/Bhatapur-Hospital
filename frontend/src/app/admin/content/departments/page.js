@@ -1,209 +1,161 @@
 "use client";
 import { useState, useEffect } from "react";
-import { 
-  getDepartments, 
-  updateDepartment as updateDepartmentAPI,
-  createDepartment as createDepartmentAPI,
-  deleteDepartment as deleteDepartmentAPI
-} from '@/lib/api/departments';
+import { getDepartments, updateDepartment, createDepartment, deleteDepartment } from '@/lib/api/departments'; //import functions for adding, updating, deleting departments api calls
 
+//function dealing with access of edit delete and create department for admin bascally variable inialization and functions for handling form data and api calls
 export default function AdminDepartments() {
   const [departments, setDepartments] = useState([]);
-  const [loading, setLoading] = useState(true);
-  
-  const [editingId, setEditingId] = useState(null); 
-  const [editForm, setEditForm] = useState({ 
-    name: "", description: "", image1: "", image2: "", headDoctor: "", secondaryDoctor: "", contactNumber: "", email: "", facilities: [], services: []
-  });
-
+  const [editingId, setEditingId] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
-  const [newDept, setNewDept] = useState({ 
-    name: "", description: "", image1: "", image2: "", headDoctor: "", secondaryDoctor: "", contactNumber: "", email: ""
-  });
+  
+  // For handling form data for both edit and create forms
+  const [editForm, setEditForm] = useState({ name: "", description: "", image: "", contactNumber: "", email: "", doctors: [] });
+  const [newDept, setNewDept] = useState({ name: "", description: "", image: "", contactNumber: "", email: "", doctors: [] });
 
-  useEffect(() => {
-    loadDepts();
-  }, []);
+  useEffect(() => { loadDepts(); }, []);
+  const loadDepts = async () => { const data = await getDepartments(); setDepartments(data || []); };
 
-  const loadDepts = async () => {
+  const handleDocChange = (index, field, value, isEdit) => {
+    const state = isEdit ? editForm : newDept;
+    const setter = isEdit ? setEditForm : setNewDept;
+    const docs = [...state.doctors];
+    docs[index][field] = value;
+    setter({ ...state, doctors: docs });
+  };
+
+  const addDoc = (isEdit) => {
+    const state = isEdit ? editForm : newDept;
+    const setter = isEdit ? setEditForm : setNewDept;
+    setter({ ...state, doctors: [...state.doctors, { name: "", description: "", image: null }] });
+  };
+
+  const removeDoc = (index, isEdit) => {
+    const state = isEdit ? editForm : newDept;
+    const setter = isEdit ? setEditForm : setNewDept;
+    setter({ ...state, doctors: state.doctors.filter((_, i) => i !== index) });
+  };
+
+  const packData = (data) => {
+    const fd = new FormData();
+    fd.append("name", data.name || "");
+    fd.append("description", data.description || "");
+    fd.append("contactNumber", data.contactNumber || "");
+    fd.append("email", data.email || "");
+    if (data.image instanceof File) fd.append("image", data.image);
+
+    const docMeta = data.doctors.map(d => ({ 
+      name: d.name, 
+      description: d.description, 
+      image: typeof d.image === 'string' ? d.image : "" 
+    }));
+    fd.append("doctors", JSON.stringify(docMeta));
+
+    data.doctors.forEach((d, i) => {
+      if (d.image instanceof File) fd.append(`doctor_image_${i}`, d.image);
+    });
+    return fd;
+  };
+
+  const handleSaveEdit = async (id) => {
     try {
-      setLoading(true);
-      const data = await getDepartments();
-      if (Array.isArray(data)) setDepartments(data);
-    } catch (err) {
-      console.error("Failed to load departments");
-    } finally {
-      setLoading(false);
-    }
+      await updateDepartment(id, packData(editForm));
+      setEditingId(null);
+      loadDepts();
+      alert("Updated!");
+    } catch (e) { alert("Error updating"); }
   };
 
-  // --- EMAIL VERIFICATION HELPER ---
-  const isValidEmail = (email) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-  };
-
-  // --- ADD NEW LOGIC ---
   const handleCreate = async () => {
-    if (!newDept.name) return alert("Department name is required!");
-    if (newDept.email && !isValidEmail(newDept.email)) return alert("Please enter a valid email address!");
-    
-    if (newDept.image1 === newDept.image2 && newDept.image1 !== "") return alert("Please use two different image");
-    if (newDept.headDoctor === newDept.secondaryDoctor && newDept.headDoctor !== "") return alert("please use two different doctor");
-    
     try {
-      await createDepartmentAPI(newDept);
-      setNewDept({ name: "", description: "", image1: "", image2: "", headDoctor: "", secondaryDoctor: "", contactNumber: "", email: "" });
+      await createDepartment(packData(newDept));
+      setNewDept({ name: "", description: "", image: "", contactNumber: "", email: "", doctors: [] });
       setShowAddForm(false);
       loadDepts();
-      alert("New department added!");
-    } catch (err) {
-      alert("Error adding department.");
-    }
+      alert("Created!");
+    } catch (e) { alert("Error creating"); }
   };
 
-  // --- DELETE LOGIC ---
-  const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this department? This action cannot be undone.")) {
-      try {
-        await deleteDepartmentAPI(id);
-        loadDepts();
-        alert("Department deleted successfully");
-      } catch (err) {
-        alert("Error deleting department");
-      }
-    }
-  };
-
-  // --- EDIT LOGIC ---
-  const handleEditClick = (dept) => {
-    setEditingId(dept._id);
-    setEditForm({
-      name: dept.name,
-      description: dept.description,
-      image1: dept.image1 || "",
-      image2: dept.image2 || "",
-      headDoctor: dept.headDoctor || "",
-      secondaryDoctor: dept.secondaryDoctor || "",
-      contactNumber: dept.contactNumber || "",
-      email: dept.email || ""
-    });
-  };
-
-  const handleSave = async (id) => {
-    if (editForm.email && !isValidEmail(editForm.email)) return alert("Please enter a valid email address!");
-    if (editForm.headDoctor === editForm.secondaryDoctor && editForm.headDoctor !== "") return alert("Please use two different doctor");
-    
-    try {
-      await updateDepartmentAPI(id, editForm);
-      setEditingId(null);
-      loadDepts(); 
-      alert("Changes saved successfully!");
-    } catch (err) {
-      alert("Error saving changes.");
-    }
-  };
-
-  if (loading) return <div style={styles.centerText}><h2>Loading Admin Panel...</h2></div>;
-
+  // Main render show forms and list of departments with edit delete options
   return (
-    <div style={styles.container}>
-      <h1 style={styles.title}>Department Administration</h1>
-
-      <div style={styles.addSection}>
-        {!showAddForm ? (
-          <button onClick={() => setShowAddForm(true)} style={styles.addNewBtn}>
-            + Add New Department
-          </button>
-        ) : (
-          <div style={styles.addForm}>
-            <h3>Add New Department</h3>
-            <div style={styles.formGrid}>
-              <input style={styles.input} placeholder="Department Name" value={newDept.name} onChange={e => setNewDept({...newDept, name: e.target.value})} />
-              <input style={styles.input} placeholder="Contact Number (97/98...)" value={newDept.contactNumber} 
-                onChange={e => {
-                  const val = e.target.value;
-                  if (/^\d*$/.test(val) && val.length <= 10) {
-                    if (val.length >= 2) {
-                      const prefix = val.substring(0, 2);
-                      if (prefix === '97' || prefix === '98') setNewDept({...newDept, contactNumber: val});
-                    } else if (val === '' || val === '9') {
-                      setNewDept({...newDept, contactNumber: val});
-                    }
-                  }
-                }}/>
-              <input style={styles.input} placeholder="Main Image URL" value={newDept.image1} onChange={e => setNewDept({...newDept, image1: e.target.value})} />
-              <input style={styles.input} placeholder="Secondary Image URL" value={newDept.image2} onChange={e => setNewDept({...newDept, image2: e.target.value})} />
-              
-              <input style={styles.input} placeholder="Head Doctor" value={newDept.headDoctor} onChange={e => setNewDept({...newDept, headDoctor: e.target.value})} />
-              <input style={styles.input} placeholder="Assistant/Secondary Doctor" value={newDept.secondaryDoctor} onChange={e => setNewDept({...newDept, secondaryDoctor: e.target.value})} />
-              
-              <input style={{...styles.input, gridColumn: 'span 2'}} placeholder="Email" value={newDept.email} onChange={e => setNewDept({...newDept, email: e.target.value})} />
-              <textarea style={{...styles.input, gridColumn: 'span 2'}} placeholder="Description" value={newDept.description} onChange={e => setNewDept({...newDept, description: e.target.value})} />
-            </div>
-            <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
-              <button onClick={handleCreate} style={styles.saveBtn}>Create</button>
-              <button onClick={() => setShowAddForm(false)} style={styles.cancelBtn}>Cancel</button>
-            </div>
-          </div>
-        )}
-      </div>
+    <div style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
+      <h1>Department Management</h1>
       
+      {/* Add New Department Form */}
+      {!showAddForm ? <button style={styles.addBtn} onClick={() => setShowAddForm(true)}>+ New Department</button> : (
+        <div style={styles.formCard}>
+          <h3>Add New</h3>
+          <label>Department Name</label>
+          <input style={styles.input} placeholder="Name" value={newDept.name} onChange={e => setNewDept({...newDept, name: e.target.value})} />
+
+          <label>Phone</label>
+          <input style={styles.input} placeholder="Phone" value={newDept.contactNumber} onChange={e => setNewDept({...newDept, contactNumber: e.target.value})} />
+
+          <label>Email</label>
+          <input style={styles.input} placeholder="Email" value={newDept.email} onChange={e => setNewDept({...newDept, email: e.target.value})} />
+
+          <label>Description</label>
+          <textarea style={styles.input} placeholder="Description" value={newDept.description} onChange={e => setNewDept({...newDept, description: e.target.value})} />
+
+          <label>Main Image</label>
+          <input type="file" onChange={e => setNewDept({...newDept, image: e.target.files[0]})} />
+          
+          <div style={styles.docBox}>
+            <h4>Doctors</h4>
+            {newDept.doctors.map((d, i) => (
+              <div key={i} style={styles.docRow}>
+                <input placeholder="Doc Name" style={styles.input} onChange={e => handleDocChange(i, 'name', e.target.value, false)} />
+                <textarea placeholder="Doc Bio" style={styles.input} onChange={e => handleDocChange(i, 'description', e.target.value, false)} />
+                <input type="file" onChange={e => handleDocChange(i, 'image', e.target.files[0], false)} />
+                <button onClick={() => removeDoc(i, false)}>✕</button>
+              </div>
+            ))}
+            <button onClick={() => addDoc(false)}>+ Add Doctor</button>
+          </div>
+          <button style={styles.saveBtn} onClick={handleCreate}>Create Department</button>
+          <button onClick={() => setShowAddForm(false)}>Cancel</button>
+        </div>
+      )}
+
       <div style={styles.grid}>
-        {departments.map((dept) => (
+        {departments.map(dept => (
           <div key={dept._id} style={styles.card}>
             {editingId === dept._id ? (
-              <div style={styles.formGroup}>
-                <h3>Edit Mode</h3>
-                <label style={styles.label}>Department Name</label>
+              <div>
+                <label>Name</label>
                 <input style={styles.input} value={editForm.name} onChange={e => setEditForm({...editForm, name: e.target.value})} />
-                
-                <div style={styles.formGrid}>
-                  <div>
-                    <label style={styles.label}>Image 1</label>
-                    <input style={styles.input} value={editForm.image1} onChange={e => setEditForm({...editForm, image1: e.target.value})} />
-                  </div>
-                  <div>
-                    <label style={styles.label}>Image 2</label>
-                    <input style={styles.input} value={editForm.image2} onChange={e => setEditForm({...editForm, image2: e.target.value})} />
-                  </div>
-                  <div>
-                    <label style={styles.label}>Head Doctor</label>
-                    <input style={styles.input} value={editForm.headDoctor} onChange={e => setEditForm({...editForm, headDoctor: e.target.value})} />
-                  </div>
-                  <div>
-                    <label style={styles.label}>Secondary Doctor</label>
-                    <input style={styles.input} value={editForm.secondaryDoctor} onChange={e => setEditForm({...editForm, secondaryDoctor: e.target.value})} />
-                  </div>
-                </div>
 
-                <label style={styles.label}>Contact Number</label>
+                <label>Phone</label>
                 <input style={styles.input} value={editForm.contactNumber} onChange={e => setEditForm({...editForm, contactNumber: e.target.value})} />
 
-                <label style={styles.label}>Email</label>
+                <label>Email</label>
                 <input style={styles.input} value={editForm.email} onChange={e => setEditForm({...editForm, email: e.target.value})} />
 
-                <label style={styles.label}>Description</label>
-                <textarea style={{...styles.input, height: '60px'}} value={editForm.description} onChange={e => setEditForm({...editForm, description: e.target.value})} />
+                <label>Description</label>
+                <textarea style={styles.input} value={editForm.description} onChange={e => setEditForm({...editForm, description: e.target.value})} />
+                  
+                <label>Main Image</label>
+                <input type="file" onChange={e => setEditForm({...editForm, image: e.target.files[0]})} />
                 
-                <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
-                  <button onClick={() => handleSave(dept._id)} style={styles.saveBtn}>Save</button>
-                  <button onClick={() => setEditingId(null)} style={styles.cancelBtn}>Cancel</button>
+                <div style={styles.docBox}>
+                  {editForm.doctors.map((d, i) => (
+                    <div key={i} style={styles.docRow}>
+                      <input value={d.name} style={styles.input} onChange={e => handleDocChange(i, 'name', e.target.value, true)} />
+                      <textarea value={d.description} style={styles.input} onChange={e => handleDocChange(i, 'description', e.target.value, true)} />
+                      <input type="file" onChange={e => handleDocChange(i, 'image', e.target.files[0], true)} />
+                      <button onClick={() => removeDoc(i, true)}>✕</button>
+                    </div>
+                  ))}
+                  <button onClick={() => addDoc(true)}>+ Add Doc</button>
                 </div>
+                <button style={styles.saveBtn} onClick={() => handleSaveEdit(dept._id)}>Apply</button>
+                <button onClick={() => setEditingId(null)}>Cancel</button>
               </div>
             ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-                <div style={{ display: 'flex', gap: '5px', marginBottom: '10px' }}>
-                  <img src={dept.image1 || 'https://via.placeholder.com/150'} style={{...styles.image, width: '50%', height: '120px'}} alt="" />
-                  <img src={dept.image2 || 'https://via.placeholder.com/150'} style={{...styles.image, width: '50%', height: '120px'}} alt="" />
-                </div>
-                <h2 style={styles.deptName}>{dept.name}</h2>
-                <p><strong>Doctors:</strong> {dept.headDoctor} & {dept.secondaryDoctor || 'None'}</p>
-                <p style={styles.descriptionText}>{dept.description}</p>
-                <div style={{ marginTop: 'auto', display: 'flex', gap: '10px' }}>
-                  <button onClick={() => handleEditClick(dept)} style={styles.editBtn}>Edit Details</button>
-                  <button onClick={() => handleDelete(dept._id)} style={styles.deleteBtn}>Delete</button>
-                </div>
+              <div>
+                <img src={dept.image} style={{width:'100%', height:'150px', objectFit:'cover'}} alt=""/>
+                <h3>{dept.name}</h3>
+                <button onClick={() => { setEditingId(dept._id); setEditForm(dept); }}>Edit</button>
+                <button style={{color:'red'}} onClick={() => deleteDepartment(dept._id).then(loadDepts)}>Delete</button>
               </div>
             )}
           </div>
@@ -214,22 +166,12 @@ export default function AdminDepartments() {
 }
 
 const styles = {
-  container: { padding: '2rem', maxWidth: '1200px', margin: '0 auto', fontFamily: 'sans-serif' },
-  title: { textAlign: 'center', color: '#1e40af', marginBottom: '1rem' },
-  label: { fontSize: '0.75rem', fontWeight: 'bold', color: '#666', display: 'block', marginTop: '10px' },
-  addSection: { marginBottom: '3rem', display: 'flex', justifyContent: 'center' },
-  addForm: { background: '#f8fafc', padding: '20px', borderRadius: '12px', border: '2px dashed #cbd5e1', width: '100%', maxWidth: '700px' },
-  formGrid: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' },
-  grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '20px' },
-  card: { border: '1px solid #ddd', borderRadius: '12px', padding: '20px', backgroundColor: '#fff' },
-  image: { objectFit: 'cover', borderRadius: '8px' },
-  deptName: { color: '#1e40af', margin: '0 0 10px 0' },
-  descriptionText: { fontSize: '0.9rem', color: '#666', marginBottom: '15px' },
-  input: { padding: '10px', borderRadius: '6px', border: '1px solid #ccc', width: '100%', boxSizing: 'border-box' },
-  addNewBtn: { padding: '12px 24px', backgroundColor: '#1e40af', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' },
-  saveBtn: { flex: 1, padding: '10px', backgroundColor: '#10b981', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' },
-  cancelBtn: { flex: 1, padding: '10px', backgroundColor: '#6b7280', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' },
-  editBtn: { flex: 1, padding: '10px', backgroundColor: '#3b82f6', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' },
-  deleteBtn: { flex: 1, padding: '10px', backgroundColor: '#ef4444', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' },
-  centerText: { textAlign: 'center', padding: '100px' }
+  grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' },
+  card: { border: '1px solid #ddd', padding: '15px', borderRadius: '8px' },
+  formCard: { background: '#f9f9f9', padding: '20px', borderRadius: '8px', marginBottom: '20px' },
+  input: { display: 'block', width: '100%', marginBottom: '10px', padding: '8px' },
+  docBox: { background: '#fff', padding: '10px', border: '1px solid #eee', marginBottom: '10px' },
+  docRow: { borderBottom: '1px solid #ddd', paddingBottom: '10px', marginBottom: '10px' },
+  saveBtn: { background: '#28a745', color: '#fff', padding: '10px 20px', border: 'none', borderRadius: '4px', marginRight: '10px' },
+  addBtn: { background: '#007bff', color: '#fff', padding: '10px 20px', border: 'none', borderRadius: '4px', marginBottom: '20px' }
 };

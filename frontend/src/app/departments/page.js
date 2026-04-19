@@ -1,6 +1,8 @@
+// This page displays a list of hospital departments, fetching data from the backend API. Each department is presented in a card format with its name, description, head doctor, contact information, and an optional image. Users can click on a department to view more details on a separate page. The component also handles loading and error states gracefully, providing feedback to the user when necessary.
 "use client";
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link'; // Make sure to import Link
 import { getDepartments } from '@/lib/api/departments';
 // import { 
 //   getDepartments,
@@ -105,11 +107,16 @@ export default function DepartmentsPage() {
       </p>
       <div className="services-grid">
       {(departments || []).filter(dept => dept?.isActive).map((dept) => (
+        <Link 
+          href={`/departments/${dept._id}`} 
+          key={dept._id} 
+          style={{ textDecoration: 'none', color: 'inherit' }}
+        >
           <div 
             key={dept._id}
             className="service-box"
             style={{ 
-              cursor: 'default',
+              cursor: 'pointer',
               transition: 'transform 0.3s ease, box-shadow 0.3s ease',
               display: 'flex',
               flexDirection: 'column',
@@ -189,6 +196,7 @@ export default function DepartmentsPage() {
               </p>
             )}
           </div>
+          </Link>
         ))}
       </div>
     </section>
