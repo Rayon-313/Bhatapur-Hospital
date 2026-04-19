@@ -13,63 +13,75 @@ const DEFAULT_HOME_CONTENT = {
   services: [
     {
       title: "24/7 Emergency Services",
-      description: "Emergency medical care available around the clock for critical situations.",
+      description:
+        "Emergency medical care available around the clock for critical situations.",
       detailedContent: {
-        about: "24/7 Emergency Services is one of our specialized services at Bhaktapur International Hospital. We are committed to providing the highest quality care and treatment in this area of healthcare.",
+        about:
+          "24/7 Emergency Services is one of our specialized services at Bhaktapur International Hospital. We are committed to providing the highest quality care and treatment in this area of healthcare.",
         keyFeatures: [
           "State-of-the-art equipment and facilities",
           "Experienced and qualified medical professionals",
           "Comprehensive care approach",
           "24/7 availability (where applicable)",
-          "Patient-centered care philosophy"
+          "Patient-centered care philosophy",
         ],
-        whyChoose: "At Bhaktapur International Hospital, we pride ourselves on delivering exceptional 24/7 emergency services. Our team of specialists combines advanced medical technology with compassionate care to ensure the best possible outcomes for our patients."
-      }
+        whyChoose:
+          "At Bhaktapur International Hospital, we pride ourselves on delivering exceptional 24/7 emergency services. Our team of specialists combines advanced medical technology with compassionate care to ensure the best possible outcomes for our patients.",
+      },
     },
     {
       title: "Outpatient & Inpatient Services",
-      description: "Comprehensive care for both outpatient visits and extended stays.",
+      description:
+        "Comprehensive care for both outpatient visits and extended stays.",
       detailedContent: {
-        about: "Outpatient & Inpatient Services is one of our specialized services at Bhaktapur International Hospital. We are committed to providing the highest quality care and treatment in this area of healthcare.",
+        about:
+          "Outpatient & Inpatient Services is one of our specialized services at Bhaktapur International Hospital. We are committed to providing the highest quality care and treatment in this area of healthcare.",
         keyFeatures: [
           "State-of-the-art equipment and facilities",
           "Experienced and qualified medical professionals",
           "Comprehensive care approach",
           "Flexible scheduling options",
-          "Patient-centered care philosophy"
+          "Patient-centered care philosophy",
         ],
-        whyChoose: "At Bhaktapur International Hospital, we pride ourselves on delivering exceptional outpatient & inpatient services. Our team of specialists combines advanced medical technology with compassionate care to ensure the best possible outcomes for our patients."
-      }
+        whyChoose:
+          "At Bhaktapur International Hospital, we pride ourselves on delivering exceptional outpatient & inpatient services. Our team of specialists combines advanced medical technology with compassionate care to ensure the best possible outcomes for our patients.",
+      },
     },
     {
       title: "Diagnostic & Imaging",
-      description: "Advanced diagnostic tools and imaging technology for accurate diagnosis.",
+      description:
+        "Advanced diagnostic tools and imaging technology for accurate diagnosis.",
       detailedContent: {
-        about: "Diagnostic & Imaging is one of our specialized services at Bhaktapur International Hospital. We are committed to providing the highest quality care and treatment in this area of healthcare.",
+        about:
+          "Diagnostic & Imaging is one of our specialized services at Bhaktapur International Hospital. We are committed to providing the highest quality care and treatment in this area of healthcare.",
         keyFeatures: [
           "State-of-the-art equipment and facilities",
           "Experienced and qualified medical professionals",
           "Comprehensive care approach",
           "Advanced imaging technology",
-          "Accurate and timely results"
+          "Accurate and timely results",
         ],
-        whyChoose: "At Bhaktapur International Hospital, we pride ourselves on delivering exceptional diagnostic & imaging services. Our team of specialists combines advanced medical technology with compassionate care to ensure the best possible outcomes for our patients."
-      }
+        whyChoose:
+          "At Bhaktapur International Hospital, we pride ourselves on delivering exceptional diagnostic & imaging services. Our team of specialists combines advanced medical technology with compassionate care to ensure the best possible outcomes for our patients.",
+      },
     },
     {
       title: "Surgical Services",
-      description: "State-of-the-art surgical facilities with experienced surgeons.",
+      description:
+        "State-of-the-art surgical facilities with experienced surgeons.",
       detailedContent: {
-        about: "Surgical Services is one of our specialized services at Bhaktapur International Hospital. We are committed to providing the highest quality care and treatment in this area of healthcare.",
+        about:
+          "Surgical Services is one of our specialized services at Bhaktapur International Hospital. We are committed to providing the highest quality care and treatment in this area of healthcare.",
         keyFeatures: [
           "State-of-the-art equipment and facilities",
           "Experienced and qualified medical professionals",
           "Comprehensive care approach",
           "Advanced surgical technology",
-          "Patient-centered care philosophy"
+          "Patient-centered care philosophy",
         ],
-        whyChoose: "At Bhaktapur International Hospital, we pride ourselves on delivering exceptional surgical services. Our team of specialists combines advanced medical technology with compassionate care to ensure the best possible outcomes for our patients."
-      }
+        whyChoose:
+          "At Bhaktapur International Hospital, we pride ourselves on delivering exceptional surgical services. Our team of specialists combines advanced medical technology with compassionate care to ensure the best possible outcomes for our patients.",
+      },
     },
   ],
 
@@ -83,7 +95,7 @@ const DEFAULT_HOME_CONTENT = {
     "Caring for your health with compassion and excellence",
     "Dedicated to your wellness and recovery",
     "Providing exceptional healthcare services",
-    "Your trusted partner in health"
+    "Your trusted partner in health",
   ],
   videoPath: "/videos/hospital-tour.mp4", // Default video path - change this to your actual video path
 };
@@ -117,11 +129,11 @@ export default function EditHomePage() {
 
   const addListItem = (listName) => {
     let newItem;
-    if (listName === 'services') {
+    if (listName === "services") {
       // For services, add a new object with title, description, imageUrl, and detailedContent
-      newItem = { 
-        title: "New Service", 
-        description: "", 
+      newItem = {
+        title: "New Service",
+        description: "",
         imageUrl: "",
         detailedContent: {
           about: "",
@@ -129,8 +141,8 @@ export default function EditHomePage() {
           whyChoose: "",
           whyChooseHeading: "Why Choose Our New Service",
           image1Path: "",
-          image2Path: ""
-        }
+          image2Path: "",
+        },
       };
     } else {
       // For other lists, add an empty string
@@ -146,16 +158,17 @@ export default function EditHomePage() {
     setContent((prev) => ({ ...prev, [listName]: newList }));
   };
 
-
-
   const handleSave = async () => {
     setIsSaving(true);
     // Filter out any blob URLs before saving
     const contentToSave = {
       ...content,
-      videoPath: content.videoPath && content.videoPath.startsWith('blob:') ? '/videos/hospital-tour.mp4' : content.videoPath
+      videoPath:
+        content.videoPath && content.videoPath.startsWith("blob:")
+          ? "/videos/hospital-tour.mp4"
+          : content.videoPath,
     };
-    
+
     const result = await saveHomeContent(contentToSave);
     if (result) {
       alert("Home page content saved to database!");
@@ -261,16 +274,19 @@ export default function EditHomePage() {
                 onChange={(e) => {
                   const updatedServices = [...content.services];
                   const newTitle = e.target.value;
-                  updatedServices[index] = { 
-                    ...updatedServices[index], 
+                  updatedServices[index] = {
+                    ...updatedServices[index],
                     title: newTitle,
                     detailedContent: {
                       ...updatedServices[index].detailedContent,
                       aboutHeading: `About ${newTitle}`,
-                      whyChooseHeading: `Why Choose Our ${newTitle}`
-                    }
+                      whyChooseHeading: `Why Choose Our ${newTitle}`,
+                    },
                   };
-                  setContent(prev => ({ ...prev, services: updatedServices }));
+                  setContent((prev) => ({
+                    ...prev,
+                    services: updatedServices,
+                  }));
                 }}
                 placeholder="Service title"
               />
@@ -286,21 +302,26 @@ export default function EditHomePage() {
               value={service.description || ""}
               onChange={(e) => {
                 const updatedServices = [...content.services];
-                updatedServices[index] = { ...updatedServices[index], description: e.target.value };
-                setContent(prev => ({ ...prev, services: updatedServices }));
+                updatedServices[index] = {
+                  ...updatedServices[index],
+                  description: e.target.value,
+                };
+                setContent((prev) => ({ ...prev, services: updatedServices }));
               }}
               placeholder="Service description"
               rows={2}
             />
-            
+
             {/* Detailed Content Section */}
             <details className="detailed-content">
               <summary>Edit Detailed Content</summary>
-              
+
               {/* Images Section */}
               <div>
                 <label>Service Images</label>
-                <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
+                <div
+                  style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}
+                >
                   {/* First Image */}
                   <div style={{ flex: 1 }}>
                     <label>Image 1</label>
@@ -311,45 +332,51 @@ export default function EditHomePage() {
                         const files = e.dataTransfer.files;
                         if (files.length > 0) {
                           const file = files[0];
-                          if (file.type.startsWith('image/')) {
+                          if (file.type.startsWith("image/")) {
                             try {
                               const uploadResult = await uploadHomeImage(file);
                               const updatedServices = [...content.services];
-                              updatedServices[index] = { 
-                                ...updatedServices[index], 
-                                detailedContent: { 
+                              updatedServices[index] = {
+                                ...updatedServices[index],
+                                detailedContent: {
                                   ...updatedServices[index].detailedContent,
-                                  image1Path: uploadResult.imagePath
-                                }
+                                  image1Path: uploadResult.imagePath,
+                                },
                               };
-                              setContent(prev => ({ ...prev, services: updatedServices }));
+                              setContent((prev) => ({
+                                ...prev,
+                                services: updatedServices,
+                              }));
                             } catch (error) {
-                              console.error('Failed to upload image:', error);
+                              console.error("Failed to upload image:", error);
                             }
                           }
                         }
                       }}
                       className="image-upload-area"
                       onClick={() => {
-                        const input = document.createElement('input');
-                        input.type = 'file';
-                        input.accept = 'image/*';
+                        const input = document.createElement("input");
+                        input.type = "file";
+                        input.accept = "image/*";
                         input.onchange = async (e) => {
                           const file = e.target.files[0];
                           if (file) {
                             try {
                               const uploadResult = await uploadHomeImage(file);
                               const updatedServices = [...content.services];
-                              updatedServices[index] = { 
-                                ...updatedServices[index], 
-                                detailedContent: { 
+                              updatedServices[index] = {
+                                ...updatedServices[index],
+                                detailedContent: {
                                   ...updatedServices[index].detailedContent,
-                                  image1Path: uploadResult.imagePath
-                                }
+                                  image1Path: uploadResult.imagePath,
+                                },
                               };
-                              setContent(prev => ({ ...prev, services: updatedServices }));
+                              setContent((prev) => ({
+                                ...prev,
+                                services: updatedServices,
+                              }));
                             } catch (error) {
-                              console.error('Failed to upload image:', error);
+                              console.error("Failed to upload image:", error);
                             }
                           }
                         };
@@ -358,9 +385,9 @@ export default function EditHomePage() {
                     >
                       {service.detailedContent?.image1Path ? (
                         <div>
-                          <img 
-                            src={service.detailedContent.image1Path} 
-                            alt="Service 1" 
+                          <img
+                            src={service.detailedContent.image1Path}
+                            alt="Service 1"
                           />
                           <p>Click to replace</p>
                         </div>
@@ -369,7 +396,7 @@ export default function EditHomePage() {
                       )}
                     </div>
                   </div>
-                  
+
                   {/* Second Image */}
                   <div style={{ flex: 1 }}>
                     <label>Image 2</label>
@@ -380,45 +407,51 @@ export default function EditHomePage() {
                         const files = e.dataTransfer.files;
                         if (files.length > 0) {
                           const file = files[0];
-                          if (file.type.startsWith('image/')) {
+                          if (file.type.startsWith("image/")) {
                             try {
                               const uploadResult = await uploadHomeImage(file);
                               const updatedServices = [...content.services];
-                              updatedServices[index] = { 
-                                ...updatedServices[index], 
-                                detailedContent: { 
+                              updatedServices[index] = {
+                                ...updatedServices[index],
+                                detailedContent: {
                                   ...updatedServices[index].detailedContent,
-                                  image2Path: uploadResult.imagePath
-                                }
+                                  image2Path: uploadResult.imagePath,
+                                },
                               };
-                              setContent(prev => ({ ...prev, services: updatedServices }));
+                              setContent((prev) => ({
+                                ...prev,
+                                services: updatedServices,
+                              }));
                             } catch (error) {
-                              console.error('Failed to upload image:', error);
+                              console.error("Failed to upload image:", error);
                             }
                           }
                         }
                       }}
                       className="image-upload-area"
                       onClick={() => {
-                        const input = document.createElement('input');
-                        input.type = 'file';
-                        input.accept = 'image/*';
+                        const input = document.createElement("input");
+                        input.type = "file";
+                        input.accept = "image/*";
                         input.onchange = async (e) => {
                           const file = e.target.files[0];
                           if (file) {
                             try {
                               const uploadResult = await uploadHomeImage(file);
                               const updatedServices = [...content.services];
-                              updatedServices[index] = { 
-                                ...updatedServices[index], 
-                                detailedContent: { 
+                              updatedServices[index] = {
+                                ...updatedServices[index],
+                                detailedContent: {
                                   ...updatedServices[index].detailedContent,
-                                  image2Path: uploadResult.imagePath
-                                }
+                                  image2Path: uploadResult.imagePath,
+                                },
                               };
-                              setContent(prev => ({ ...prev, services: updatedServices }));
+                              setContent((prev) => ({
+                                ...prev,
+                                services: updatedServices,
+                              }));
                             } catch (error) {
-                              console.error('Failed to upload image:', error);
+                              console.error("Failed to upload image:", error);
                             }
                           }
                         };
@@ -427,9 +460,9 @@ export default function EditHomePage() {
                     >
                       {service.detailedContent?.image2Path ? (
                         <div>
-                          <img 
-                            src={service.detailedContent.image2Path} 
-                            alt="Service 2" 
+                          <img
+                            src={service.detailedContent.image2Path}
+                            alt="Service 2"
                           />
                           <p>Click to replace</p>
                         </div>
@@ -440,114 +473,190 @@ export default function EditHomePage() {
                   </div>
                 </div>
               </div>
-              
+
               <div style={{ marginTop: "1rem" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" }}>
-                  <label style={{ display: "block" }}>About Section Heading</label>
-                  <button 
-                    type="button" 
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginBottom: "0.5rem",
+                  }}
+                >
+                  <label style={{ display: "block" }}>
+                    About Section Heading
+                  </label>
+                  <button
+                    type="button"
                     onClick={() => {
                       const updatedServices = [...content.services];
-                      updatedServices[index] = { 
-                        ...updatedServices[index], 
-                        detailedContent: { 
-                          ...updatedServices[index].detailedContent, 
-                          aboutHeading: "About This Service" 
-                        }
+                      updatedServices[index] = {
+                        ...updatedServices[index],
+                        detailedContent: {
+                          ...updatedServices[index].detailedContent,
+                          aboutHeading: "About This Service",
+                        },
                       };
-                      setContent(prev => ({ ...prev, services: updatedServices }));
+                      setContent((prev) => ({
+                        ...prev,
+                        services: updatedServices,
+                      }));
                     }}
-                    style={{ background: "#0b7ac4", color: "white", border: "none", padding: "4px 8px", borderRadius: "4px", cursor: "pointer", fontSize: "0.8rem" }}
-                  >Reset</button>
+                    style={{
+                      background: "#0b7ac4",
+                      color: "white",
+                      border: "none",
+                      padding: "4px 8px",
+                      borderRadius: "4px",
+                      cursor: "pointer",
+                      fontSize: "0.8rem",
+                    }}
+                  >
+                    Reset
+                  </button>
                 </div>
                 <input
                   type="text"
-                  value={service.detailedContent?.aboutHeading || "About This Service"}
+                  value={
+                    service.detailedContent?.aboutHeading ||
+                    "About This Service"
+                  }
                   onChange={(e) => {
                     const updatedServices = [...content.services];
-                    updatedServices[index] = { 
-                      ...updatedServices[index], 
-                      detailedContent: { 
-                        ...updatedServices[index].detailedContent, 
-                        aboutHeading: e.target.value 
-                      }
+                    updatedServices[index] = {
+                      ...updatedServices[index],
+                      detailedContent: {
+                        ...updatedServices[index].detailedContent,
+                        aboutHeading: e.target.value,
+                      },
                     };
-                    setContent(prev => ({ ...prev, services: updatedServices }));
+                    setContent((prev) => ({
+                      ...prev,
+                      services: updatedServices,
+                    }));
                   }}
                   placeholder="Enter heading for about section"
-                  style={{ width: "100%", padding: "8px", marginBottom: "0.5rem", borderRadius: "4px", border: "1px solid #ccc" }}
+                  style={{
+                    width: "100%",
+                    padding: "8px",
+                    marginBottom: "0.5rem",
+                    borderRadius: "4px",
+                    border: "1px solid #ccc",
+                  }}
                 />
-                <label style={{ display: "block", marginBottom: "0.5rem" }}>About Content</label>
+                <label style={{ display: "block", marginBottom: "0.5rem" }}>
+                  About Content
+                </label>
                 <textarea
                   value={service.detailedContent?.about || ""}
                   onChange={(e) => {
                     const updatedServices = [...content.services];
-                    updatedServices[index] = { 
-                      ...updatedServices[index], 
-                      detailedContent: { 
-                        ...updatedServices[index].detailedContent, 
-                        about: e.target.value 
-                      }
+                    updatedServices[index] = {
+                      ...updatedServices[index],
+                      detailedContent: {
+                        ...updatedServices[index].detailedContent,
+                        about: e.target.value,
+                      },
                     };
-                    setContent(prev => ({ ...prev, services: updatedServices }));
+                    setContent((prev) => ({
+                      ...prev,
+                      services: updatedServices,
+                    }));
                   }}
                   placeholder="Enter content for about section"
                   rows={3}
                   style={{ width: "100%", marginBottom: "1rem" }}
                 />
               </div>
-              
 
-              
               <div style={{ marginTop: "1rem" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" }}>
-                  <label style={{ display: "block" }}>Why Choose Section Heading</label>
-                  <button 
-                    type="button" 
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginBottom: "0.5rem",
+                  }}
+                >
+                  <label style={{ display: "block" }}>
+                    Why Choose Section Heading
+                  </label>
+                  <button
+                    type="button"
                     onClick={() => {
                       const updatedServices = [...content.services];
-                      updatedServices[index] = { 
-                        ...updatedServices[index], 
-                        detailedContent: { 
-                          ...updatedServices[index].detailedContent, 
-                          whyChooseHeading: `Why Choose Our ${updatedServices[index].title}` 
-                        }
+                      updatedServices[index] = {
+                        ...updatedServices[index],
+                        detailedContent: {
+                          ...updatedServices[index].detailedContent,
+                          whyChooseHeading: `Why Choose Our ${updatedServices[index].title}`,
+                        },
                       };
-                      setContent(prev => ({ ...prev, services: updatedServices }));
+                      setContent((prev) => ({
+                        ...prev,
+                        services: updatedServices,
+                      }));
                     }}
-                    style={{ background: "#0b7ac4", color: "white", border: "none", padding: "4px 8px", borderRadius: "4px", cursor: "pointer", fontSize: "0.8rem" }}
-                  >Reset</button>
+                    style={{
+                      background: "#0b7ac4",
+                      color: "white",
+                      border: "none",
+                      padding: "4px 8px",
+                      borderRadius: "4px",
+                      cursor: "pointer",
+                      fontSize: "0.8rem",
+                    }}
+                  >
+                    Reset
+                  </button>
                 </div>
                 <input
                   type="text"
-                  value={service.detailedContent?.whyChooseHeading || `Why Choose Our ${service.title}`}
+                  value={
+                    service.detailedContent?.whyChooseHeading ||
+                    `Why Choose Our ${service.title}`
+                  }
                   onChange={(e) => {
                     const updatedServices = [...content.services];
-                    updatedServices[index] = { 
-                      ...updatedServices[index], 
-                      detailedContent: { 
-                        ...updatedServices[index].detailedContent, 
-                        whyChooseHeading: e.target.value 
-                      }
+                    updatedServices[index] = {
+                      ...updatedServices[index],
+                      detailedContent: {
+                        ...updatedServices[index].detailedContent,
+                        whyChooseHeading: e.target.value,
+                      },
                     };
-                    setContent(prev => ({ ...prev, services: updatedServices }));
+                    setContent((prev) => ({
+                      ...prev,
+                      services: updatedServices,
+                    }));
                   }}
                   placeholder="Enter heading for why choose section"
-                  style={{ width: "100%", padding: "8px", marginBottom: "0.5rem", borderRadius: "4px", border: "1px solid #ccc" }}
+                  style={{
+                    width: "100%",
+                    padding: "8px",
+                    marginBottom: "0.5rem",
+                    borderRadius: "4px",
+                    border: "1px solid #ccc",
+                  }}
                 />
-                <label style={{ display: "block", marginBottom: "0.5rem" }}>Why Choose Content</label>
+                <label style={{ display: "block", marginBottom: "0.5rem" }}>
+                  Why Choose Content
+                </label>
                 <textarea
                   value={service.detailedContent?.whyChoose || ""}
                   onChange={(e) => {
                     const updatedServices = [...content.services];
-                    updatedServices[index] = { 
-                      ...updatedServices[index], 
-                      detailedContent: { 
-                        ...updatedServices[index].detailedContent, 
-                        whyChoose: e.target.value 
-                      }
+                    updatedServices[index] = {
+                      ...updatedServices[index],
+                      detailedContent: {
+                        ...updatedServices[index].detailedContent,
+                        whyChoose: e.target.value,
+                      },
                     };
-                    setContent(prev => ({ ...prev, services: updatedServices }));
+                    setContent((prev) => ({
+                      ...prev,
+                      services: updatedServices,
+                    }));
                   }}
                   placeholder="Enter content for why choose section"
                   rows={3}
@@ -555,7 +664,7 @@ export default function EditHomePage() {
                 />
               </div>
             </details>
-            
+
             <div
               onDragOver={(e) => e.preventDefault()}
               onDrop={async (e) => {
@@ -563,14 +672,20 @@ export default function EditHomePage() {
                 const files = e.dataTransfer.files;
                 if (files.length > 0) {
                   const file = files[0];
-                  if (file.type.startsWith('image/')) {
+                  if (file.type.startsWith("image/")) {
                     try {
                       const uploadResult = await uploadHomeImage(file);
                       const updatedServices = [...content.services];
-                      updatedServices[index] = { ...updatedServices[index], imageUrl: uploadResult.imagePath };
-                      setContent(prev => ({ ...prev, services: updatedServices }));
+                      updatedServices[index] = {
+                        ...updatedServices[index],
+                        imageUrl: uploadResult.imagePath,
+                      };
+                      setContent((prev) => ({
+                        ...prev,
+                        services: updatedServices,
+                      }));
                     } catch (error) {
-                      console.error('Failed to upload image:', error);
+                      console.error("Failed to upload image:", error);
                     }
                   }
                 }
@@ -578,19 +693,25 @@ export default function EditHomePage() {
               className="image-upload-area"
               onClick={() => {
                 // Create a file input element to allow clicking to select image
-                const input = document.createElement('input');
-                input.type = 'file';
-                input.accept = 'image/*';
+                const input = document.createElement("input");
+                input.type = "file";
+                input.accept = "image/*";
                 input.onchange = async (e) => {
                   const file = e.target.files[0];
                   if (file) {
                     try {
                       const uploadResult = await uploadHomeImage(file);
                       const updatedServices = [...content.services];
-                      updatedServices[index] = { ...updatedServices[index], imageUrl: uploadResult.imagePath };
-                      setContent(prev => ({ ...prev, services: updatedServices }));
+                      updatedServices[index] = {
+                        ...updatedServices[index],
+                        imageUrl: uploadResult.imagePath,
+                      };
+                      setContent((prev) => ({
+                        ...prev,
+                        services: updatedServices,
+                      }));
                     } catch (error) {
-                      console.error('Failed to upload image:', error);
+                      console.error("Failed to upload image:", error);
                     }
                   }
                 };
@@ -599,10 +720,7 @@ export default function EditHomePage() {
             >
               {service.imageUrl ? (
                 <div>
-                  <img 
-                    src={service.imageUrl} 
-                    alt="Service" 
-                  />
+                  <img src={service.imageUrl} alt="Service" />
                   <p>Click or drag an image to replace</p>
                 </div>
               ) : (
@@ -611,11 +729,14 @@ export default function EditHomePage() {
             </div>
           </div>
         ))}
-        <button type="button" onClick={() => addListItem("services")} className="add-button">
+        <button
+          type="button"
+          onClick={() => addListItem("services")}
+          className="add-button"
+        >
           + Add Service
         </button>
       </div>
-
 
       {/* Why Choose Us */}
       <div className="card">
@@ -625,7 +746,9 @@ export default function EditHomePage() {
             <input
               type="text"
               value={item}
-              onChange={(e) => handleListChange("whyChooseUs", index, e.target.value)}
+              onChange={(e) =>
+                handleListChange("whyChooseUs", index, e.target.value)
+              }
             />
             <button
               type="button"
@@ -636,7 +759,11 @@ export default function EditHomePage() {
             </button>
           </div>
         ))}
-        <button type="button" onClick={() => addListItem("whyChooseUs")} className="add-button">
+        <button
+          type="button"
+          onClick={() => addListItem("whyChooseUs")}
+          className="add-button"
+        >
           + Add Reason
         </button>
       </div>
@@ -650,7 +777,9 @@ export default function EditHomePage() {
             <input
               type="text"
               value={item}
-              onChange={(e) => handleListChange("rotatingTextPhrases", index, e.target.value)}
+              onChange={(e) =>
+                handleListChange("rotatingTextPhrases", index, e.target.value)
+              }
             />
             <button
               type="button"
@@ -661,7 +790,11 @@ export default function EditHomePage() {
             </button>
           </div>
         ))}
-        <button type="button" onClick={() => addListItem("rotatingTextPhrases")} className="add-button">
+        <button
+          type="button"
+          onClick={() => addListItem("rotatingTextPhrases")}
+          className="add-button"
+        >
           + Add Phrase
         </button>
       </div>
@@ -680,38 +813,43 @@ export default function EditHomePage() {
           />
           <div style={{ marginTop: "0.5rem" }}>
             {content.videoPath && !content.videoPath.startsWith("blob:") && (
-              <div style={{ 
-                width: "100%", 
-                maxWidth: "400px", 
-                height: "225px", 
-                marginTop: "0.5rem",
-                borderRadius: "8px", 
-                overflow: "hidden",
-                position: "relative"
-              }}>
+              <div
+                style={{
+                  width: "100%",
+                  maxWidth: "400px",
+                  height: "225px",
+                  marginTop: "0.5rem",
+                  borderRadius: "8px",
+                  overflow: "hidden",
+                  position: "relative",
+                }}
+              >
                 <video
                   src={content.videoPath}
                   controls
-                  style={{ 
-                    width: "100%", 
-                    height: "100%", 
-                    objectFit: "cover" 
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
                   }}
                 />
               </div>
             )}
             {content.videoPath && content.videoPath.startsWith("blob:") && (
               <p style={{ color: "red" }}>
-                Blob URLs are temporary and won't work for other users. Please upload a video file.
+                Blob URLs are temporary and won't work for other users. Please
+                upload a video file.
               </p>
             )}
           </div>
         </div>
 
         <div
-          className={`mt-sm ${dragActive ? 'drag-active' : ''}`}
+          className={`mt-sm ${dragActive ? "drag-active" : ""}`}
           style={{
-            border: dragActive ? "2px dashed var(--primary-color)" : "2px dashed var(--border-color)",
+            border: dragActive
+              ? "2px dashed var(--primary-color)"
+              : "2px dashed var(--border-color)",
             padding: "1rem",
             textAlign: "center",
             borderRadius: "8px",
@@ -733,13 +871,18 @@ export default function EditHomePage() {
           />
         </div>
         <p className="mt-sm" style={{ fontSize: "0.9rem", color: "#666" }}>
-          This will upload the video to the server and automatically update the video path.
+          This will upload the video to the server and automatically update the
+          video path.
         </p>
       </div>
 
       {/* Save Button */}
-      <div className="mt-md" style={{ textAlign: 'center' }}>
-        <button onClick={handleSave} disabled={isSaving} className="save-button">
+      <div className="mt-md" style={{ textAlign: "center" }}>
+        <button
+          onClick={handleSave}
+          disabled={isSaving}
+          className="save-button"
+        >
           {isSaving ? "Saving..." : "Save Changes"}
         </button>
       </div>

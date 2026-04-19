@@ -1,18 +1,19 @@
-'use client';
+"use client";
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { getHomeContent } from "@/lib/api/homeContent";
-import { usePathname } from 'next/navigation';
+import { usePathname } from "next/navigation";
+import "./layout.css";
 
 export default function MainLayout({ children }) {
   const [phrases, setPhrases] = useState([
     "Caring for your health with compassion and excellence",
     "Dedicated to your wellness and recovery",
     "Providing exceptional healthcare services",
-    "Your trusted partner in health"
+    "Your trusted partner in health",
   ]);
-  
+
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
@@ -20,11 +21,11 @@ export default function MainLayout({ children }) {
     const fetchPhrases = async () => {
       try {
         const data = await getHomeContent();
-        if (data && data.rotatingTextPhrases && data.rotatingTextPhrases.length > 0) {
+        if (data?.rotatingTextPhrases?.length > 0) {
           setPhrases(data.rotatingTextPhrases);
         }
       } catch (error) {
-        console.error('Failed to fetch rotating text phrases:', error);
+        console.error("Failed to fetch rotating text phrases:", error);
       }
     };
     fetchPhrases();
@@ -60,16 +61,15 @@ export default function MainLayout({ children }) {
               />
               <div className="logo-text">
                 <h1>Bhaktapur International Hospital</h1>
-                <p className="site-header-subtitle rotating-text">
-                  {currentPhrase}
-                </p>
+
+                <p className="rotating-text">{currentPhrase}</p>
               </div>
             </div>
+
             <div className="nav-container">
               <button
                 className="mobile-menu-button"
-                onClick={toggleMobileMenu}
-                aria-label="Toggle navigation menu"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               >
                 ☰
               </button>

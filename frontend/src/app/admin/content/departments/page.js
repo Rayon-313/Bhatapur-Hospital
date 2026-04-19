@@ -158,6 +158,24 @@ export default function AdminDepartments() {
                 <button style={{color:'red'}} onClick={() => deleteDepartment(dept._id).then(loadDepts)}>Delete</button>
               </div>
             )}
+
+            <div className="cardMeta">
+              <p>
+                <b>Contact:</b> {d.contactNumber}
+              </p>
+              <p>
+                <b>Email:</b> {d.email}
+              </p>
+            </div>
+
+            <div className="btnRow">
+              <button className="editBtn" onClick={() => handleEdit(d)}>
+                Edit
+              </button>
+              <button className="deleteBtn" onClick={() => handleDelete(d._id)}>
+                Delete
+              </button>
+            </div>
           </div>
         ))}
       </div>
