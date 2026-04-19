@@ -1,93 +1,105 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const departmentSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
   },
   description: {
     type: String,
-    default: ''
+    default: "",
   },
   headDoctor: {
     type: String,
-    default: ''
+    default: "",
   },
-    secondaryDoctor: {
+  secondaryDoctor: {
     type: String,
-    default: ''
+    default: "",
   },
   contactNumber: {
     type: String,
-    default: '',
-
+    default: "",
   },
   email: {
     type: String,
-    default: ''
+    default: "",
   },
-  facilities: [{
-    type: String
-  }],
-  services: [{
-    type: String
-  }],
+
+  doctors: [
+    {
+      name: { type: String, default: "" },
+      description: { type: String, default: "" },
+      image: { type: String, default: "" },
+    },
+  ],
+
+  facilities: [
+    {
+      type: String,
+    },
+  ],
+  services: [
+    {
+      type: String,
+    },
+  ],
   image1: {
     type: String,
-    default: ''
+    default: "",
   },
   image2: {
     type: String,
-    default: ''
+    default: "",
   },
   order: {
     type: Number,
-    default: 0
+    default: 0,
   },
   isActive: {
     type: Boolean,
-    default: true
+    default: true,
   },
   detailedContent: {
     about: {
       type: String,
-      default: ''
+      default: "",
     },
     aboutHeading: {
       type: String,
-      default: 'About This Department'
+      default: "About This Department",
     },
     whyChoose: {
       type: String,
-      default: ''
+      default: "",
     },
     whyChooseHeading: {
       type: String,
-      default: 'Why Choose Our Department'
+      default: "Why Choose Our Department",
     },
     image1Path: {
       type: String,
-      default: ''
+      default: "",
     },
     image2Path: {
       type: String,
-      default: ''
-    }
+      default: "",
+    },
   },
   createdAt: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   updatedAt: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
-departmentSchema.pre('save', function(next) {
+departmentSchema.pre("save", function (next) {
   this.updatedAt = Date.now;
   next();
 });
 
-module.exports = mongoose.model('Department', departmentSchema);
+module.exports = mongoose.model("Department", departmentSchema);

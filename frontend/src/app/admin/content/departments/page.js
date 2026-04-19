@@ -1,223 +1,258 @@
 "use client";
 import { useState, useEffect } from "react";
-import { 
-  getDepartments, 
-  updateDepartment as updateDepartmentAPI, 
-  createDepartment as createDepartmentAPI 
-} from '@/lib/api/departments';
+import {
+  getDepartments,
+  createDepartment,
+  deleteDepartment,
+} from "@/lib/api/departments";
+
+import "./page.css";
 
 export default function AdminDepartments() {
   const [departments, setDepartments] = useState([]);
   const [loading, setLoading] = useState(true);
-  
-  // State for Editing existing
-  const [editingId, setEditingId] = useState(null); 
-  const [editForm, setEditForm] = useState({ 
-    name: "", description: "", image1: "", image2: "", headDoctor: "", secondaryDoctor: "", contactNumber: "", email: "" 
-  });
 
-  // State for Adding new
-  const [showAddForm, setShowAddForm] = useState(false);
-  const [newDept, setNewDept] = useState({ 
-    name: "", description: "", image1: "", image2: "", headDoctor: "", secondaryDoctor: "", contactNumber: "", email: "" 
-  });
+  const emptyDept = {
+    _id: null,
+    name: "",
+    description: "",
+    contactNumber: "",
+    email: "",
+    doctors: [],
+  };
+
+  const [formDept, setFormDept] = useState(emptyDept);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    loadDepts();
+    loadDepartments();
   }, []);
 
-  const loadDepts = async () => {
+  const loadDepartments = async () => {
     try {
-      setLoading(true);
       const data = await getDepartments();
-      if (Array.isArray(data)) setDepartments(data);
+      setDepartments(data || []);
     } catch (err) {
-      console.error("Failed to load departments");
+      console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
-  // --- ADD NEW LOGIC ---
-  const handleCreate = async () => {
-    if (!newDept.name) return alert("Department name is required!");
-    //validate to ensure images and doctor are different
-    if (newDept.image1=== newDeot.image2 && newDept.image1 !=="") return alert("Please use two different image");
-    if (newDept.headDocter === newDept.secondaryDoctor && newDept.headDoctor !=="") return alert("please use two different doctor");
-    try {
-      await createDepartmentAPI(newDept);
-      setNewDept({ name: "", description: "", image1: "", image2: "", headDoctor: "", secondaryDoctor: "", contactNumber: "", email: "" });
-      setShowAddForm(false);
-      loadDepts();
-      alert("New department added!");
-    } catch (err) {
-      alert("Error adding department.");
+  // ✅ FIXED IMAGE HANDLER (size check + safe base64)
+  const handleImage = (file, callback) => {
+    if (!file) return;
+
+    if (file.size > 2 * 1024 * 1024) {
+      alert("Image must be under 2MB");
+      return;
     }
+
+    const reader = new FileReader();
+    reader.onloadend = () => callback(reader.result);
+    reader.readAsDataURL(file);
   };
 
-  // --- EDIT LOGIC ---
-  const handleEditClick = (dept) => {
-    setEditingId(dept._id);
-    setEditForm({
-      name: dept.name,
-      description: dept.description,
-      image1: dept.image1 || "",
-      image2: dept.image2 || "",
-      headDoctor: dept.headDoctor || "",
-      secondaryDoctor: dept.secondaryDoctor || "",
-      contactNumber: dept.contactNumber || "",
-      email: dept.email || ""
+  const addDoctor = () => {
+    setFormDept({
+      ...formDept,
+      doctors: [...formDept.doctors, { name: "", image: "", description: "" }],
     });
   };
 
-  const handleSave = async (id) => {
-    if (editForm.headDoctor === editForm.secondaryDoctor) return alert("Please use two different doctor");
+  const removeDoctor = (index) => {
+    const updated = formDept.doctors.filter((_, i) => i !== index);
+    setFormDept({ ...formDept, doctors: updated });
+  };
+
+  const updateDoctor = (index, field, value) => {
+    const updated = [...formDept.doctors];
+    updated[index][field] = value;
+    setFormDept({ ...formDept, doctors: updated });
+  };
+
+  const handleSubmit = async () => {
+    if (!formDept.name) return alert("Department name required!");
     try {
-      await updateDepartmentAPI(id, editForm);
-      setEditingId(null);
-      loadDepts(); 
-      alert("Changes saved successfully!");
-    } catch (err) {
-      alert("Error saving changes.");
+      await createDepartment(formDept);
+      setFormDept(emptyDept);
+      setIsEditing(false);
+      loadDepartments();
+    } catch {
+      alert("Error saving department");
     }
   };
 
-  if (loading) return <div style={styles.centerText}><h2>Loading Admin Panel...</h2></div>;
+  // ✅ FIXED EDIT (keeps image intact)
+  const handleEdit = (dept) => {
+    setFormDept({
+      ...dept,
+      doctors:
+        dept.doctors?.map((d) => ({
+          ...d,
+          image: d.image || "",
+        })) || [],
+    });
+    setIsEditing(true);
+  };
+
+  const handleDelete = async (id) => {
+    if (!confirm("Delete this department?")) return;
+    try {
+      await deleteDepartment(id);
+      loadDepartments();
+    } catch {
+      alert("Error deleting");
+    }
+  };
+
+  if (loading) return <div className="center">Loading...</div>;
 
   return (
-    <div style={styles.container}>
-      <h1 style={styles.title}>Department Administration</h1>
+    <div className="container">
+      <h1 className="title">Department Admin Panel</h1>
 
-      {/* --- ADD NEW DEPARTMENT SECTION --- */}
-      <div style={styles.addSection}>
-        {!showAddForm ? (
-          <button onClick={() => setShowAddForm(true)} style={styles.addNewBtn}>
-            + Add New Department
-          </button>
-        ) : (
-          <div style={styles.addForm}>
-            <h3>Add New Department</h3>
-            <div style={styles.formGrid}>
-              <input style={styles.input} placeholder="Department Name" value={newDept.name} onChange={e => setNewDept({...newDept, name: e.target.value})} />
-              <input style={styles.input} placeholder="Contact Number (97/98...)" value={newDept.contactNumber} 
-                onChange={e => {
-                  const val = e.target.value;
-                  if (/^\d*$/.test(val) && val.length <= 10) {
-                    if (val.length >= 2) {
-                      const prefix = val.substring(0, 2);
-                      if (prefix === '97' || prefix === '98') setNewDept({...newDept, contactNumber: val});
-                    } else if (val === '' || val === '9') {
-                      setNewDept({...newDept, contactNumber: val});
-                    }
-                  }
-                }}/>
-              <input style={styles.input} placeholder="Main Image URL" value={newDept.image1} onChange={e => setNewDept({...newDept, image1: e.target.value})} />
-              <input style={styles.input} placeholder="Secondary Image URL" value={newDept.image2} onChange={e => setNewDept({...newDept, image2: e.target.value})} />
-              
-              <input style={styles.input} placeholder="Head Doctor" value={newDept.headDoctor} onChange={e => setNewDept({...newDept, headDoctor: e.target.value})} />
-              <input style={styles.input} placeholder="Assistant/Secondary Doctor" value={newDept.secondaryDoctor} onChange={e => setNewDept({...newDept, secondaryDoctor: e.target.value})} />
-              
-              <input style={{...styles.input, gridColumn: 'span 2'}} placeholder="Email" value={newDept.email} onChange={e => setNewDept({...newDept, email: e.target.value})} />
-              <textarea style={{...styles.input, gridColumn: 'span 2'}} placeholder="Description" value={newDept.description} onChange={e => setNewDept({...newDept, description: e.target.value})} />
+      {/* --- FORM SECTION --- */}
+      <div className="formCard">
+        <h2>{isEditing ? "Edit Department" : "Add Department"}</h2>
+
+        <input
+          placeholder="Department Name"
+          value={formDept.name}
+          onChange={(e) => setFormDept({ ...formDept, name: e.target.value })}
+        />
+        <input
+          placeholder="Contact Number"
+          value={formDept.contactNumber}
+          onChange={(e) =>
+            setFormDept({ ...formDept, contactNumber: e.target.value })
+          }
+        />
+        <input
+          placeholder="Email"
+          value={formDept.email}
+          onChange={(e) => setFormDept({ ...formDept, email: e.target.value })}
+        />
+        <textarea
+          placeholder="Department Description"
+          value={formDept.description}
+          onChange={(e) =>
+            setFormDept({ ...formDept, description: e.target.value })
+          }
+        />
+
+        <h3>Doctors</h3>
+
+        {formDept.doctors.map((doc, index) => (
+          <div key={index} className="doctorForm">
+            <div className="imageInputGroup">
+              <img
+                src={
+                  doc.image
+                    ? doc.image.startsWith("data:")
+                      ? doc.image // base64 preview
+                      : `http://localhost:5000/${doc.image}` // backend path
+                    : "https://cdn-icons-png.flaticon.com/512/3774/3774299.png"
+                }
+                className="doctorImg"
+                alt="Preview"
+              />
+
+              <input
+                type="file"
+                onChange={(e) =>
+                  handleImage(e.target.files[0], (img) =>
+                    updateDoctor(index, "image", img),
+                  )
+                }
+              />
             </div>
-            <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
-              <button onClick={handleCreate} style={styles.saveBtn}>Create</button>
-              <button onClick={() => setShowAddForm(false)} style={styles.cancelBtn}>Cancel</button>
-            </div>
+
+            <input
+              placeholder="Doctor Name"
+              value={doc.name}
+              onChange={(e) => updateDoctor(index, "name", e.target.value)}
+            />
+
+            <textarea
+              placeholder="Doctor Description"
+              value={doc.description}
+              onChange={(e) =>
+                updateDoctor(index, "description", e.target.value)
+              }
+            />
+
+            <button className="deleteBtn" onClick={() => removeDoctor(index)}>
+              Remove Doctor
+            </button>
           </div>
-        )}
+        ))}
+
+        <div className="btnRow">
+          <button className="secondaryBtn" onClick={addDoctor}>
+            + Add Doctor
+          </button>
+          <button className="primaryBtn" onClick={handleSubmit}>
+            {isEditing ? "Update Department" : "Create Department"}
+          </button>
+        </div>
       </div>
-      
-      <div style={styles.grid}>
-        {departments.map((dept) => (
-          <div key={dept._id} style={styles.card}>
-            {editingId === dept._id ? (
-              <div style={styles.formGroup}>
-                <h3>Edit Mode</h3>
-                <label style={styles.label}>Department Name</label>
-                <input style={styles.input} value={editForm.name} onChange={e => setEditForm({...editForm, name: e.target.value})} />
-                
-                <div style={styles.formGrid}>
-                  <div>
-                    <label style={styles.label}>Image 1</label>
-                    <input style={styles.input} value={editForm.image1} onChange={e => setEditForm({...editForm, image1: e.target.value})} />
-                  </div>
-                  <div>
-                    <label style={styles.label}>Image 2</label>
-                    <input style={styles.input} value={editForm.image2} onChange={e => setEditForm({...editForm, image2: e.target.value})} />
-                  </div>
-                  <div>
-                    <label style={styles.label}>Head Doctor</label>
-                    <input style={styles.input} value={editForm.headDoctor} onChange={e => setEditForm({...editForm, headDoctor: e.target.value})} />
-                  </div>
-                  <div>
-                    <label style={styles.label}>Secondary Doctor</label>
-                    <input style={styles.input} value={editForm.secondaryDoctor} onChange={e => setEditForm({...editForm, secondaryDoctor: e.target.value})} />
-                  </div>
-                </div>
 
-                <label style={styles.label}>Contact Number</label>
-                <input style={styles.input} placeholder="Contact Number (97/98...)" value={newDept.contactNumber} 
-                onChange={e => {
-                  const val = e.target.value;
-                  if (/^\d*$/.test(val) && val.length <= 10) {
-                    if (val.length >= 2) {
-                      const prefix = val.substring(0, 2);
-                      if (prefix === '97' || prefix === '98') setNewDept({...newDept, contactNumber: val});
-                    } else if (val === '' || val === '9') {
-                      setNewDept({...newDept, contactNumber: val});
-                    }
-                  }
-                }}/>
+      {/* --- DISPLAY LIST --- */}
+      <div className="grid">
+        {departments.map((d) => (
+          <div key={d._id} className="card">
+            <div className="cardHeader">
+              <h3>{d.name}</h3>
+              <p className="desc">{d.description}</p>
+            </div>
 
-                <label style={styles.label}>Email</label>
-                <input style={{...styles.input, gridColumn: 'span 2'}} placeholder="Email" value={newDept.email} onChange={e => setNewDept({...newDept, email: e.target.value})} />
+            {/* ✅ IMAGE SHOWS HERE */}
+            {d.doctors?.length > 0 && (
+              <div className="doctorSection">
+                {d.doctors.map((doc, i) => (
+                  <div key={i} className="doctor">
+                    <img
+                      src={
+                        doc.image
+                          ? doc.image.startsWith("data:")
+                            ? doc.image
+                            : `http://localhost:5000/${doc.image}`
+                          : "https://cdn-icons-png.flaticon.com/512/3774/3774299.png"
+                      }
+                      alt={doc.name}
+                      className="doctorImg"
+                    />
 
-                <label style={styles.label}>Description</label>
-                <textarea style={{...styles.input, height: '60px'}} value={editForm.description} onChange={e => setEditForm({...editForm, description: e.target.value})} />
-                
-                <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
-                  <button onClick={() => handleSave(dept._id)} style={styles.saveBtn}>Save</button>
-                  <button onClick={() => setEditingId(null)} style={styles.cancelBtn}>Cancel</button>
-                </div>
-              </div>
-            ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-                <div style={{ display: 'flex', gap: '5px', marginBottom: '10px' }}>
-                   <img src={dept.image1 || 'https://via.placeholder.com/150'} style={{...styles.image, width: '50%', height: '120px'}} alt="" />
-                   <img src={dept.image2 || 'https://via.placeholder.com/150'} style={{...styles.image, width: '50%', height: '120px'}} alt="" />
-                </div>
-                <h2 style={styles.deptName}>{dept.name}</h2>
-                <p><strong>Doctors:</strong> {dept.headDoctor} & {dept.secondaryDoctor || 'None'}</p>
-                <p style={styles.descriptionText}>{dept.description}</p>
-                <div style={{ marginTop: 'auto' }}>
-                  <button onClick={() => handleEditClick(dept)} style={styles.editBtn}>Edit Details</button>
-                </div>
+                    <div className="doctorInfo">
+                      <strong>{doc.name}</strong>
+                      <p>{doc.description}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
+
+            <div className="cardMeta">
+              <p>
+                <b>Contact:</b> {d.contactNumber}
+              </p>
+              <p>
+                <b>Email:</b> {d.email}
+              </p>
+            </div>
+
+            <div className="btnRow">
+              <button className="editBtn" onClick={() => handleEdit(d)}>
+                Edit
+              </button>
+              <button className="deleteBtn" onClick={() => handleDelete(d._id)}>
+                Delete
+              </button>
+            </div>
           </div>
         ))}
       </div>
     </div>
   );
 }
-
-const styles = {
-  container: { padding: '2rem', maxWidth: '1200px', margin: '0 auto', fontFamily: 'sans-serif' },
-  title: { textAlign: 'center', color: '#1e40af', marginBottom: '1rem' },
-  label: { fontSize: '0.75rem', fontWeight: 'bold', color: '#666', display: 'block', marginTop: '10px' },
-  addSection: { marginBottom: '3rem', display: 'flex', justifyContent: 'center' },
-  addForm: { background: '#f8fafc', padding: '20px', borderRadius: '12px', border: '2px dashed #cbd5e1', width: '100%', maxWidth: '700px' },
-  formGrid: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' },
-  grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '20px' },
-  card: { border: '1px solid #ddd', borderRadius: '12px', padding: '20px', backgroundColor: '#fff' },
-  image: { objectFit: 'cover', borderRadius: '8px' },
-  deptName: { color: '#1e40af', margin: '0 0 10px 0' },
-  descriptionText: { fontSize: '0.9rem', color: '#666', marginBottom: '15px' },
-  input: { padding: '10px', borderRadius: '6px', border: '1px solid #ccc', width: '100%', boxSizing: 'border-box' },
-  addNewBtn: { padding: '12px 24px', backgroundColor: '#1e40af', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' },
-  saveBtn: { flex: 1, padding: '10px', backgroundColor: '#10b981', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' },
-  cancelBtn: { flex: 1, padding: '10px', backgroundColor: '#6b7280', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' },
-  editBtn: { width: '100%', padding: '10px', backgroundColor: '#3b82f6', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' },
-  centerText: { textAlign: 'center', padding: '100px' }
-};

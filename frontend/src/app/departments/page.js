@@ -1,193 +1,114 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { getDepartments } from '@/lib/api/departments';
-// import { 
-//   getDepartments,
-//   updateDepartment as updateDepartmentAPI,
-//   deleteDepartment as deleteDepartmentAPI
-// } from '@/lib/api/departments';
+import { useState, useEffect } from "react";
+import { getDepartments } from "@/lib/api/departments";
+import "./page.css";
 
 export default function DepartmentsPage() {
   const [departments, setDepartments] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [selectedDept, setSelectedDept] = useState(null);
 
   useEffect(() => {
-    const fetchDepartments = async () => {
-      try {
-        const data = await getDepartments();
-        setDepartments(data);
-      } catch (err) {
-        console.error('Error fetching departments:', err);
-        setError(err.message);
-        // Fallback to default departments if API fails
-        setDepartments([
-          {
-            _id: 1,
-            name: "Emergency Medicine",
-            description: "Our emergency department provides 24/7 care for urgent medical conditions.",
-            headDoctor: "Dr. Smith",
-            contactNumber: "+1 234 567 8900",
-            email: "emergency@hospital.com",
-            facilities: ["24/7 Care", "Advanced Equipment", "Trauma Center"],
-            services: ["Emergency Care", "Trauma Treatment", "Critical Care"],
-            image: "",
-            order: 0,
-            isActive: true
-          },
-          {
-            _id: 2,
-            name: "Cardiology",
-            description: "Specialized care for heart and cardiovascular conditions.",
-            headDoctor: "Dr. Johnson",
-            contactNumber: "+1 234 567 8901",
-            email: "cardiology@hospital.com",
-            facilities: ["Cardiac ICU", "Cath Lab", "ECG Services"],
-            services: ["Heart Surgery", "Angioplasty", "ECG", "Echocardiogram"],
-            image: "",
-            order: 1,
-            isActive: true
-          },
-          {
-            _id: 3,
-            name: "Orthopedics",
-            description: "Treatment for musculoskeletal conditions and injuries.",
-            headDoctor: "Dr. Williams",
-            contactNumber: "+1 234 567 8902",
-            email: "orthopedics@hospital.com",
-            facilities: ["Surgical Theater", "Physical Therapy", "X-Ray Services"],
-            services: ["Joint Replacement", "Sports Medicine", "Spine Surgery"],
-            image: "",
-            order: 2,
-            isActive: true
-          }
-        ]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchDepartments();
+    getDepartments().then((data) => {
+      setDepartments(data || []);
+      setLoading(false);
+    });
   }, []);
 
-  if (loading) {
-    return (
-      <section className="section">
-        <h2 className="section-title">Departments</h2>
-        <div className="services-grid">
-          <div className="service-box" style={{ textAlign: 'center', padding: '2rem' }}>
-            Loading departments...
-          </div>
-        </div>
-      </section>
-    );
-  }
+  const getImage = (img) => {
+    if (!img) return "https://cdn-icons-png.flaticon.com/512/3774/3774299.png"; // Fallback icon
 
-  if (error) {
+    if (img.startsWith("data:")) return img;
+
+    // Use port 5000 to match your previous backend configuration
+    if (img.startsWith("/images") || !img.startsWith("http")) {
+      return `http://localhost:5000/${img.replace(/^\//, "")}`;
+    }
+
+    return img;
+  };
+
+  if (loading) return <div className="center">Loading...</div>;
+
+  if (selectedDept) {
     return (
-      <section className="section">
-        <h2 className="section-title">Departments</h2>
-        <div className="services-grid">
-          <div className="service-box" style={{ textAlign: 'center', padding: '2rem', color: '#ef4444' }}>
-            Error loading departments: {error}
-          </div>
+      <div className="detailContainer">
+        <button className="backBtn" onClick={() => setSelectedDept(null)}>
+          ← Back
+        </button>
+
+        <h1>{selectedDept.name}</h1>
+
+        <div className="detailImages">
+          {/* Pull images from the doctors array if image1/image2 are empty */}
+          {selectedDept.doctors?.map((doc, i) => (
+            <img
+              key={i}
+              src={getImage(doc.image)}
+              alt={doc.name}
+              className="detailImg"
+            />
+          ))}
         </div>
-      </section>
+
+        <h2>Our Doctors</h2>
+        <div className="doctorGrid">
+          {selectedDept.doctors?.map((doc, i) => (
+            <div key={i} className="doctorCard">
+              <img src={getImage(doc.image)} alt="" />
+              <h4>{doc.name}</h4>
+              <p>{doc.description}</p>
+            </div>
+          ))}
+        </div>
+
+        <h2>About Department</h2>
+        <p className="fullDesc">{selectedDept.description}</p>
+
+        <div className="contactBox">
+          <p>📞 {selectedDept.contactNumber}</p>
+          <p>✉️ {selectedDept.email}</p>
+        </div>
+      </div>
     );
   }
 
   return (
     <section className="section">
-      <h2 className="section-title">Departments</h2>
-      <p className="section-subtitle">
-        We offer a range of departments to cover your healthcare needs.
-      </p>
-      <div className="services-grid">
-      {(departments || []).filter(dept => dept?.isActive).map((dept) => (
-          <div 
+      <h2 className="title">Our Departments</h2>
+
+      <div className="grid">
+        {departments.map((dept) => (
+          <div
             key={dept._id}
-            className="service-box"
-            style={{ 
-              cursor: 'default',
-              transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-              display: 'flex',
-              flexDirection: 'column',
-              height: '100%',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-6px)';
-              e.currentTarget.style.boxShadow = '0 12px 20px rgba(0, 0, 0, 0.15)';
-              e.currentTarget.style.borderColor = '#0b7ac4';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.05)';
-              e.currentTarget.style.borderColor = 'rgb(229, 231, 235)';
-            }}
+            className="card clickable"
+            onClick={() => setSelectedDept(dept)}
           >
-            {dept.image && (
-              <img
-                src={dept.image} 
-                alt={dept.name}
-                style={{ 
-                  width: '80px', 
-                  height: '80px', 
-                  objectFit: 'cover', 
-                  marginBottom: '1rem', 
-                  borderRadius: '4px', 
-                  display: 'block', 
-                  margin: '0 auto 1rem auto' 
-                }}
-              />
-            )}
-            <h3 style={{ 
-              margin: '0 0 0.75rem 0', 
-              fontSize: '1.2rem', 
-              fontWeight: '600', 
-              color: 'var(--primary-color)',
-              minHeight: '2rem'
-            }}>
-              {dept.name}
-            </h3>
-            <p style={{ 
-              margin: '0', 
-              fontSize: '1rem', 
-              color: 'var(--muted-text)',
-              marginTop: '0.75rem',
-              lineHeight: '1.6',
-              flex: '1'
-            }}>
-              {dept.description}
-            </p>
-            {dept.headDoctor && (
-              <p style={{ 
-                margin: '0.75rem 0 0 0', 
-                fontSize: '0.9rem', 
-                color: 'var(--muted-text)',
-                fontStyle: 'italic'
-              }}>
-                Head: {dept.headDoctor}
-              </p>
-            )}
-            {dept.contactNumber && (
-              <p style={{ 
-                margin: '0.25rem 0 0 0', 
-                fontSize: '0.9rem', 
-                color: 'var(--muted-text)'
-              }}>
-                {dept.contactNumber}
-              </p>
-            )}
-            {dept.email && (
-              <p style={{ 
-                margin: '0.25rem 0 0 0', 
-                fontSize: '0.9rem', 
-                color: 'var(--muted-text)'
-              }}>
-                {dept.email}
-              </p>
-            )}
+            <div className="imageRow">
+              {/* ✅ FIXED: Mapping through the doctors array to show images in the list view */}
+              {dept.doctors && dept.doctors.length > 0 ? (
+                dept.doctors
+                  .slice(0, 2)
+                  .map((doc, index) => (
+                    <img
+                      key={index}
+                      src={getImage(doc.image)}
+                      alt={dept.name}
+                    />
+                  ))
+              ) : (
+                <img
+                  src="https://cdn-icons-png.flaticon.com/512/3774/3774299.png"
+                  alt="placeholder"
+                />
+              )}
+            </div>
+
+            <div className="cardContent">
+              <h3>{dept.name}</h3>
+              <p className="shortDesc">{dept.description?.slice(0, 100)}...</p>
+            </div>
           </div>
         ))}
       </div>
