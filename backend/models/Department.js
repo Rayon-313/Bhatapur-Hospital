@@ -1,105 +1,25 @@
 const mongoose = require("mongoose");
 
-const departmentSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  description: {
-    type: String,
-    default: "",
-  },
-  headDoctor: {
-    type: String,
-    default: "",
-  },
-  secondaryDoctor: {
-    type: String,
-    default: "",
-  },
-  contactNumber: {
-    type: String,
-    default: "",
-  },
-  email: {
-    type: String,
-    default: "",
-  },
-
-  doctors: [
-    {
-      name: { type: String, default: "" },
-      description: { type: String, default: "" },
-      image: { type: String, default: "" },
-    },
-  ],
-
-  facilities: [
-    {
-      type: String,
-    },
-  ],
-  services: [
-    {
-      type: String,
-    },
-  ],
-  image1: {
-    type: String,
-    default: "",
-  },
-  image2: {
-    type: String,
-    default: "",
-  },
-  order: {
-    type: Number,
-    default: 0,
-  },
-  isActive: {
-    type: Boolean,
-    default: true,
-  },
-  detailedContent: {
-    about: {
-      type: String,
-      default: "",
-    },
-    aboutHeading: {
-      type: String,
-      default: "About This Department",
-    },
-    whyChoose: {
-      type: String,
-      default: "",
-    },
-    whyChooseHeading: {
-      type: String,
-      default: "Why Choose Our Department",
-    },
-    image1Path: {
-      type: String,
-      default: "",
-    },
-    image2Path: {
-      type: String,
-      default: "",
-    },
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now,
-  },
+//for allowing to add multiple doctors with images, we define a sub-schema for doctors
+const DoctorSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  description: { type: String },
+  image: { type: String } // Stores the URL path
 });
 
-departmentSchema.pre("save", function (next) {
-  this.updatedAt = Date.now;
-  next();
-});
+//for department details
+const DepartmentSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  description: { type: String },
+  image: { type: String },
+  contactNumber: { type: String },
+  email: { type: String },
+  // Changed from doctor: String to doctors: [DoctorSchema]
+  doctors: [DoctorSchema], 
+  facilities: [String],
+  services: [String],
+  order: { type: Number, default: 0 },
+  isActive: { type: Boolean, default: true }
+}, { timestamps: true });
 
-module.exports = mongoose.model("Department", departmentSchema);
+module.exports = mongoose.model('Department', DepartmentSchema);

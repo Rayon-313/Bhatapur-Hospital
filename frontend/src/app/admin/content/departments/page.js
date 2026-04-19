@@ -1,235 +1,161 @@
 "use client";
 import { useState, useEffect } from "react";
-import {
-  getDepartments,
-  createDepartment,
-  deleteDepartment,
-} from "@/lib/api/departments";
+import { getDepartments, updateDepartment, createDepartment, deleteDepartment } from '@/lib/api/departments'; //import functions for adding, updating, deleting departments api calls
 
-import "./page.css";
-
+//function dealing with access of edit delete and create department for admin bascally variable inialization and functions for handling form data and api calls
 export default function AdminDepartments() {
   const [departments, setDepartments] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [editingId, setEditingId] = useState(null);
+  const [showAddForm, setShowAddForm] = useState(false);
+  
+  // For handling form data for both edit and create forms
+  const [editForm, setEditForm] = useState({ name: "", description: "", image: "", contactNumber: "", email: "", doctors: [] });
+  const [newDept, setNewDept] = useState({ name: "", description: "", image: "", contactNumber: "", email: "", doctors: [] });
 
-  const emptyDept = {
-    _id: null,
-    name: "",
-    description: "",
-    contactNumber: "",
-    email: "",
-    doctors: [],
+  useEffect(() => { loadDepts(); }, []);
+  const loadDepts = async () => { const data = await getDepartments(); setDepartments(data || []); };
+
+  const handleDocChange = (index, field, value, isEdit) => {
+    const state = isEdit ? editForm : newDept;
+    const setter = isEdit ? setEditForm : setNewDept;
+    const docs = [...state.doctors];
+    docs[index][field] = value;
+    setter({ ...state, doctors: docs });
   };
 
-  const [formDept, setFormDept] = useState(emptyDept);
-  const [isEditing, setIsEditing] = useState(false);
-
-  useEffect(() => {
-    loadDepartments();
-  }, []);
-
-  const loadDepartments = async () => {
-    try {
-      const data = await getDepartments();
-      setDepartments(data || []);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
+  const addDoc = (isEdit) => {
+    const state = isEdit ? editForm : newDept;
+    const setter = isEdit ? setEditForm : setNewDept;
+    setter({ ...state, doctors: [...state.doctors, { name: "", description: "", image: null }] });
   };
 
-  // ✅ FIXED IMAGE HANDLER (size check + safe base64)
-  const handleImage = (file, callback) => {
-    if (!file) return;
-
-    if (file.size > 2 * 1024 * 1024) {
-      alert("Image must be under 2MB");
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onloadend = () => callback(reader.result);
-    reader.readAsDataURL(file);
+  const removeDoc = (index, isEdit) => {
+    const state = isEdit ? editForm : newDept;
+    const setter = isEdit ? setEditForm : setNewDept;
+    setter({ ...state, doctors: state.doctors.filter((_, i) => i !== index) });
   };
 
-  const addDoctor = () => {
-    setFormDept({
-      ...formDept,
-      doctors: [...formDept.doctors, { name: "", image: "", description: "" }],
+  const packData = (data) => {
+    const fd = new FormData();
+    fd.append("name", data.name || "");
+    fd.append("description", data.description || "");
+    fd.append("contactNumber", data.contactNumber || "");
+    fd.append("email", data.email || "");
+    if (data.image instanceof File) fd.append("image", data.image);
+
+    const docMeta = data.doctors.map(d => ({ 
+      name: d.name, 
+      description: d.description, 
+      image: typeof d.image === 'string' ? d.image : "" 
+    }));
+    fd.append("doctors", JSON.stringify(docMeta));
+
+    data.doctors.forEach((d, i) => {
+      if (d.image instanceof File) fd.append(`doctor_image_${i}`, d.image);
     });
+    return fd;
   };
 
-  const removeDoctor = (index) => {
-    const updated = formDept.doctors.filter((_, i) => i !== index);
-    setFormDept({ ...formDept, doctors: updated });
-  };
-
-  const updateDoctor = (index, field, value) => {
-    const updated = [...formDept.doctors];
-    updated[index][field] = value;
-    setFormDept({ ...formDept, doctors: updated });
-  };
-
-  const handleSubmit = async () => {
-    if (!formDept.name) return alert("Department name required!");
+  const handleSaveEdit = async (id) => {
     try {
-      await createDepartment(formDept);
-      setFormDept(emptyDept);
-      setIsEditing(false);
-      loadDepartments();
-    } catch {
-      alert("Error saving department");
-    }
+      await updateDepartment(id, packData(editForm));
+      setEditingId(null);
+      loadDepts();
+      alert("Updated!");
+    } catch (e) { alert("Error updating"); }
   };
 
-  // ✅ FIXED EDIT (keeps image intact)
-  const handleEdit = (dept) => {
-    setFormDept({
-      ...dept,
-      doctors:
-        dept.doctors?.map((d) => ({
-          ...d,
-          image: d.image || "",
-        })) || [],
-    });
-    setIsEditing(true);
-  };
-
-  const handleDelete = async (id) => {
-    if (!confirm("Delete this department?")) return;
+  const handleCreate = async () => {
     try {
-      await deleteDepartment(id);
-      loadDepartments();
-    } catch {
-      alert("Error deleting");
-    }
+      await createDepartment(packData(newDept));
+      setNewDept({ name: "", description: "", image: "", contactNumber: "", email: "", doctors: [] });
+      setShowAddForm(false);
+      loadDepts();
+      alert("Created!");
+    } catch (e) { alert("Error creating"); }
   };
 
-  if (loading) return <div className="center">Loading...</div>;
-
+  // Main render show forms and list of departments with edit delete options
   return (
-    <div className="container">
-      <h1 className="title">Department Admin Panel</h1>
+    <div style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
+      <h1>Department Management</h1>
+      
+      {/* Add New Department Form */}
+      {!showAddForm ? <button style={styles.addBtn} onClick={() => setShowAddForm(true)}>+ New Department</button> : (
+        <div style={styles.formCard}>
+          <h3>Add New</h3>
+          <label>Department Name</label>
+          <input style={styles.input} placeholder="Name" value={newDept.name} onChange={e => setNewDept({...newDept, name: e.target.value})} />
 
-      {/* --- FORM SECTION --- */}
-      <div className="formCard">
-        <h2>{isEditing ? "Edit Department" : "Add Department"}</h2>
+          <label>Phone</label>
+          <input style={styles.input} placeholder="Phone" value={newDept.contactNumber} onChange={e => setNewDept({...newDept, contactNumber: e.target.value})} />
 
-        <input
-          placeholder="Department Name"
-          value={formDept.name}
-          onChange={(e) => setFormDept({ ...formDept, name: e.target.value })}
-        />
-        <input
-          placeholder="Contact Number"
-          value={formDept.contactNumber}
-          onChange={(e) =>
-            setFormDept({ ...formDept, contactNumber: e.target.value })
-          }
-        />
-        <input
-          placeholder="Email"
-          value={formDept.email}
-          onChange={(e) => setFormDept({ ...formDept, email: e.target.value })}
-        />
-        <textarea
-          placeholder="Department Description"
-          value={formDept.description}
-          onChange={(e) =>
-            setFormDept({ ...formDept, description: e.target.value })
-          }
-        />
+          <label>Email</label>
+          <input style={styles.input} placeholder="Email" value={newDept.email} onChange={e => setNewDept({...newDept, email: e.target.value})} />
 
-        <h3>Doctors</h3>
+          <label>Description</label>
+          <textarea style={styles.input} placeholder="Description" value={newDept.description} onChange={e => setNewDept({...newDept, description: e.target.value})} />
 
-        {formDept.doctors.map((doc, index) => (
-          <div key={index} className="doctorForm">
-            <div className="imageInputGroup">
-              <img
-                src={
-                  doc.image
-                    ? doc.image.startsWith("data:")
-                      ? doc.image // base64 preview
-                      : `http://localhost:5000/${doc.image}` // backend path
-                    : "https://cdn-icons-png.flaticon.com/512/3774/3774299.png"
-                }
-                className="doctorImg"
-                alt="Preview"
-              />
-
-              <input
-                type="file"
-                onChange={(e) =>
-                  handleImage(e.target.files[0], (img) =>
-                    updateDoctor(index, "image", img),
-                  )
-                }
-              />
-            </div>
-
-            <input
-              placeholder="Doctor Name"
-              value={doc.name}
-              onChange={(e) => updateDoctor(index, "name", e.target.value)}
-            />
-
-            <textarea
-              placeholder="Doctor Description"
-              value={doc.description}
-              onChange={(e) =>
-                updateDoctor(index, "description", e.target.value)
-              }
-            />
-
-            <button className="deleteBtn" onClick={() => removeDoctor(index)}>
-              Remove Doctor
-            </button>
+          <label>Main Image</label>
+          <input type="file" onChange={e => setNewDept({...newDept, image: e.target.files[0]})} />
+          
+          <div style={styles.docBox}>
+            <h4>Doctors</h4>
+            {newDept.doctors.map((d, i) => (
+              <div key={i} style={styles.docRow}>
+                <input placeholder="Doc Name" style={styles.input} onChange={e => handleDocChange(i, 'name', e.target.value, false)} />
+                <textarea placeholder="Doc Bio" style={styles.input} onChange={e => handleDocChange(i, 'description', e.target.value, false)} />
+                <input type="file" onChange={e => handleDocChange(i, 'image', e.target.files[0], false)} />
+                <button onClick={() => removeDoc(i, false)}>✕</button>
+              </div>
+            ))}
+            <button onClick={() => addDoc(false)}>+ Add Doctor</button>
           </div>
-        ))}
-
-        <div className="btnRow">
-          <button className="secondaryBtn" onClick={addDoctor}>
-            + Add Doctor
-          </button>
-          <button className="primaryBtn" onClick={handleSubmit}>
-            {isEditing ? "Update Department" : "Create Department"}
-          </button>
+          <button style={styles.saveBtn} onClick={handleCreate}>Create Department</button>
+          <button onClick={() => setShowAddForm(false)}>Cancel</button>
         </div>
-      </div>
+      )}
 
-      {/* --- DISPLAY LIST --- */}
-      <div className="grid">
-        {departments.map((d) => (
-          <div key={d._id} className="card">
-            <div className="cardHeader">
-              <h3>{d.name}</h3>
-              <p className="desc">{d.description}</p>
-            </div>
+      <div style={styles.grid}>
+        {departments.map(dept => (
+          <div key={dept._id} style={styles.card}>
+            {editingId === dept._id ? (
+              <div>
+                <label>Name</label>
+                <input style={styles.input} value={editForm.name} onChange={e => setEditForm({...editForm, name: e.target.value})} />
 
-            {/* ✅ IMAGE SHOWS HERE */}
-            {d.doctors?.length > 0 && (
-              <div className="doctorSection">
-                {d.doctors.map((doc, i) => (
-                  <div key={i} className="doctor">
-                    <img
-                      src={
-                        doc.image
-                          ? doc.image.startsWith("data:")
-                            ? doc.image
-                            : `http://localhost:5000/${doc.image}`
-                          : "https://cdn-icons-png.flaticon.com/512/3774/3774299.png"
-                      }
-                      alt={doc.name}
-                      className="doctorImg"
-                    />
+                <label>Phone</label>
+                <input style={styles.input} value={editForm.contactNumber} onChange={e => setEditForm({...editForm, contactNumber: e.target.value})} />
 
-                    <div className="doctorInfo">
-                      <strong>{doc.name}</strong>
-                      <p>{doc.description}</p>
+                <label>Email</label>
+                <input style={styles.input} value={editForm.email} onChange={e => setEditForm({...editForm, email: e.target.value})} />
+
+                <label>Description</label>
+                <textarea style={styles.input} value={editForm.description} onChange={e => setEditForm({...editForm, description: e.target.value})} />
+                  
+                <label>Main Image</label>
+                <input type="file" onChange={e => setEditForm({...editForm, image: e.target.files[0]})} />
+                
+                <div style={styles.docBox}>
+                  {editForm.doctors.map((d, i) => (
+                    <div key={i} style={styles.docRow}>
+                      <input value={d.name} style={styles.input} onChange={e => handleDocChange(i, 'name', e.target.value, true)} />
+                      <textarea value={d.description} style={styles.input} onChange={e => handleDocChange(i, 'description', e.target.value, true)} />
+                      <input type="file" onChange={e => handleDocChange(i, 'image', e.target.files[0], true)} />
+                      <button onClick={() => removeDoc(i, true)}>✕</button>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                  <button onClick={() => addDoc(true)}>+ Add Doc</button>
+                </div>
+                <button style={styles.saveBtn} onClick={() => handleSaveEdit(dept._id)}>Apply</button>
+                <button onClick={() => setEditingId(null)}>Cancel</button>
+              </div>
+            ) : (
+              <div>
+                <img src={dept.image} style={{width:'100%', height:'150px', objectFit:'cover'}} alt=""/>
+                <h3>{dept.name}</h3>
+                <button onClick={() => { setEditingId(dept._id); setEditForm(dept); }}>Edit</button>
+                <button style={{color:'red'}} onClick={() => deleteDepartment(dept._id).then(loadDepts)}>Delete</button>
               </div>
             )}
 
@@ -256,3 +182,14 @@ export default function AdminDepartments() {
     </div>
   );
 }
+
+const styles = {
+  grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' },
+  card: { border: '1px solid #ddd', padding: '15px', borderRadius: '8px' },
+  formCard: { background: '#f9f9f9', padding: '20px', borderRadius: '8px', marginBottom: '20px' },
+  input: { display: 'block', width: '100%', marginBottom: '10px', padding: '8px' },
+  docBox: { background: '#fff', padding: '10px', border: '1px solid #eee', marginBottom: '10px' },
+  docRow: { borderBottom: '1px solid #ddd', paddingBottom: '10px', marginBottom: '10px' },
+  saveBtn: { background: '#28a745', color: '#fff', padding: '10px 20px', border: 'none', borderRadius: '4px', marginRight: '10px' },
+  addBtn: { background: '#007bff', color: '#fff', padding: '10px 20px', border: 'none', borderRadius: '4px', marginBottom: '20px' }
+};

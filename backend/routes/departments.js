@@ -4,14 +4,9 @@ const Department = require("../models/Department");
 const multer = require("multer");
 const path = require("path");
 
-/* ------------------- MULTER SETUP ------------------- */
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    if (file.fieldname === "image") {
-      cb(null, path.join(__dirname, "../../frontend/public/images"));
-    } else {
-      cb(null, path.join(__dirname, "../../frontend/public/uploads"));
-    }
+    cb(null, path.join(__dirname, "../../frontend/public/images"));
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + "-" + file.originalname);
@@ -20,153 +15,81 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-/* ------------------- GET ALL ------------------- */
-router.get("/", async (req, res) => {
-  try {
-    const departments = await Department.find().sort({
-      order: 1,
-      createdAt: 1,
+// --- DATA PROCESSOR ---
+const processDepartmentData = (req) => {
+  const updateData = { ...req.body };
+
+  const safeParse = (val) => {
+    if (!val || val === "undefined" || val === "null" || val === "") return [];
+    try {
+      return JSON.parse(val);
+    } catch (e) {
+      return [];
+    }
+  };
+
+  updateData.doctors = safeParse(updateData.doctors);
+
+  // Main Image
+  const mainImage = req.files?.find((f) => f.fieldname === "image");
+  if (mainImage) updateData.image = `/images/${mainImage.filename}`;
+
+  // Doctor Images
+  if (Array.isArray(updateData.doctors)) {
+    updateData.doctors = updateData.doctors.map((doc, index) => {
+      const docFile = req.files?.find(
+        (f) => f.fieldname === `doctor_image_${index}`,
+      );
+      if (docFile) doc.image = `/images/${docFile.filename}`;
+      return doc;
     });
-    res.json(departments);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Failed to fetch departments" });
   }
+
+  return updateData;
+};
+
+/* ROUTES */
+
+router.get("/", async (req, res) => {
+  const depts = await Department.find().sort({ createdAt: -1 });
+  res.json(depts);
 });
 
-/* ------------------- GET ONE ------------------- */
 router.get("/:id", async (req, res) => {
   try {
-    const department = await Department.findById(req.params.id);
-    if (!department) return res.status(404).json({ error: "Not found" });
-    res.json(department);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to fetch department" });
+    const dept = await Department.findById(req.params.id);
+    res.json(dept);
+  } catch (err) {
+    res.status(404).json({ error: "Not found" });
   }
 });
 
-/* ------------------- CREATE (FIXED) ------------------- */
-router.post("/", async (req, res) => {
+router.post("/", upload.any(), async (req, res) => {
   try {
-    const {
-      name,
-      description,
-      headDoctor,
-      secondaryDoctor,
-      contactNumber,
-      email,
-      facilities,
-      services,
-      image1,
-      image2,
-      order,
-      isActive,
-      detailedContent,
-      doctors, // ✅ IMPORTANT FIX
-    } = req.body;
+    const data = processDepartmentData(req);
+    const newDept = new Department(data);
+    await newDept.save();
+    res.status(201).json(newDept);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
-    const newDepartment = new Department({
-      name,
-      description,
-      headDoctor,
-      secondaryDoctor,
-      contactNumber,
-      email,
-      facilities: facilities || [],
-      services: services || [],
-      image1,
-      image2,
-      order,
-      isActive,
-
-      doctors: doctors || [],
-
-      detailedContent: detailedContent || {
-        about: "",
-        aboutHeading: "About This Department",
-        whyChoose: "",
-        whyChooseHeading: "Why Choose Our Department",
-        image1Path: "",
-        image2Path: "",
-      },
+router.put("/:id", upload.any(), async (req, res) => {
+  try {
+    const data = processDepartmentData(req);
+    const updated = await Department.findByIdAndUpdate(req.params.id, data, {
+      new: true,
     });
-
-    const saved = await newDepartment.save();
-    res.status(201).json(saved);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Failed to create department" });
-  }
-});
-
-/* ------------------- UPDATE (FIXED) ------------------- */
-router.put("/:id", async (req, res) => {
-  try {
-    const {
-      name,
-      description,
-      headDoctor,
-      secondaryDoctor,
-      contactNumber,
-      email,
-      facilities,
-      services,
-      image1,
-      image2,
-      order,
-      isActive,
-      detailedContent,
-      doctors, // ✅ IMPORTANT FIX
-    } = req.body;
-
-    const updated = await Department.findByIdAndUpdate(
-      req.params.id,
-      {
-        name,
-        description,
-        headDoctor,
-        secondaryDoctor,
-        contactNumber,
-        email,
-        facilities,
-        services,
-        image1,
-        image2,
-        order,
-        isActive,
-        detailedContent,
-        doctors, // ✅ SAVE DOCTORS
-      },
-      { new: true },
-    );
-
-    if (!updated) return res.status(404).json({ error: "Not found" });
-
     res.json(updated);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Failed to update" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 
-/* ------------------- DELETE ------------------- */
 router.delete("/:id", async (req, res) => {
-  try {
-    await Department.findByIdAndDelete(req.params.id);
-    res.json({ message: "Deleted successfully" });
-  } catch (error) {
-    res.status(500).json({ error: "Failed to delete" });
-  }
-});
-
-/* ------------------- IMAGE UPLOAD ------------------- */
-router.post("/upload-image", upload.single("image"), (req, res) => {
-  if (!req.file) return res.status(400).json({ message: "No image uploaded" });
-
-  res.json({
-    message: "Uploaded successfully",
-    imagePath: `/images/${req.file.filename}`,
-  });
+  await Department.findByIdAndDelete(req.params.id);
+  res.json({ message: "Deleted" });
 });
 
 module.exports = router;
