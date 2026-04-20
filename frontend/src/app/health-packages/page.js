@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { getHealthPackages, bookHealthPackage } from '@/lib/api/healthPackages';
+import { useState, useEffect } from "react";
+import { getHealthPackages, bookHealthPackage } from "@/lib/api/healthPackages";
+import styles from "./page.css";
 
 export default function HealthPackagesPage() {
   const [packages, setPackages] = useState([]);
@@ -69,7 +70,7 @@ export default function HealthPackagesPage() {
         setLoading(false);
       }
     };
-    
+
     fetchPackages();
   }, []);
 
