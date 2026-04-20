@@ -42,6 +42,49 @@ function HomeVideoSection({ videoPath }) {
             <source src={validVideoPath} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
+
+          {/* --- MOVING TEXT OVERLAY --- */}
+          <div
+            style={{
+              position: "absolute",
+              bottom: "10px", // ✅ FIXED: Lowered the text (was 50px)
+              left: 0,
+              width: "100%",
+              background: "rgba(11, 243, 27, 0.6)",
+              color: "#fff",
+              padding: "8px 0",
+              overflow: "hidden",
+              whiteSpace: "nowrap",
+              pointerEvents: "none",
+              zIndex: 10,
+              fontSize: "1.1rem",
+              fontWeight: "bold",
+            }}
+          >
+            <div
+              style={{
+                display: "inline-block",
+                paddingLeft: "100%",
+                marginTop: "4px",
+                animation: "marquee 12s linear infinite",
+                color: "white",
+              }}
+            >
+              Bhaktapur international hospital, 24/7 free ambulance, radiology,
+              SSF
+            </div>
+          </div>
+
+          <style
+            dangerouslySetInnerHTML={{
+              __html: `
+            @keyframes marquee {
+              0% { transform: translateX(0); }
+              100% { transform: translateX(-100%); }
+            }
+          `,
+            }}
+          />
         </div>
       </div>
     </section>

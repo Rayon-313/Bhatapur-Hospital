@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 //for allowing to add multiple doctors with images, we define a sub-schema for doctor
 const DoctorSchema = new mongoose.Schema({

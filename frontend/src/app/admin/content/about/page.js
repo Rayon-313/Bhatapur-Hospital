@@ -6,28 +6,43 @@ import { uploadAboutImage } from "@/lib/api/imageUpload";
 
 // Default about content
 const DEFAULT_ABOUT_CONTENT = {
-  missionVision: "Our mission is to provide high quality, patient-centered healthcare services to the community of Bhaktapur and beyond. Our vision is to be a leading healthcare institution recognized for clinical excellence, innovation, and compassionate care.",
-  hospitalProfile: "Bhaktapur International Hospital is a multidisciplinary hospital offering a wide range of inpatient and outpatient services, advanced diagnostic facilities, and specialized departments staffed by experienced professionals.",
-  hospitalPhoto: '/images/hospital-default.jpg',
-  chairmanMessage: '"We are committed to delivering healthcare services that meet international standards while staying rooted in our community values." – Chairman',
-  chairmanPhoto: '/images/chairman-default.jpg',
-  chairmanName: 'Chairman Name',
-  medicalDirectorMessage: '"Our medical team continuously strives to improve patient outcomes through evidence-based practices and continuous learning." – Medical Director',
-  medicalDirectorPhoto: '/images/medical-director-default.jpg',
-  medicalDirectorName: 'Medical Director Name',
+  missionVision:
+    "Our mission is to provide high quality, patient-centered healthcare services to the community of Bhaktapur and beyond. Our vision is to be a leading healthcare institution recognized for clinical excellence, innovation, and compassionate care.",
+  hospitalProfile:
+    "Bhaktapur International Hospital is a multidisciplinary hospital offering a wide range of inpatient and outpatient services, advanced diagnostic facilities, and specialized departments staffed by experienced professionals.",
+  hospitalPhoto: "/images/hospital-default.jpg",
+  chairmanMessage:
+    '"We are committed to delivering healthcare services that meet international standards while staying rooted in our community values." – Chairman',
+  chairmanPhoto: "/images/chairman-default.jpg",
+  chairmanName: "Chairman Name",
+  medicalDirectorMessage:
+    '"Our medical team continuously strives to improve patient outcomes through evidence-based practices and continuous learning." – Medical Director',
+  medicalDirectorPhoto: "/images/medical-director-default.jpg",
+  medicalDirectorName: "Medical Director Name",
   boardOfDirectors: [
     { name: "Director 1", photo: "/images/director-default.jpg" },
     { name: "Director 2", photo: "/images/director-default.jpg" },
-    { name: "Director 3", photo: "/images/director-default.jpg" }
+    { name: "Director 3", photo: "/images/director-default.jpg" },
   ],
   managementTeam: [
     { name: "CEO", photo: "/images/team-member-default.jpg" },
-    { name: "Hospital Administrator", photo: "/images/team-member-default.jpg" },
-    { name: "Nursing Director", photo: "/images/team-member-default.jpg" }
+    {
+      name: "Hospital Administrator",
+      photo: "/images/team-member-default.jpg",
+    },
+    { name: "Nursing Director", photo: "/images/team-member-default.jpg" },
   ],
   awards: [
-    { title: "Example Award 1", description: "Description for Example Award 1", photo: "/images/award-default.jpg" },
-    { title: "Example Award 2", description: "Description for Example Award 2", photo: "/images/award-default.jpg" }
+    {
+      title: "Example Award 1",
+      description: "Description for Example Award 1",
+      photo: "/images/award-default.jpg",
+    },
+    {
+      title: "Example Award 2",
+      description: "Description for Example Award 2",
+      photo: "/images/award-default.jpg",
+    },
   ],
 };
 
@@ -56,22 +71,22 @@ export default function EditAboutPage() {
       // Ensure boardOfDirectors and managementTeam are properly structured
       const contentToSave = {
         ...content,
-        boardOfDirectors: content.boardOfDirectors.map(director => ({
-          name: director.name || 'Director Name',
-          photo: director.photo || '/images/director-default.jpg'
+        boardOfDirectors: content.boardOfDirectors.map((director) => ({
+          name: director.name || "Director Name",
+          photo: director.photo || "/images/director-default.jpg",
         })),
-        managementTeam: content.managementTeam.map(member => ({
-          name: member.name || 'Team Member Name',
-          photo: member.photo || '/images/team-member-default.jpg'
+        managementTeam: content.managementTeam.map((member) => ({
+          name: member.name || "Team Member Name",
+          photo: member.photo || "/images/team-member-default.jpg",
         })),
-        awards: content.awards.map(award => ({
-          title: award.title || 'Award Title',
-          description: award.description || 'Award description',
-          photo: award.photo || '/images/award-default.jpg'
+        awards: content.awards.map((award) => ({
+          title: award.title || "Award Title",
+          description: award.description || "Award description",
+          photo: award.photo || "/images/award-default.jpg",
         })),
-        hospitalPhoto: content.hospitalPhoto || '/images/hospital-default.jpg'
+        hospitalPhoto: content.hospitalPhoto || "/images/hospital-default.jpg",
       };
-      
+
       const result = await saveAboutContent(contentToSave);
       if (result) {
         alert("About page content saved successfully!");
@@ -112,7 +127,9 @@ export default function EditAboutPage() {
         <h3>Mission & Vision</h3>
         <textarea
           value={content.missionVision}
-          onChange={(e) => setContent({...content, missionVision: e.target.value})}
+          onChange={(e) =>
+            setContent({ ...content, missionVision: e.target.value })
+          }
           placeholder="Enter mission and vision content"
           rows={4}
           style={{ width: "100%", marginTop: "0.5rem" }}
@@ -122,24 +139,41 @@ export default function EditAboutPage() {
       {/* Hospital Profile */}
       <div className="card">
         <h3>Hospital Profile</h3>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-          <div style={{ textAlign: 'center' }}>
-            <img 
-              src={content.hospitalPhoto || '/images/hospital-default.jpg'} 
-              alt="Hospital" 
-              style={{ width: '100px', height: '100px', objectFit: 'cover', border: '2px solid #ddd' }}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "1rem",
+            marginBottom: "1rem",
+          }}
+        >
+          <div style={{ textAlign: "center" }}>
+            <img
+              src={content.hospitalPhoto || "/images/hospital-default.jpg"}
+              alt="Hospital"
+              style={{
+                width: "100px",
+                height: "100px",
+                objectFit: "cover",
+                border: "2px solid #ddd",
+              }}
               onError={(e) => {
-                e.target.src = '/images/hospital-default.jpg';
+                e.target.src = "/images/hospital-default.jpg";
                 e.target.onerror = null;
               }}
             />
-            <p style={{ marginTop: '0.5rem', fontWeight: 'bold' }}>Hospital Photo</p>
+            <p style={{ marginTop: "0.5rem", fontWeight: "bold" }}>
+              Hospital Photo
+            </p>
           </div>
           <div>
-            <p>Current Photo: {content.hospitalPhoto?.split('/').pop() || 'No photo selected'}</p>
+            <p>
+              Current Photo:{" "}
+              {content.hospitalPhoto?.split("/").pop() || "No photo selected"}
+            </p>
           </div>
         </div>
-        <div className="file-upload" style={{ marginBottom: '1rem' }}>
+        <div className="file-upload" style={{ marginBottom: "1rem" }}>
           <input
             type="file"
             id="hospitalPhoto"
@@ -150,10 +184,10 @@ export default function EditAboutPage() {
                 try {
                   const result = await uploadAboutImage(file);
                   setContent({ ...content, hospitalPhoto: result.imagePath });
-                  alert('Hospital photo uploaded successfully!');
+                  alert("Hospital photo uploaded successfully!");
                 } catch (error) {
-                  console.error('Error uploading hospital photo:', error);
-                  alert('Error uploading photo: ' + error.message);
+                  console.error("Error uploading hospital photo:", error);
+                  alert("Error uploading photo: " + error.message);
                 }
               }
             }}
@@ -164,7 +198,9 @@ export default function EditAboutPage() {
         </div>
         <textarea
           value={content.hospitalProfile}
-          onChange={(e) => setContent({...content, hospitalProfile: e.target.value})}
+          onChange={(e) =>
+            setContent({ ...content, hospitalProfile: e.target.value })
+          }
           placeholder="Enter hospital profile content"
           rows={4}
           style={{ width: "100%", marginTop: "0.5rem" }}
@@ -176,7 +212,9 @@ export default function EditAboutPage() {
         <h3>Chairman Message</h3>
         <textarea
           value={content.chairmanMessage}
-          onChange={(e) => setContent({...content, chairmanMessage: e.target.value})}
+          onChange={(e) =>
+            setContent({ ...content, chairmanMessage: e.target.value })
+          }
           placeholder="Enter chairman message content"
           rows={4}
           style={{ width: "100%", marginTop: "0.5rem" }}
@@ -186,24 +224,42 @@ export default function EditAboutPage() {
       {/* Chairman Photo and Name */}
       <div className="card">
         <h3>Chairman Photo & Name</h3>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-          <div style={{ textAlign: 'center' }}>
-            <img 
-              src={content.chairmanPhoto || '/images/chairman-default.jpg'} 
-              alt="Current Chairman" 
-              style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #ddd' }}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "1rem",
+            marginBottom: "1rem",
+          }}
+        >
+          <div style={{ textAlign: "center" }}>
+            <img
+              src={content.chairmanPhoto || "/images/chairman-default.jpg"}
+              alt="Current Chairman"
+              style={{
+                width: "100px",
+                height: "100px",
+                borderRadius: "50%",
+                objectFit: "cover",
+                border: "2px solid #ddd",
+              }}
               onError={(e) => {
-                e.target.src = '/images/chairman-default.jpg';
+                e.target.src = "/images/chairman-default.jpg";
                 e.target.onerror = null;
               }}
             />
-            <p style={{ marginTop: '0.5rem', fontWeight: 'bold' }}>{content.chairmanName || 'Chairman Name'}</p>
+            <p style={{ marginTop: "0.5rem", fontWeight: "bold" }}>
+              {content.chairmanName || "Chairman Name"}
+            </p>
           </div>
           <div>
-            <p>Current Photo: {content.chairmanPhoto?.split('/').pop() || 'No photo selected'}</p>
+            <p>
+              Current Photo:{" "}
+              {content.chairmanPhoto?.split("/").pop() || "No photo selected"}
+            </p>
           </div>
         </div>
-        <div className="file-upload" style={{ marginBottom: '1rem' }}>
+        <div className="file-upload" style={{ marginBottom: "1rem" }}>
           <input
             type="file"
             id="chairmanPhoto"
@@ -214,10 +270,10 @@ export default function EditAboutPage() {
                 try {
                   const result = await uploadAboutImage(file);
                   setContent({ ...content, chairmanPhoto: result.imagePath });
-                  alert('Chairman photo uploaded successfully!');
+                  alert("Chairman photo uploaded successfully!");
                 } catch (error) {
-                  console.error('Error uploading chairman photo:', error);
-                  alert('Error uploading photo: ' + error.message);
+                  console.error("Error uploading chairman photo:", error);
+                  alert("Error uploading photo: " + error.message);
                 }
               }
             }}
@@ -231,10 +287,12 @@ export default function EditAboutPage() {
           <input
             type="text"
             id="chairmanName"
-            value={content.chairmanName || ''}
-            onChange={(e) => setContent({...content, chairmanName: e.target.value})}
+            value={content.chairmanName || ""}
+            onChange={(e) =>
+              setContent({ ...content, chairmanName: e.target.value })
+            }
             placeholder="Enter chairman name"
-            style={{ width: '100%', marginTop: '0.5rem' }}
+            style={{ width: "100%", marginTop: "0.5rem" }}
           />
         </div>
       </div>
@@ -244,7 +302,9 @@ export default function EditAboutPage() {
         <h3>Medical Director Message</h3>
         <textarea
           value={content.medicalDirectorMessage}
-          onChange={(e) => setContent({...content, medicalDirectorMessage: e.target.value})}
+          onChange={(e) =>
+            setContent({ ...content, medicalDirectorMessage: e.target.value })
+          }
           placeholder="Enter medical director message content"
           rows={4}
           style={{ width: "100%", marginTop: "0.5rem" }}
@@ -254,24 +314,46 @@ export default function EditAboutPage() {
       {/* Medical Director Photo and Name */}
       <div className="card">
         <h3>Medical Director Photo & Name</h3>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-          <div style={{ textAlign: 'center' }}>
-            <img 
-              src={content.medicalDirectorPhoto || '/images/medical-director-default.jpg'} 
-              alt="Current Medical Director" 
-              style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #ddd' }}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "1rem",
+            marginBottom: "1rem",
+          }}
+        >
+          <div style={{ textAlign: "center" }}>
+            <img
+              src={
+                content.medicalDirectorPhoto ||
+                "/images/medical-director-default.jpg"
+              }
+              alt="Current Medical Director"
+              style={{
+                width: "100px",
+                height: "100px",
+                borderRadius: "50%",
+                objectFit: "cover",
+                border: "2px solid #ddd",
+              }}
               onError={(e) => {
-                e.target.src = '/images/medical-director-default.jpg';
+                e.target.src = "/images/medical-director-default.jpg";
                 e.target.onerror = null;
               }}
             />
-            <p style={{ marginTop: '0.5rem', fontWeight: 'bold' }}>{content.medicalDirectorName || 'Medical Director Name'}</p>
+            <p style={{ marginTop: "0.5rem", fontWeight: "bold" }}>
+              {content.medicalDirectorName || "Medical Director Name"}
+            </p>
           </div>
           <div>
-            <p>Current Photo: {content.medicalDirectorPhoto?.split('/').pop() || 'No photo selected'}</p>
+            <p>
+              Current Photo:{" "}
+              {content.medicalDirectorPhoto?.split("/").pop() ||
+                "No photo selected"}
+            </p>
           </div>
         </div>
-        <div className="file-upload" style={{ marginBottom: '1rem' }}>
+        <div className="file-upload" style={{ marginBottom: "1rem" }}>
           <input
             type="file"
             id="medicalDirectorPhoto"
@@ -281,11 +363,17 @@ export default function EditAboutPage() {
               if (file) {
                 try {
                   const result = await uploadAboutImage(file);
-                  setContent({ ...content, medicalDirectorPhoto: result.imagePath });
-                  alert('Medical Director photo uploaded successfully!');
+                  setContent({
+                    ...content,
+                    medicalDirectorPhoto: result.imagePath,
+                  });
+                  alert("Medical Director photo uploaded successfully!");
                 } catch (error) {
-                  console.error('Error uploading medical director photo:', error);
-                  alert('Error uploading photo: ' + error.message);
+                  console.error(
+                    "Error uploading medical director photo:",
+                    error,
+                  );
+                  alert("Error uploading photo: " + error.message);
                 }
               }
             }}
@@ -299,10 +387,12 @@ export default function EditAboutPage() {
           <input
             type="text"
             id="medicalDirectorName"
-            value={content.medicalDirectorName || ''}
-            onChange={(e) => setContent({...content, medicalDirectorName: e.target.value})}
+            value={content.medicalDirectorName || ""}
+            onChange={(e) =>
+              setContent({ ...content, medicalDirectorName: e.target.value })
+            }
             placeholder="Enter medical director name"
-            style={{ width: '100%', marginTop: '0.5rem' }}
+            style={{ width: "100%", marginTop: "0.5rem" }}
           />
         </div>
       </div>
@@ -311,25 +401,61 @@ export default function EditAboutPage() {
       <div className="card">
         <h3>Board of Directors</h3>
         {content.boardOfDirectors.map((director, index) => (
-          <div key={index} className="list-item" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem', padding: '1rem', border: '1px solid #e5e7eb', borderRadius: '8px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.5rem' }}>
-              <div style={{ textAlign: 'center' }}>
-                <img 
-                  src={director.photo || '/images/director-default.jpg'} 
-                  alt={`Director ${index + 1}`} 
-                  style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #ddd' }}
+          <div
+            key={index}
+            className="list-item"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.5rem",
+              marginBottom: "1rem",
+              padding: "1rem",
+              border: "1px solid #e5e7eb",
+              borderRadius: "8px",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "1rem",
+                marginBottom: "0.5rem",
+              }}
+            >
+              <div style={{ textAlign: "center" }}>
+                <img
+                  src={director.photo || "/images/director-default.jpg"}
+                  alt={`Director ${index + 1}`}
+                  style={{
+                    width: "80px",
+                    height: "80px",
+                    borderRadius: "50%",
+                    objectFit: "cover",
+                    border: "2px solid #ddd",
+                  }}
                   onError={(e) => {
-                    e.target.src = '/images/director-default.jpg';
+                    e.target.src = "/images/director-default.jpg";
                     e.target.onerror = null;
                   }}
                 />
-                <p style={{ marginTop: '0.25rem', fontWeight: 'bold', fontSize: '0.9rem' }}>{director.name || 'Director Name'}</p>
+                <p
+                  style={{
+                    marginTop: "0.25rem",
+                    fontWeight: "bold",
+                    fontSize: "0.9rem",
+                  }}
+                >
+                  {director.name || "Director Name"}
+                </p>
               </div>
               <div style={{ flex: 1 }}>
-                <p>Current Photo: {director.photo?.split('/').pop() || 'No photo selected'}</p>
+                <p>
+                  Current Photo:{" "}
+                  {director.photo?.split("/").pop() || "No photo selected"}
+                </p>
               </div>
             </div>
-            <div className="file-upload" style={{ marginBottom: '0.5rem' }}>
+            <div className="file-upload" style={{ marginBottom: "0.5rem" }}>
               <input
                 type="file"
                 id={`directorPhoto-${index}`}
@@ -340,28 +466,43 @@ export default function EditAboutPage() {
                     try {
                       const result = await uploadAboutImage(file);
                       const updatedDirectors = [...content.boardOfDirectors];
-                      updatedDirectors[index] = { ...updatedDirectors[index], photo: result.imagePath };
-                      setContent({ ...content, boardOfDirectors: updatedDirectors });
-                      alert('Director photo uploaded successfully!');
+                      updatedDirectors[index] = {
+                        ...updatedDirectors[index],
+                        photo: result.imagePath,
+                      };
+                      setContent({
+                        ...content,
+                        boardOfDirectors: updatedDirectors,
+                      });
+                      alert("Director photo uploaded successfully!");
                     } catch (error) {
-                      console.error('Error uploading director photo:', error);
-                      alert('Error uploading photo: ' + error.message);
+                      console.error("Error uploading director photo:", error);
+                      alert("Error uploading photo: " + error.message);
                     }
                   }
                 }}
               />
-              <label htmlFor={`directorPhoto-${index}`} className="upload-label">
+              <label
+                htmlFor={`directorPhoto-${index}`}
+                className="upload-label"
+              >
                 Choose Photo
               </label>
             </div>
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <div style={{ display: "flex", gap: "0.5rem" }}>
               <input
                 type="text"
                 value={director.name}
                 onChange={(e) => {
                   const updatedDirectors = [...content.boardOfDirectors];
-                  updatedDirectors[index] = { ...updatedDirectors[index], name: e.target.value };
-                  setContent({ ...content, boardOfDirectors: updatedDirectors });
+                  updatedDirectors[index] = {
+                    ...updatedDirectors[index],
+                    name: e.target.value,
+                  };
+                  setContent({
+                    ...content,
+                    boardOfDirectors: updatedDirectors,
+                  });
                 }}
                 placeholder="Director name"
                 style={{ flex: 1 }}
@@ -371,19 +512,32 @@ export default function EditAboutPage() {
                 onClick={() => {
                   const updatedDirectors = [...content.boardOfDirectors];
                   updatedDirectors.splice(index, 1);
-                  setContent({ ...content, boardOfDirectors: updatedDirectors });
+                  setContent({
+                    ...content,
+                    boardOfDirectors: updatedDirectors,
+                  });
                 }}
-                style={{ background: "red", color: "white", minWidth: 'auto' }}
+                style={{ background: "red", color: "white", minWidth: "auto" }}
               >
                 Remove
               </button>
             </div>
           </div>
         ))}
-        <button type="button" onClick={() => {
-          const newDirector = { name: 'New Director', photo: '/images/director-default.jpg' };
-          setContent({ ...content, boardOfDirectors: [...content.boardOfDirectors, newDirector] });
-        }} className="add-button">
+        <button
+          type="button"
+          onClick={() => {
+            const newDirector = {
+              name: "New Director",
+              photo: "/images/director-default.jpg",
+            };
+            setContent({
+              ...content,
+              boardOfDirectors: [...content.boardOfDirectors, newDirector],
+            });
+          }}
+          className="add-button"
+        >
           + Add Director
         </button>
       </div>
@@ -392,25 +546,61 @@ export default function EditAboutPage() {
       <div className="card">
         <h3>Management Team</h3>
         {content.managementTeam.map((member, index) => (
-          <div key={index} className="list-item" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem', padding: '1rem', border: '1px solid #e5e7eb', borderRadius: '8px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.5rem' }}>
-              <div style={{ textAlign: 'center' }}>
-                <img 
-                  src={member.photo || '/images/team-member-default.jpg'} 
-                  alt={`Team Member ${index + 1}`} 
-                  style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #ddd' }}
+          <div
+            key={index}
+            className="list-item"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.5rem",
+              marginBottom: "1rem",
+              padding: "1rem",
+              border: "1px solid #e5e7eb",
+              borderRadius: "8px",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "1rem",
+                marginBottom: "0.5rem",
+              }}
+            >
+              <div style={{ textAlign: "center" }}>
+                <img
+                  src={member.photo || "/images/team-member-default.jpg"}
+                  alt={`Team Member ${index + 1}`}
+                  style={{
+                    width: "80px",
+                    height: "80px",
+                    borderRadius: "50%",
+                    objectFit: "cover",
+                    border: "2px solid #ddd",
+                  }}
                   onError={(e) => {
-                    e.target.src = '/images/team-member-default.jpg';
+                    e.target.src = "/images/team-member-default.jpg";
                     e.target.onerror = null;
                   }}
                 />
-                <p style={{ marginTop: '0.25rem', fontWeight: 'bold', fontSize: '0.9rem' }}>{member.name || 'Team Member Name'}</p>
+                <p
+                  style={{
+                    marginTop: "0.25rem",
+                    fontWeight: "bold",
+                    fontSize: "0.9rem",
+                  }}
+                >
+                  {member.name || "Team Member Name"}
+                </p>
               </div>
               <div style={{ flex: 1 }}>
-                <p>Current Photo: {member.photo?.split('/').pop() || 'No photo selected'}</p>
+                <p>
+                  Current Photo:{" "}
+                  {member.photo?.split("/").pop() || "No photo selected"}
+                </p>
               </div>
             </div>
-            <div className="file-upload" style={{ marginBottom: '0.5rem' }}>
+            <div className="file-upload" style={{ marginBottom: "0.5rem" }}>
               <input
                 type="file"
                 id={`memberPhoto-${index}`}
@@ -421,12 +611,21 @@ export default function EditAboutPage() {
                     try {
                       const result = await uploadAboutImage(file);
                       const updatedMembers = [...content.managementTeam];
-                      updatedMembers[index] = { ...updatedMembers[index], photo: result.imagePath };
-                      setContent({ ...content, managementTeam: updatedMembers });
-                      alert('Team member photo uploaded successfully!');
+                      updatedMembers[index] = {
+                        ...updatedMembers[index],
+                        photo: result.imagePath,
+                      };
+                      setContent({
+                        ...content,
+                        managementTeam: updatedMembers,
+                      });
+                      alert("Team member photo uploaded successfully!");
                     } catch (error) {
-                      console.error('Error uploading team member photo:', error);
-                      alert('Error uploading photo: ' + error.message);
+                      console.error(
+                        "Error uploading team member photo:",
+                        error,
+                      );
+                      alert("Error uploading photo: " + error.message);
                     }
                   }
                 }}
@@ -435,13 +634,16 @@ export default function EditAboutPage() {
                 Choose Photo
               </label>
             </div>
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <div style={{ display: "flex", gap: "0.5rem" }}>
               <input
                 type="text"
                 value={member.name}
                 onChange={(e) => {
                   const updatedMembers = [...content.managementTeam];
-                  updatedMembers[index] = { ...updatedMembers[index], name: e.target.value };
+                  updatedMembers[index] = {
+                    ...updatedMembers[index],
+                    name: e.target.value,
+                  };
                   setContent({ ...content, managementTeam: updatedMembers });
                 }}
                 placeholder="Team member name"
@@ -454,17 +656,27 @@ export default function EditAboutPage() {
                   updatedMembers.splice(index, 1);
                   setContent({ ...content, managementTeam: updatedMembers });
                 }}
-                style={{ background: "red", color: "white", minWidth: 'auto' }}
+                style={{ background: "red", color: "white", minWidth: "auto" }}
               >
                 Remove
               </button>
             </div>
           </div>
         ))}
-        <button type="button" onClick={() => {
-          const newMember = { name: 'New Team Member', photo: '/images/team-member-default.jpg' };
-          setContent({ ...content, managementTeam: [...content.managementTeam, newMember] });
-        }} className="add-button">
+        <button
+          type="button"
+          onClick={() => {
+            const newMember = {
+              name: "New Team Member",
+              photo: "/images/team-member-default.jpg",
+            };
+            setContent({
+              ...content,
+              managementTeam: [...content.managementTeam, newMember],
+            });
+          }}
+          className="add-button"
+        >
           + Add Team Member
         </button>
       </div>
@@ -473,24 +685,51 @@ export default function EditAboutPage() {
       <div className="card">
         <h3>Awards & Recognitions</h3>
         {content.awards.map((award, index) => (
-          <div key={index} className="list-item" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem', padding: '1rem', border: '1px solid #e5e7eb', borderRadius: '8px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.5rem' }}>
-              <div style={{ textAlign: 'center' }}>
-                <img 
-                  src={award.photo || '/images/award-default.jpg'} 
-                  alt={`Award ${index + 1}`} 
-                  style={{ width: '80px', height: '80px', objectFit: 'cover', border: '2px solid #ddd' }}
+          <div
+            key={index}
+            className="list-item"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.5rem",
+              marginBottom: "1rem",
+              padding: "1rem",
+              border: "1px solid #e5e7eb",
+              borderRadius: "8px",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "1rem",
+                marginBottom: "0.5rem",
+              }}
+            >
+              <div style={{ textAlign: "center" }}>
+                <img
+                  src={award.photo || "/images/award-default.jpg"}
+                  alt={`Award ${index + 1}`}
+                  style={{
+                    width: "80px",
+                    height: "80px",
+                    objectFit: "cover",
+                    border: "2px solid #ddd",
+                  }}
                   onError={(e) => {
-                    e.target.src = '/images/award-default.jpg';
+                    e.target.src = "/images/award-default.jpg";
                     e.target.onerror = null;
                   }}
                 />
               </div>
               <div style={{ flex: 1 }}>
-                <p>Current Photo: {award.photo?.split('/').pop() || 'No photo selected'}</p>
+                <p>
+                  Current Photo:{" "}
+                  {award.photo?.split("/").pop() || "No photo selected"}
+                </p>
               </div>
             </div>
-            <div className="file-upload" style={{ marginBottom: '0.5rem' }}>
+            <div className="file-upload" style={{ marginBottom: "0.5rem" }}>
               <input
                 type="file"
                 id={`awardPhoto-${index}`}
@@ -501,12 +740,15 @@ export default function EditAboutPage() {
                     try {
                       const result = await uploadAboutImage(file);
                       const updatedAwards = [...content.awards];
-                      updatedAwards[index] = { ...updatedAwards[index], photo: result.imagePath };
+                      updatedAwards[index] = {
+                        ...updatedAwards[index],
+                        photo: result.imagePath,
+                      };
                       setContent({ ...content, awards: updatedAwards });
-                      alert('Award photo uploaded successfully!');
+                      alert("Award photo uploaded successfully!");
                     } catch (error) {
-                      console.error('Error uploading award photo:', error);
-                      alert('Error uploading photo: ' + error.message);
+                      console.error("Error uploading award photo:", error);
+                      alert("Error uploading photo: " + error.message);
                     }
                   }
                 }}
@@ -515,33 +757,43 @@ export default function EditAboutPage() {
                 Choose Photo
               </label>
             </div>
-            <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem' }}>
+            <div
+              style={{ display: "flex", gap: "0.5rem", marginBottom: "0.5rem" }}
+            >
               <input
                 type="text"
                 value={award.title}
                 onChange={(e) => {
                   const updatedAwards = [...content.awards];
-                  updatedAwards[index] = { ...updatedAwards[index], title: e.target.value };
+                  updatedAwards[index] = {
+                    ...updatedAwards[index],
+                    title: e.target.value,
+                  };
                   setContent({ ...content, awards: updatedAwards });
                 }}
                 placeholder="Award title"
                 style={{ flex: 1 }}
               />
             </div>
-            <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem' }}>
+            <div
+              style={{ display: "flex", gap: "0.5rem", marginBottom: "0.5rem" }}
+            >
               <textarea
                 value={award.description}
                 onChange={(e) => {
                   const updatedAwards = [...content.awards];
-                  updatedAwards[index] = { ...updatedAwards[index], description: e.target.value };
+                  updatedAwards[index] = {
+                    ...updatedAwards[index],
+                    description: e.target.value,
+                  };
                   setContent({ ...content, awards: updatedAwards });
                 }}
                 placeholder="Award description"
                 rows={2}
-                style={{ width: '100%' }}
+                style={{ width: "100%" }}
               />
             </div>
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <div style={{ display: "flex", gap: "0.5rem" }}>
               <button
                 type="button"
                 onClick={() => {
@@ -556,17 +808,29 @@ export default function EditAboutPage() {
             </div>
           </div>
         ))}
-        <button type="button" onClick={() => {
-          const newAward = { title: 'New Award', description: 'Award description', photo: '/images/award-default.jpg' };
-          setContent({ ...content, awards: [...content.awards, newAward] });
-        }} className="add-button">
+        <button
+          type="button"
+          onClick={() => {
+            const newAward = {
+              title: "New Award",
+              description: "Award description",
+              photo: "/images/award-default.jpg",
+            };
+            setContent({ ...content, awards: [...content.awards, newAward] });
+          }}
+          className="add-button"
+        >
           + Add Award
         </button>
       </div>
 
       {/* Save Button */}
-      <div className="mt-md" style={{ textAlign: 'center' }}>
-        <button onClick={handleSave} disabled={isSaving} className="save-button">
+      <div className="mt-md" style={{ textAlign: "center" }}>
+        <button
+          onClick={handleSave}
+          disabled={isSaving}
+          className="save-button"
+        >
           {isSaving ? "Saving..." : "Save Changes"}
         </button>
       </div>
