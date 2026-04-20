@@ -103,10 +103,11 @@ export default function HealthPackagesPage() {
       minHeight: '100vh', 
       background: 'linear-gradient(135deg, #f0f9ff 0%, #e6f7ff 100%)',
       padding: '2rem 1rem',
+      width: '100%',
       fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
     }}>
       <div style={{
-        maxWidth: '1200px',
+        maxWidth: '100%',
         margin: '0 auto',
         padding: '2rem',
         backgroundColor: 'white',
@@ -118,7 +119,7 @@ export default function HealthPackagesPage() {
           textAlign: 'center',
           marginBottom: '3rem',
           padding: '2rem 0',
-          background: 'linear-gradient(135deg, #0b7ac4 0%, #1e40af 100%)',
+          background: 'var(--primary-color)',
           borderRadius: '15px',
           color: 'white',
           boxShadow: '0 5px 15px rgba(11, 122, 196, 0.3)'
@@ -129,7 +130,7 @@ export default function HealthPackagesPage() {
             marginBottom: '0.5rem',
             textShadow: '0 2px 4px rgba(0,0,0,0.3)'
           }}>Health Packages</h1>
-          <p style={{ 
+          <p style={{
             fontSize: '1.3rem', 
             opacity: 0.9,
             maxWidth: '600px',
@@ -276,7 +277,7 @@ export default function HealthPackagesPage() {
           position: 'fixed',
           top: 0,
           left: 0,
-          width: '100%',
+          width: '30%',
           height: '100%',
           backgroundColor: 'rgba(0, 0, 0, 0.5)',
           display: 'flex',
