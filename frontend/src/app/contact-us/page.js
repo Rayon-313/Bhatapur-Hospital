@@ -73,7 +73,7 @@ export default function ContactUsPage() {
           </div>
         </section>
 
-        {/* FEEDBACK */}
+        {/* FEEDBACK
         <section className="section feedback">
           <h2>Feedback Form</h2>
 
@@ -87,7 +87,7 @@ export default function ContactUsPage() {
               <button type="submit">Send Message</button>
             </form>
           </div>
-        </section>
+        </section> */}
       </div>
     </div>
   );
