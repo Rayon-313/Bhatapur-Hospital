@@ -1,101 +1,28 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { getHealthPackages, bookHealthPackage } from '@/lib/api/healthPackages';
+import { useState, useEffect } from "react";
+import { getHealthPackages, bookHealthPackage } from "@/lib/api/healthPackages";
+import styles from "./page.css";
 
 export default function HealthPackagesPage() {
   const [packages, setPackages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showBookingModal, setShowBookingModal] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState(null);
-  
+
   useEffect(() => {
     const fetchPackages = async () => {
       try {
         const data = await getHealthPackages();
         setPackages(data);
       } catch (error) {
-        console.error('Error fetching health packages:', error);
-        // Fallback to default packages if API fails
-        setPackages([
-          {
-            _id: 1,
-            name: "Basic Health Checkup",
-            description: "Includes essential blood tests, vitals check, and physician consultation.",
-            price: "Rs. 2,500",
-            features: [
-              "Complete Blood Count",
-              "Blood Pressure Check",
-              "Basic Metabolic Panel",
-              "General Physician Consultation"
-            ]
-          },
-          {
-            _id: 2,
-            name: "Cardiac Screening Package",
-            description: "ECG, lipid profile, cardiac evaluation, and cardiologist consultation.",
-            price: "Rs. 8,500",
-            features: [
-              "ECG Test",
-              "Lipid Profile",
-              "Cardiac Enzymes",
-              "Cardiologist Consultation"
-            ]
-          },
-          {
-            _id: 3,
-            name: "Diabetes Care Package",
-            description: "Blood sugar profile, HbA1c, diet counseling, and specialist review.",
-            price: "Rs. 5,200",
-            features: [
-              "Blood Sugar Profile",
-              "HbA1c Test",
-              "Dietitian Consultation",
-              "Endocrinologist Review"
-            ]
-          },
-          {
-            _id: 4,
-            name: "Senior Citizen Package",
-            description: "Comprehensive health screening tailored for senior citizens.",
-            price: "Rs. 12,000",
-            features: [
-              "Complete Health Checkup",
-              "Bone Density Scan",
-              "Vision & Hearing Tests",
-              "Geriatrician Consultation"
-            ]
-          },
-          {
-            _id: 5,
-            name: "Women's Health Package",
-            description: "Specialized screening for women's health needs.",
-            price: "Rs. 9,800",
-            features: [
-              "Mammography",
-              "Pap Smear",
-              "Hormone Profile",
-              "Gynecologist Consultation"
-            ]
-          },
-          {
-            _id: 6,
-            name: "Executive Health Package",
-            description: "Premium comprehensive health screening with advanced diagnostics.",
-            price: "Rs. 25,000",
-            features: [
-              "Full Body MRI",
-              "Advanced Cardiac Screening",
-              "Cancer Markers",
-              "Specialist Consultations"
-            ]
-          }
-        ]);
+        console.error("Error fetching health packages:", error);
+        setPackages([]);
       } finally {
         setLoading(false);
       }
     };
-    
+
     fetchPackages();
   }, []);
 

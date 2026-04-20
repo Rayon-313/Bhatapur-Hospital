@@ -65,16 +65,15 @@ export default function MainLayout({ children }) {
               />
               <div className="logo-text">
                 <h1>Bhaktapur International Hospital</h1>
-                <p className="site-header-subtitle rotating-text">
-                  {currentPhrase}
-                </p>
+
+                <p className="rotating-text">{currentPhrase}</p>
               </div>
             </div>
+
             <div className="nav-container">
               <button
                 className="mobile-menu-button"
-                onClick={toggleMobileMenu}
-                aria-label="Toggle navigation menu"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               >
                 ☰
               </button>
