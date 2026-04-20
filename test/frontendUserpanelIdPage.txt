@@ -2,12 +2,11 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { getDepartmentById } from '@/lib/api/departments';
-// FIXED: Corrected import to match our new specialized form
-import DeptSpecificAppointment from "./DeptSpecificAppointment";import Link from 'next/link';
+import Link from 'next/link';
 
 export default function DepartmentDetailPage() {
   const params = useParams();
-  const id = params?.id; 
+  const id = params?.id; // Safely access the dynamic ID
 
   const [dept, setDept] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -52,20 +51,19 @@ export default function DepartmentDetailPage() {
       <Link href="/departments" style={styles.backLink}>← Back to List</Link>
       
       <header style={styles.header}>
-                <div style={styles.headerText}>
+        <img src={dept.image} alt={dept.name} style={styles.mainImg} />
+        <div style={styles.headerText}>
           <h1 style={styles.title}>{dept.name}</h1>
-          {/* <p style={styles.contact}><strong>Contact:</strong> {dept.contactNumber}</p>
-          <p style={styles.contact}><strong>Email:</strong> {dept.email}</p> */}
+          <p style={styles.contact}><strong>Contact:</strong> {dept.contactNumber}</p>
+          <p style={styles.contact}><strong>Email:</strong> {dept.email}</p>
         </div>
       </header>
-      <img src={dept.image} alt={dept.name} style={styles.mainImg} />
 
       <section style={styles.section}>
         <h2>About Department</h2>
         <p style={styles.desc}>{dept.description}</p>
       </section>
 
-      {/* Specialist Doctors Grid */}
       {dept.doctors && dept.doctors.length > 0 && (
         <section style={styles.section}>
           <h2>Specialists</h2>
@@ -80,11 +78,6 @@ export default function DepartmentDetailPage() {
           </div>
         </section>
       )}
-
-      {/* FIXED: Moved Appointment Form out of the Doctors Grid so it looks better and functions correctly */}
-      <section style={styles.appointmentSection}>
-        <DeptSpecificAppointment departmentName={dept.name} />
-      </section>
     </div>
   );
 }
@@ -103,7 +96,5 @@ const styles = {
   desc: { lineHeight: '1.8', color: '#374151', fontSize: '1.1rem' },
   docGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '20px', marginTop: '20px' },
   docCard: { textAlign: 'center', padding: '15px', border: '1px solid #f3f4f6', borderRadius: '12px' },
-  docImg: { width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover', marginBottom: '10px' },
-  // ADDED STYLE:
-  appointmentSection: { marginTop: '50px', borderTop: '2px solid #0b7ac4', paddingTop: '40px' }
+  docImg: { width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover', marginBottom: '10px' }
 };

@@ -232,7 +232,7 @@ export default function ContactUsPage() {
             border: "1px solid #e2e8f0",
             position: "relative"
           }}>
-            <iframe 
+<iframe 
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1766.6864772580295!2d85.3654504362405!3d27.67486566437954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb1b3eb720aa73%3A0xbd155722b5862ea1!2sBhaktapur%20International%20Hospital!5e0!3m2!1sne!2snp!4v1767370171204!5m2!1sne!2snp" 
               width="100%" 
               height="100%" 

@@ -15,6 +15,10 @@ export default function AdminDashboardPage() {
           <p>Manage mission, vision, leadership, and recognition content.</p>
         </div>
         <div className="card">
+          <h3>Edit Doctors Page</h3>
+          <p>Manage doctor profiles, specialties, and availability.</p>
+        </div>
+        <div className="card">
           <h3>Edit Departments</h3>
           <p>Add, remove, or update hospital departments.</p>
         </div>

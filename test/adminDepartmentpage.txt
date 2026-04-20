@@ -1,14 +1,12 @@
 "use client";
 import { useState, useEffect } from "react";
-import { getDepartments, updateDepartment, createDepartment, deleteDepartment } from '@/lib/api/departments'; //import functions for adding, updating, deleting departments api calls
+import { getDepartments, updateDepartment, createDepartment, deleteDepartment } from '@/lib/api/departments';
 
-//function dealing with access of edit delete and create department for admin bascally variable inialization and functions for handling form data and api calls
 export default function AdminDepartments() {
   const [departments, setDepartments] = useState([]);
   const [editingId, setEditingId] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
   
-  // For handling form data for both edit and create forms
   const [editForm, setEditForm] = useState({ name: "", description: "", image: "", contactNumber: "", email: "", doctors: [] });
   const [newDept, setNewDept] = useState({ name: "", description: "", image: "", contactNumber: "", email: "", doctors: [] });
 
@@ -75,28 +73,17 @@ export default function AdminDepartments() {
     } catch (e) { alert("Error creating"); }
   };
 
-  // Main render show forms and list of departments with edit delete options
   return (
     <div style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
       <h1>Department Management</h1>
       
-      {/* Add New Department Form */}
       {!showAddForm ? <button style={styles.addBtn} onClick={() => setShowAddForm(true)}>+ New Department</button> : (
         <div style={styles.formCard}>
           <h3>Add New</h3>
-          <label>Department Name</label>
           <input style={styles.input} placeholder="Name" value={newDept.name} onChange={e => setNewDept({...newDept, name: e.target.value})} />
-
-          {/* <label>Phone</label>
-          <input style={styles.input} placeholder="Phone" value={newDept.contactNumber} onChange={e => setNewDept({...newDept, contactNumber: e.target.value})} /> */}
-
-          {/* <label>Email</label>
-          <input style={styles.input} placeholder="Email" value={newDept.email} onChange={e => setNewDept({...newDept, email: e.target.value})} /> */}
-
-          <label>Description</label>
+          <input style={styles.input} placeholder="Phone" value={newDept.contactNumber} onChange={e => setNewDept({...newDept, contactNumber: e.target.value})} />
+          <input style={styles.input} placeholder="Email" value={newDept.email} onChange={e => setNewDept({...newDept, email: e.target.value})} />
           <textarea style={styles.input} placeholder="Description" value={newDept.description} onChange={e => setNewDept({...newDept, description: e.target.value})} />
-
-          <label>Main Image</label>
           <input type="file" onChange={e => setNewDept({...newDept, image: e.target.files[0]})} />
           
           <div style={styles.docBox}>
@@ -121,19 +108,10 @@ export default function AdminDepartments() {
           <div key={dept._id} style={styles.card}>
             {editingId === dept._id ? (
               <div>
-                <label>Name</label>
                 <input style={styles.input} value={editForm.name} onChange={e => setEditForm({...editForm, name: e.target.value})} />
-
-                {/* <label>Phone</label>
-                <input style={styles.input} value={editForm.contactNumber} onChange={e => setEditForm({...editForm, contactNumber: e.target.value})} /> */}
-
-                {/* <label>Email</label>
-                <input style={styles.input} value={editForm.email} onChange={e => setEditForm({...editForm, email: e.target.value})} /> */}
-
-                <label>Description</label>
+                <input style={styles.input} value={editForm.contactNumber} onChange={e => setEditForm({...editForm, contactNumber: e.target.value})} />
+                <input style={styles.input} value={editForm.email} onChange={e => setEditForm({...editForm, email: e.target.value})} />
                 <textarea style={styles.input} value={editForm.description} onChange={e => setEditForm({...editForm, description: e.target.value})} />
-                  
-                <label>Main Image</label>
                 <input type="file" onChange={e => setEditForm({...editForm, image: e.target.files[0]})} />
                 
                 <div style={styles.docBox}>
