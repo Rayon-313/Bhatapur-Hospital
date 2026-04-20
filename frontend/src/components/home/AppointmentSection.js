@@ -28,7 +28,7 @@ export default function AppointmentSection() {
   };
 
   return (
-    <section className={styles.section}>
+    <section style={{ width: "100% !important", padding: "2rem 0" }}>
       <h2>Need a doctor for checkup?</h2>
       <p>Fill in the appointment form and we will contact you shortly.</p>
 

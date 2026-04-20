@@ -58,17 +58,39 @@ export default function ContactUsPage() {
             <AppointmentSection />
           </div>
         </section>
-
-        {/* MAP */}
-        <section className="section map">
-          <h2>Find Us Here</h2>
-          <div className="mapBox">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1766.6864772580295!2d85.3654504362405!3d27.67486566437954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb1b3eb720aa73%3A0xbd155722b5862ea1!2sBhaktapur%20International%20Hospital!5e0!3m2!1sne!2snp!4v1767370171204!5m2!1sne!2snp"
-              width="100%"
-              height="100%"
-              loading="lazy"
-              title="map"
+        
+        {/* Map Section */}
+        <section style={{
+          marginBottom: '4rem',
+          padding: '2rem',
+          background: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)',
+          borderRadius: '15px',
+          border: '1px solid #d1d5db'
+        }}>
+          <h2 style={{
+            textAlign: 'center',
+            fontSize: '2.2rem',
+            color: '#166534',
+            marginBottom: '2.5rem',
+            fontWeight: '600'
+          }}>Find Us Here</h2>
+          <div style={{ 
+            height: "500px", 
+            borderRadius: "15px", 
+            overflow: "hidden", 
+            boxShadow: "0 10px 25px rgba(0, 0, 0, 0.15)", 
+            border: "1px solid #e2e8f0",
+            position: "relative"
+          }}>
+<iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1766.6864772580295!2d85.3654504362405!3d27.67486566437954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb1b3eb720aa73%3A0xbd155722b5862ea1!2sBhaktapur%20International%20Hospital!5e0!3m2!1sne!2snp!4v1767370171204!5m2!1sne!2snp" 
+              width="100%" 
+              height="100%" 
+              style={{ border: 0 }} 
+              allowFullScreen={true} 
+              loading="lazy" 
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Bhaktapur International Hospital Location"
             />
           </div>
         </section>

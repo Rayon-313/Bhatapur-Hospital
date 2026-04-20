@@ -201,6 +201,7 @@ width: 100%;
 
 .section {
   padding: 2rem 0;
+  width: 100%;
 }
 
 .section + .section {
@@ -214,9 +215,10 @@ width: 100%;
 }
 /* Define this so you can center text ONLY when you want to */
 .section-container {
-  max-width: 1200px;
+  max-width: 12000px;/* Adjust this to your preferred "content width" */
+  width : 100%;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 2rem;
 }
 
 .video-section-title {
@@ -234,7 +236,7 @@ width: 100%;
 .section-subtitle {
   margin-top: 0.5rem;
   max-width: 700px;
-  color: var(--muted-text);
+  color: var(--primary-color);
   font-size: 0.95rem;
   text-align: center;
   margin-left: auto;
@@ -471,7 +473,10 @@ button:hover {
   }
   
   .section {
-    padding: 1.5rem 0;
+    padding: 3rem 0;
+    width: 100%;
+    margin: 0 ;
+    display: block;
   }
   
   .section-title {

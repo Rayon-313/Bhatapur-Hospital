@@ -1,13 +1,11 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-//for allowing to add multiple doctors with images, we define a sub-schema for doctor
 const DoctorSchema = new mongoose.Schema({
   name: { type: String, required: true },
   description: { type: String },
   image: { type: String } // Stores the URL path
 });
 
-//for department details
 const DepartmentSchema = new mongoose.Schema({
   name: { type: String, required: true },
   description: { type: String },
