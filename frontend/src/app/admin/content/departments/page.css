@@ -1,122 +1,186 @@
-/* page.css */
+/* AdminDepartments.css */
+:root {
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --success: #10b981;
+  --danger: #ef4444;
+  --bg-subtle: #f8fafc;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
 
 .container {
-  padding: 2rem;
-  max-width: 1200px;
+  padding: 3rem 1.5rem;
+  max-width: 1100px;
   margin: 0 auto;
-  font-family: sans-serif;
+  font-family:
+    "Inter",
+    -apple-system,
+    sans-serif;
+  color: var(--text-main);
+  background-color: var(--bg-subtle);
+  min-height: 100vh;
 }
 
-.title {
-  text-align: center;
-  color: #1e40af;
-  margin-bottom: 1rem;
+h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  margin-bottom: 2rem;
+  color: #0f172a;
 }
 
-.formCard {
-  background: #f8fafc;
-  padding: 20px;
-  border-radius: 12px;
-  border: 2px dashed #cbd5e1;
-  width: 100%;
-  max-width: 700px;
-  margin: 0 auto 3rem auto;
+/* Buttons */
+.addBtn {
+  background: var(--primary);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px 0 rgba(79, 70, 229, 0.39);
+  margin-bottom: 2.5rem;
 }
 
+.addBtn:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.23);
+}
+
+/* Grid & Cards */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
 }
 
 .card {
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  padding: 20px;
-  background-color: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  padding: 1.25rem;
+  border-radius: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow);
 }
 
-/* --- THE FIX FOR IMAGES --- */
-.doctorSection {
-  display: flex;
-  gap: 10px;
-  margin: 15px 0;
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
 }
 
-.doctor {
-  flex: 1;
-  text-align: center;
-}
-
-.doctorImg {
-  width: 120px; /* Makes it fit the content area */
-  height: 120px; /* Fixed height for a clean look */
-  object-fit: cover; /* This makes the image fit without cutting/stretching */
-  border-radius: 8px;
-  display: block;
-  margin-bottom: 5px;
-  border-radius: 50%;
-}
-
-/* --- BUTTONS & INPUTS --- */
-input,
-textarea {
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+.cardImg {
   width: 100%;
-  margin-bottom: 10px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 1.25rem;
 }
 
-.btnRow {
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+  color: #0f172a;
+}
+
+.cardMeta p {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin: 0.4rem 0;
   display: flex;
-  gap: 10px;
-  margin-top: 10px;
+  align-items: center;
+  gap: 8px;
 }
 
-.primaryBtn {
-  background-color: #1e40af;
-  color: white;
+/* Forms */
+.formCard {
+  background: white;
+  padding: 2rem;
+  border-radius: 20px;
+  margin-bottom: 3rem;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid #e2e8f0;
+}
+
+.inputField {
+  display: block;
+  width: 100%;
+  margin: 0.5rem 0 1.25rem 0;
+  padding: 0.75rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s;
+}
+
+.inputField:focus {
+  outline: none;
+  border-color: var(--primary);
+  ring: 2px solid rgba(79, 70, 229, 0.1);
+}
+
+label {
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+/* Doctor Section in Form */
+.docBox {
+  background: #f1f5f9;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin: 1.5rem 0;
+}
+
+.docRow {
+  background: white;
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Action Buttons */
+.editBtn {
+  background: #f1f5f9;
+  color: var(--text-main);
   border: none;
-  padding: 10px 20px;
+  padding: 0.5rem 1rem;
   border-radius: 8px;
+  font-weight: 600;
   cursor: pointer;
   flex: 1;
-}
-
-.secondaryBtn {
-  background-color: #3b82f6;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  cursor: pointer;
 }
 
 .deleteBtn {
-  background-color: #ef4444;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 6px;
+  color: var(--danger);
+  background: transparent;
+  border: 1.5px solid #fee2e2;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
   cursor: pointer;
-  flex: 1;
 }
 
-.editBtn {
-  background-color: #3b82f6;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 6px;
-  cursor: pointer;
-  flex: 1;
+.deleteBtn:hover {
+  background: #fef2f2;
+  border-color: var(--danger);
 }
 
-.center {
-  text-align: center;
-  padding: 100px;
+.saveBtn {
+  background: var(--success);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
 }
