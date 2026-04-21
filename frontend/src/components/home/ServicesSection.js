@@ -34,17 +34,18 @@ export default function ServicesSection({ services = [] }) {
                 padding: "1rem",
                 border: "1px solid #e0e0e0",
                 borderRadius: "9px",
-                borderColor: " #1f168b",
+                borderColor: " #080c67",
                 borderStyle: "solid",
-                borderWidth: "2px",
-                transitionDuration: "0.6s",
+                borderWidth: "3px",
+                transitionDuration: "0.8s",
                 textAlign: "center",
                 backgroundColor: "white",
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = "translateY(-6px)";
-                e.currentTarget.style.boxShadow = "0 4px 8px rgba(0,0,0,0.1)";
-                e.currentTarget.style.borderColor = " #13cb13";
+                e.currentTarget.style.boxShadow =
+                  "0 4px 6px rgba(0, 0, 0, 0.15)";
+                e.currentTarget.style.borderColor = " #18b730";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = "translateY(0)";

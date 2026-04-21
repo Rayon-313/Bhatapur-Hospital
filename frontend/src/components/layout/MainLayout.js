@@ -86,7 +86,6 @@ export default function MainLayout({ children }) {
                   </Link>
                 </b>
 
-
                 <b>
                   <Link href="/departments" onClick={closeMobileMenu}>
                     Departments
@@ -97,7 +96,7 @@ export default function MainLayout({ children }) {
                     Health Packages
                   </Link>
                 </b>
-                
+
                 <b>
                   <Link href="/contact-us" onClick={closeMobileMenu}>
                     Contact Us
@@ -113,7 +112,7 @@ export default function MainLayout({ children }) {
                     About Us
                   </Link>
                 </b>
-                
+
                 <b>
                   <Link href="/patient-recovery" onClick={closeMobileMenu}>
                     Patient Recovery
