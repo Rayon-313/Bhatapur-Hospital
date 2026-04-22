@@ -3,7 +3,8 @@ export default function AdminDashboardPage() {
     <section>
       <h2>Admin Dashboard</h2>
       <p style={{ marginTop: "0.5rem" }}>
-        Welcome to the admin panel. Use the sidebar to manage content across the website.
+        Welcome to the admin panel. Use the sidebar to manage content across the
+        website.
       </p>
       <div className="card-grid mt-md">
         <div className="card">

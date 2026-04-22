@@ -182,7 +182,7 @@ main {
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-md);
   z-index: 1000;
-  min-width: 200px;
+  width: 100px;
 }
 
 .site-subnav.mobile-menu-open a {
@@ -475,7 +475,7 @@ button:hover {
     position: absolute;
     top: 100%;
     right: 0;
-    background: white;
+    background: #2982cf;
     padding: 1rem;
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);

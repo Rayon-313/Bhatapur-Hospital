@@ -87,63 +87,75 @@ const DEFAULT_HOME_CONTENT = {
   departments: [
     {
       title: "24/7 Emergency Services",
-      description: "Emergency medical care available around the clock for critical situations.",
+      description:
+        "Emergency medical care available around the clock for critical situations.",
       detailedContent: {
-        about: "24/7 Emergency Services is one of our specialized services at Bhaktapur International Hospital. We are committed to providing the highest quality care and treatment in this area of healthcare.",
+        about:
+          "24/7 Emergency Services is one of our specialized services at Bhaktapur International Hospital. We are committed to providing the highest quality care and treatment in this area of healthcare.",
         keyFeatures: [
           "State-of-the-art equipment and facilities",
           "Experienced and qualified medical professionals",
           "Comprehensive care approach",
           "24/7 availability (where applicable)",
-          "Patient-centered care philosophy"
+          "Patient-centered care philosophy",
         ],
-        whyChoose: "At Bhaktapur International Hospital, we pride ourselves on delivering exceptional 24/7 emergency services. Our team of specialists combines advanced medical technology with compassionate care to ensure the best possible outcomes for our patients."
-      }
+        whyChoose:
+          "At Bhaktapur International Hospital, we pride ourselves on delivering exceptional 24/7 emergency services. Our team of specialists combines advanced medical technology with compassionate care to ensure the best possible outcomes for our patients.",
+      },
     },
     {
       title: "Outpatient & Inpatient Services",
-      description: "Comprehensive care for both outpatient visits and extended stays.",
+      description:
+        "Comprehensive care for both outpatient visits and extended stays.",
       detailedContent: {
-        about: "Outpatient & Inpatient Services is one of our specialized services at Bhaktapur International Hospital. We are committed to providing the highest quality care and treatment in this area of healthcare.",
+        about:
+          "Outpatient & Inpatient Services is one of our specialized services at Bhaktapur International Hospital. We are committed to providing the highest quality care and treatment in this area of healthcare.",
         keyFeatures: [
           "State-of-the-art equipment and facilities",
           "Experienced and qualified medical professionals",
           "Comprehensive care approach",
           "Flexible scheduling options",
-          "Patient-centered care philosophy"
+          "Patient-centered care philosophy",
         ],
-        whyChoose: "At Bhaktapur International Hospital, we pride ourselves on delivering exceptional outpatient & inpatient services. Our team of specialists combines advanced medical technology with compassionate care to ensure the best possible outcomes for our patients."
-      }
+        whyChoose:
+          "At Bhaktapur International Hospital, we pride ourselves on delivering exceptional outpatient & inpatient services. Our team of specialists combines advanced medical technology with compassionate care to ensure the best possible outcomes for our patients.",
+      },
     },
     {
       title: "Diagnostic & Imaging",
-      description: "Advanced diagnostic tools and imaging technology for accurate diagnosis.",
+      description:
+        "Advanced diagnostic tools and imaging technology for accurate diagnosis.",
       detailedContent: {
-        about: "Diagnostic & Imaging is one of our specialized services at Bhaktapur International Hospital. We are committed to providing the highest quality care and treatment in this area of healthcare.",
+        about:
+          "Diagnostic & Imaging is one of our specialized services at Bhaktapur International Hospital. We are committed to providing the highest quality care and treatment in this area of healthcare.",
         keyFeatures: [
           "State-of-the-art equipment and facilities",
           "Experienced and qualified medical professionals",
           "Comprehensive care approach",
           "Advanced imaging technology",
-          "Accurate and timely results"
+          "Accurate and timely results",
         ],
-        whyChoose: "At Bhaktapur International Hospital, we pride ourselves on delivering exceptional diagnostic & imaging services. Our team of specialists combines advanced medical technology with compassionate care to ensure the best possible outcomes for our patients."
-      }
+        whyChoose:
+          "At Bhaktapur International Hospital, we pride ourselves on delivering exceptional diagnostic & imaging services. Our team of specialists combines advanced medical technology with compassionate care to ensure the best possible outcomes for our patients.",
+      },
     },
     {
       title: "Surgical Services",
-      description: "State-of-the-art surgical facilities with experienced surgeons.",
+      description:
+        "State-of-the-art surgical facilities with experienced surgeons.",
       detailedContent: {
-        about: "Surgical Services is one of our specialized services at Bhaktapur International Hospital. We are committed to providing the highest quality care and treatment in this area of healthcare.",
+        about:
+          "Surgical Services is one of our specialized services at Bhaktapur International Hospital. We are committed to providing the highest quality care and treatment in this area of healthcare.",
         keyFeatures: [
           "State-of-the-art equipment and facilities",
           "Experienced and qualified medical professionals",
           "Comprehensive care approach",
           "Advanced surgical technology",
-          "Patient-centered care philosophy"
+          "Patient-centered care philosophy",
         ],
-        whyChoose: "At Bhaktapur International Hospital, we pride ourselves on delivering exceptional surgical services. Our team of specialists combines advanced medical technology with compassionate care to ensure the best possible outcomes for our patients."
-      }
+        whyChoose:
+          "At Bhaktapur International Hospital, we pride ourselves on delivering exceptional surgical services. Our team of specialists combines advanced medical technology with compassionate care to ensure the best possible outcomes for our patients.",
+      },
     },
   ],
 
@@ -210,7 +222,7 @@ export default function EditHomePage() {
       // For other lists, add an empty string
       newItem = "";
     }
-const newList = [...(content[listName] || []), newItem];
+    const newList = [...(content[listName] || []), newItem];
     setContent((prev) => ({ ...prev, [listName]: newList }));
   };
 
@@ -799,374 +811,6 @@ const newList = [...(content[listName] || []), newItem];
           + Add Service
         </button>
       </div>
-
-      {/* Department */}
-      <div className="card">
-        <h3>Department</h3>
-{(content?.departments || []).map((department, index) => (
-            <div key={index} className="service-item">
-            <div className="service-item-header">
-              <input
-                type="text"
-                value={department.title || ""}
-                onChange={(e) => {
-                  const updatedDepartments = [...content.departments];
-                  const newTitle = e.target.value;
-                  updatedDepartments[index] = { 
-                    ...updatedDepartments[index], 
-                    title: newTitle,
-                    detailedContent: {
-                      ...updatedDepartments[index].detailedContent,
-                      aboutHeading: `About ${newTitle}`,
-                      whyChooseHeading: `Why Choose Our ${newTitle}`
-                    }
-                  };
-                  setContent(prev => ({ ...prev, departments: updatedDepartments }));
-                }}
-                placeholder="Department title"
-              />
-              <button
-                type="button"
-                onClick={() => removeListItem("departments", index)}
-                style={{ background: "red", color: "white", minWidth: "70px" }}
-              >
-                Remove
-              </button>
-            </div>
-            <textarea
-              value={department.description || ""}
-              onChange={(e) => {
-                const updatedDepartments = [...content.departments];
-                updatedDepartments[index] = { ...updatedDepartments[index], description: e.target.value };
-                setContent(prev => ({ ...prev, departments: updatedDepartments }));
-              }}
-              placeholder="Department description"
-              rows={2}
-            />
-            
-            {/* Detailed Content Section */}
-            <details className="detailed-content">
-              <summary>Edit Detailed Content</summary>
-              
-              {/* Images Section */}
-              <div>
-                <label>Department Images</label>
-                <div style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
-                  {/* First Image */}
-                  <div style={{ flex: 1 }}>
-                    <label>Image 1</label>
-                    <div
-                      onDragOver={(e) => e.preventDefault()}
-                      onDrop={async (e) => {
-                        e.preventDefault();
-                        const files = e.dataTransfer.files;
-                        if (files.length > 0) {
-                          const file = files[0];
-                          if (file.type.startsWith('image/')) {
-                            try {
-                              const uploadResult = await uploadHomeImage(file);
-                              const updatedDepartments = [...content.departments];
-                              updatedDepartments[index] = { 
-                                ...updatedDepartments[index], 
-                                detailedContent: { 
-                                  ...updatedDepartments[index].detailedContent,
-                                  image1Path: uploadResult.imagePath
-                                }
-                              };
-                              setContent(prev => ({ ...prev, departments: updatedDepartments }));
-                            } catch (error) {
-                              console.error('Failed to upload image:', error);
-                            }
-                          }
-                        }
-                      }}
-                      className="image-upload-area"
-                      onClick={() => {
-                        const input = document.createElement('input');
-                        input.type = 'file';
-                        input.accept = 'image/*';
-                        input.onchange = async (e) => {
-                          const file = e.target.files[0];
-                          if (file) {
-                            try {
-                              const uploadResult = await uploadHomeImage(file);
-                              const updatedDepartments = [...content.departments];
-                              updatedDepartments[index] = { 
-                                ...updatedDepartments[index], 
-                                detailedContent: { 
-                                  ...updatedDepartments[index].detailedContent,
-                                  image1Path: uploadResult.imagePath
-                                }
-                              };
-                              setContent(prev => ({ ...prev, departments: updatedDepartments }));
-                            } catch (error) {
-                              console.error('Failed to upload image:', error);
-                            }
-                          }
-                        };
-                        input.click();
-                      }}
-                    >
-                      {department.detailedContent?.image1Path ? (
-                        <div>
-                          <img 
-                            src={department.detailedContent.image1Path} 
-                            alt="Department 1" 
-                          />
-                          <p>Click to replace</p>
-                        </div>
-                      ) : (
-                        <p>Click or drag image here</p>
-                      )}
-                    </div>
-                  </div>
-                  
-                  {/* Second Image */}
-                  <div style={{ flex: 1 }}>
-                    <label>Image 2</label>
-                    <div
-                      onDragOver={(e) => e.preventDefault()}
-                      onDrop={async (e) => {
-                        e.preventDefault();
-                        const files = e.dataTransfer.files;
-                        if (files.length > 0) {
-                          const file = files[0];
-                          if (file.type.startsWith('image/')) {
-                            try {
-                              const uploadResult = await uploadHomeImage(file);
-                              const updatedDepartments = [...content.departments];
-                              updatedDepartments[index] = { 
-                                ...updatedDepartments[index], 
-                                detailedContent: { 
-                                  ...updatedDepartments[index].detailedContent,
-                                  image2Path: uploadResult.imagePath
-                                }
-                              };
-                              setContent(prev => ({ ...prev, departments: updatedDepartments }));
-                            } catch (error) {
-                              console.error('Failed to upload image:', error);
-                            }
-                          }
-                        }
-                      }}
-                      className="image-upload-area"
-                      onClick={() => {
-                        const input = document.createElement('input');
-                        input.type = 'file';
-                        input.accept = 'image/*';
-                        input.onchange = async (e) => {
-                          const file = e.target.files[0];
-                          if (file) {
-                            try {
-                              const uploadResult = await uploadHomeImage(file);
-                              const updatedDepartments = [...content.departments];
-                              updatedDepartments[index] = { 
-                                ...updatedDepartments[index], 
-                                detailedContent: { 
-                                  ...updatedDepartments[index].detailedContent,
-                                  image2Path: uploadResult.imagePath
-                                }
-                              };
-                              setContent(prev => ({ ...prev, departments: updatedDepartments }));
-                            } catch (error) {
-                              console.error('Failed to upload image:', error);
-                            }
-                          }
-                        };
-                        input.click();
-                      }}
-                    >
-                      {department.detailedContent?.image2Path ? (
-                        <div>
-                          <img 
-                            src={department.detailedContent.image2Path} 
-                            alt="Department 2" 
-                          />
-                          <p>Click to replace</p>
-                        </div>
-                      ) : (
-                        <p>Click or drag image here</p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div style={{ marginTop: "1rem" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" }}>
-                  <label style={{ display: "block" }}>About Section Heading</label>
-                  <button 
-                    type="button" 
-                    onClick={() => {
-                      const updatedDepartments = [...content.departments];
-                      updatedDepartments[index] = { 
-                        ...updatedDepartments[index], 
-                        detailedContent: { 
-                          ...updatedDepartments[index].detailedContent, 
-                          aboutHeading: "About This Department" 
-                        }
-                      };
-                      setContent(prev => ({ ...prev, departments: updatedDepartments }));
-                    }}
-                    style={{ background: "#0b7ac4", color: "white", border: "none", padding: "4px 8px", borderRadius: "4px", cursor: "pointer", fontSize: "0.8rem" }}
-                  >Reset</button>
-                </div>
-                <input
-                  type="text"
-                  value={department.detailedContent?.aboutHeading || "About This Department"}
-                  onChange={(e) => {
-                    const updatedDepartments = [...content.departments];
-                    updatedDepartments[index] = { 
-                      ...updatedDepartments[index], 
-                      detailedContent: { 
-                        ...updatedDepartments[index].detailedContent, 
-                        aboutHeading: e.target.value 
-                      }
-                    };
-                    setContent(prev => ({ ...prev, departments: updatedDepartments }));
-                  }}
-                  placeholder="Enter heading for about section"
-                  style={{ width: "100%", padding: "8px", marginBottom: "0.5rem", borderRadius: "4px", border: "1px solid #ccc" }}
-                />
-                <label style={{ display: "block", marginBottom: "0.5rem" }}>About Content</label>
-                <textarea
-                  value={department.detailedContent?.about || ""}
-                  onChange={(e) => {
-                    const updatedDepartments = [...content.departments];
-                    updatedDepartments[index] = { 
-                      ...updatedDepartments[index], 
-                      detailedContent: { 
-                        ...updatedDepartments[index].detailedContent, 
-                        about: e.target.value 
-                      }
-                    };
-                    setContent(prev => ({ ...prev, departments: updatedDepartments }));
-                  }}
-                  placeholder="Enter content for about section"
-                  rows={3}
-                  style={{ width: "100%", marginBottom: "1rem" }}
-                />
-              </div>
-              
-
-              
-              <div style={{ marginTop: "1rem" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" }}>
-                  <label style={{ display: "block" }}>Why Choose Section Heading</label>
-                  <button 
-                    type="button" 
-                    onClick={() => {
-                      const updatedDepartments = [...content.departments];
-                      updatedDepartments[index] = { 
-                        ...updatedDepartments[index], 
-                        detailedContent: { 
-                          ...updatedDepartments[index].detailedContent, 
-                          whyChooseHeading: `Why Choose Our ${updatedDepartments[index].title}` 
-                        }
-                      };
-                      setContent(prev => ({ ...prev, departments: updatedDepartments }));
-                    }}
-                    style={{ background: "#0b7ac4", color: "white", border: "none", padding: "4px 8px", borderRadius: "4px", cursor: "pointer", fontSize: "0.8rem" }}
-                  >Reset</button>
-                </div>
-                <input
-                  type="text"
-                  value={department.detailedContent?.whyChooseHeading || `Why Choose Our ${department.title}`}
-                  onChange={(e) => {
-                    const updatedDepartments = [...content.departments];
-                    updatedDepartments[index] = { 
-                      ...updatedDepartments[index], 
-                      detailedContent: { 
-                        ...updatedDepartments[index].detailedContent, 
-                        whyChooseHeading: e.target.value 
-                      }
-                    };
-                    setContent(prev => ({ ...prev, departments: updatedDepartments }));
-                  }}
-                  placeholder="Enter heading for why choose section"
-                  style={{ width: "100%", padding: "8px", marginBottom: "0.5rem", borderRadius: "4px", border: "1px solid #ccc" }}
-                />
-                <label style={{ display: "block", marginBottom: "0.5rem" }}>Why Choose Content</label>
-                <textarea
-                  value={department.detailedContent?.whyChoose || ""}
-                  onChange={(e) => {
-                    const updatedDepartments = [...content.departments];
-                    updatedDepartments[index] = { 
-                      ...updatedDepartments[index], 
-                      detailedContent: { 
-                        ...updatedDepartments[index].detailedContent, 
-                        whyChoose: e.target.value 
-                      }
-                    };
-                    setContent(prev => ({ ...prev, departments: updatedDepartments }));
-                  }}
-                  placeholder="Enter content for why choose section"
-                  rows={3}
-                  style={{ width: "100%", marginBottom: "1rem" }}
-                />
-              </div>
-            </details>
-            
-            <div
-              onDragOver={(e) => e.preventDefault()}
-              onDrop={async (e) => {
-                e.preventDefault();
-                const files = e.dataTransfer.files;
-                if (files.length > 0) {
-                  const file = files[0];
-                  if (file.type.startsWith('image/')) {
-                    try {
-                      const uploadResult = await uploadHomeImage(file);
-                      const updatedDepartments = [...content.departments];
-                      updatedDepartments[index] = { ...updatedDepartments[index], imageUrl: uploadResult.imagePath };
-                      setContent(prev => ({ ...prev, departments: updatedDepartments }));
-                    } catch (error) {
-                      console.error('Failed to upload image:', error);
-                    }
-                  }
-                }
-              }}
-              className="image-upload-area"
-              onClick={() => {
-                // Create a file input element to allow clicking to select image
-                const input = document.createElement('input');
-                input.type = 'file';
-                input.accept = 'image/*';
-                input.onchange = async (e) => {
-                  const file = e.target.files[0];
-                  if (file) {
-                    try {
-                      const uploadResult = await uploadHomeImage(file);
-                      const updatedDepartments = [...content.departments];
-                      updatedDepartments[index] = { ...updatedDepartments[index], imageUrl: uploadResult.imagePath };
-                      setContent(prev => ({ ...prev, departments: updatedDepartments }));
-                    } catch (error) {
-                      console.error('Failed to upload image:', error);
-                    }
-                  }
-                };
-                input.click();
-              }}
-            >
-              {department.imageUrl ? (
-                <div>
-                  <img 
-                    src={department.imageUrl} 
-                    alt="Department" 
-                  />
-                  <p>Click or drag an image to replace</p>
-                </div>
-              ) : (
-                <p>Click or drag an image here</p>
-              )}
-            </div>
-          </div>
-        ))}
-        <button type="button" onClick={() => addListItem("departments")} className="add-button">
-          + Add Department
-        </button>
-      </div>
-
 
       {/* Why Choose Us */}
       <div className="card">

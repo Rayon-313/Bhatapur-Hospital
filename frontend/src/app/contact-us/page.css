@@ -79,15 +79,14 @@
   padding: 1.5rem;
   background: #f8fafc;
   border-radius: 12px;
-  border: 1px solid #e2e8f0;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+  border: 3px solid #080c67;
+  transition-duration: 0.5s;
 }
 
 .card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgb(0, 0, 0, 0.15);
+  border: 3px solid #13cb13;
 }
 
 .icon {

@@ -129,172 +129,254 @@ export default function MainLayout({ children }) {
         {children}
       </main>
 
-      <footer
-        className="site-footer"
-        style={{
-          width: "100%",
-          backgroundColor: "var(--primary-dark)",
-          color: "var(--hftext-color)",
-          padding: "4rem 0 0 0",
-          marginTop: "auto",
-        }}
-      >
-        {/* INNER WRAPPER: Space-between ensures one is far left and one is far right */}
-        <div
-          style={{
-            width: "80%",
-            margin: "0 auto",
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "space-between",
-            alignItems: "flex-start",
-            gap: "2rem",
-            padding: "0 2rem",
-          }}
-        >
-          {/* 1. CONTACT INFO: Now on the LEFT side of the container */}
-          <div
-            style={{
-              flex: "0 1 400px",
-              minWidth: "280px",
-              display: "flex",
-              flexDirection: "column",
-              gap: "1.5rem",
-              textAlign: "left",
-            }}
-          >
-            <img
-              src="/images/logo.png"
-              alt="Logo"
-              style={{ width: "80px", filter: "brightness(0) invert(1)" }}
-            />
-            <div style={{ fontSize: "1.1rem", lineHeight: "1.8" }}>
-              <p
-                style={{
-                  fontWeight: "bold",
-                  fontSize: "1.3rem",
-                  marginBottom: "1.5rem",
-                  color: "white",
-                }}
-              >
-                Bhaktapur International Hospital
-              </p>
-              <p>📞 9801202550</p>
-              <p>☎️ 015159266</p>
-              <p>📍 P. O. Box 11796</p>
-              <p>🏠 Bhaktapur, Nepal</p>
-              <p>
-                ✉️{" "}
-                <span style={{ color: "var(--accent-color)" }}>
-                  info@bihospital.com
-                </span>
-              </p>
-            </div>
-
-            <div style={{ display: "flex", gap: "10px" }}>
-              {["f", "ig", "in", "x"].map((icon) => (
-                <div key={icon} style={socialIconStyle}>
-                  {icon}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* 2. FEEDBACK FORM: Now on the RIGHT side of the container */}
-          <div style={{ flex: "0 1 550px", minWidth: "300px" }}>
-            <h2
-              style={{
-                color: "white",
-                marginBottom: "1.5rem",
-                fontSize: "1.8rem",
-              }}
-            >
-              Feedback Form
-            </h2>
-            <div
-              style={{
-                padding: "1.5rem",
-                backgroundColor: "rgba(255, 255, 255, 0.05)",
-                borderRadius: "var(--radius-md)",
-                border: "1px solid rgba(255, 255, 255, 0.1)",
-              }}
-            >
-              <form style={{ display: "grid", gap: "1rem" }}>
-                <label
-                  htmlFor="name"
-                  style={{ color: "var(--hftext-color)", fontSize: "0.9rem" }}
-                >
-                  Name
-                </label>
-                <input
-                  type="text"
-                  placeholder="Name"
-                  style={footerInputStyle}
-                  required
-                />
-                <label
-                  htmlFor="email"
-                  style={{ color: "var(--hftext-color)", fontSize: "0.9rem" }}
-                >
-                  Email
-                </label>
-                <input
-                  type="email"
-                  placeholder="Email"
-                  style={footerInputStyle}
-                  required
-                />
-                <label
-                  htmlFor="subject"
-                  style={{ color: "var(--hftext-color)", fontSize: "0.9rem" }}
-                >
-                  Subject
-                </label>
-                <input
-                  type="text"
-                  placeholder="Subject"
-                  style={footerInputStyle}
-                  required
-                />
-                <label
-                  htmlFor="message"
-                  style={{ color: "var(--hftext-color)", fontSize: "0.9rem" }}
-                >
-                  Message
-                </label>
-                <textarea
-                  placeholder="Message"
-                  rows={3}
-                  style={footerInputStyle}
-                  required
-                ></textarea>
-                <button type="submit" style={footerButtonStyle}>
-                  Send Message
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-
-        {/* BOTTOM BAR */}
-        <div
+      {!isAdminPanel && !isServiceDetail && (
+        <footer
+          className="site-footer"
           style={{
             width: "100%",
-            marginTop: "4rem",
-            borderTop: "1px solid rgba(255,255,255,0.1)",
-            padding: "1.5rem 2rem 1.5rem 2rem",
-            textAlign: "center",
-            fontSize: "0.9rem",
-            backgroundColor: "rgba(0,0,0,0.1)",
+            backgroundColor: "var(--primary-dark)",
+            color: "var(--hftext-color)",
+            padding: "4rem 0 0 0",
+            marginTop: "auto",
           }}
         >
-          <p>Privacy Policy | Terms and Conditions</p>
-          <p>
-            © {new Date().getFullYear()} Bhaktapur International Hospital Pvt.
-            Ltd. | All rights reserved.
-          </p>
-        </div>
-      </footer>
+          {/* INNER WRAPPER: Space-between ensures one is far left and one is far right */}
+          <div
+            style={{
+              width: "80%",
+              margin: "0 auto",
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "space-between",
+              alignItems: "flex-start",
+              gap: "2rem",
+              padding: "0 2rem",
+            }}
+          >
+            {/* 1. CONTACT INFO: Now on the LEFT side of the container */}
+            <div
+              style={{
+                flex: "0 1 400px",
+                minWidth: "280px",
+                display: "flex",
+                flexDirection: "column",
+                gap: "1.5rem",
+                textAlign: "left",
+              }}
+            >
+              <img
+                src="/images/logo.png"
+                alt="Logo"
+                style={{ width: "80px", filter: "brightness(0) invert(1)" }}
+              />
+              <div style={{ fontSize: "1.1rem", lineHeight: "1.8" }}>
+                <p
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: "1.3rem",
+                    marginBottom: "1.5rem",
+                    color: "white",
+                  }}
+                >
+                  Bhaktapur International Hospital
+                </p>
+                <p
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                  }}
+                >
+                  <img
+                    src="/images/phone.png"
+                    style={{
+                      width: "25px",
+                      height: "25px",
+                      position: "relative",
+                      top: "2px", // 👈 pushes image downward
+                    }}
+                  />
+                  9801202550
+                </p>
+                <p
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                  }}
+                >
+                  <img
+                    src="/images/telephone.png"
+                    style={{
+                      width: "25px",
+                      height: "25px",
+                      position: "relative",
+                      top: "2px", // 👈 pushes image downward
+                    }}
+                  />
+                  015178645
+                </p>
+                <p
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                  }}
+                >
+                  <img
+                    src="/images/footerpostbox.png"
+                    style={{
+                      width: "25px",
+                      height: "25px",
+                      position: "relative",
+                      top: "2px", // 👈 pushes image downward
+                    }}
+                  />
+                  P.O.Box 11796
+                </p>
+                <p
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                  }}
+                >
+                  <img
+                    src="/images/footerhospital.png"
+                    style={{
+                      width: "25px",
+                      height: "25px",
+                      position: "relative",
+                      top: "2px", // 👈 pushes image downward
+                    }}
+                  />
+                  Bhaktapur,Nepal
+                </p>
+                <p
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                  }}
+                >
+                  <img
+                    src="/images/email.png"
+                    style={{
+                      width: "25px",
+                      height: "25px",
+                      position: "relative",
+                      top: "2px", // 👈 pushes image downward
+                    }}
+                  />
+                  info@bihospital.com
+                </p>
+              </div>
+
+              <div style={{ display: "flex", gap: "10px" }}>
+                {["f", "ig", "in", "x"].map((icon) => (
+                  <div key={icon} style={socialIconStyle}>
+                    {icon}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* 2. FEEDBACK FORM: Now on the RIGHT side of the container */}
+            <div style={{ flex: "0 1 550px", minWidth: "300px" }}>
+              <h2
+                style={{
+                  color: "white",
+                  marginBottom: "1.5rem",
+                  fontSize: "1.8rem",
+                }}
+              >
+                Feedback Form
+              </h2>
+              <div
+                style={{
+                  padding: "1.5rem",
+                  backgroundColor: "rgba(255, 255, 255, 0.05)",
+                  borderRadius: "var(--radius-md)",
+                  border: "1px solid rgba(255, 255, 255, 0.1)",
+                }}
+              >
+                <form style={{ display: "grid", gap: "1rem" }}>
+                  <label
+                    htmlFor="name"
+                    style={{ color: "var(--hftext-color)", fontSize: "0.9rem" }}
+                  >
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Name"
+                    style={footerInputStyle}
+                    required
+                  />
+                  <label
+                    htmlFor="email"
+                    style={{ color: "var(--hftext-color)", fontSize: "0.9rem" }}
+                  >
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    style={footerInputStyle}
+                    required
+                  />
+                  <label
+                    htmlFor="subject"
+                    style={{ color: "var(--hftext-color)", fontSize: "0.9rem" }}
+                  >
+                    Subject
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Subject"
+                    style={footerInputStyle}
+                    required
+                  />
+                  <label
+                    htmlFor="message"
+                    style={{ color: "var(--hftext-color)", fontSize: "0.9rem" }}
+                  >
+                    Message
+                  </label>
+                  <textarea
+                    placeholder="Message"
+                    rows={3}
+                    style={footerInputStyle}
+                    required
+                  ></textarea>
+                  <button type="submit" style={footerButtonStyle}>
+                    Send Message
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          {/* BOTTOM BAR */}
+          <div
+            style={{
+              width: "100%",
+              marginTop: "4rem",
+              borderTop: "1px solid rgba(255,255,255,0.1)",
+              padding: "1.5rem 2rem 1.5rem 2rem",
+              textAlign: "center",
+              fontSize: "0.9rem",
+              backgroundColor: "rgba(0,0,0,0.1)",
+            }}
+          >
+            <p>Privacy Policy | Terms and Conditions</p>
+            <p>
+              © {new Date().getFullYear()} Bhaktapur International Hospital Pvt.
+              Ltd. | All rights reserved.
+            </p>
+          </div>
+        </footer>
+      )}
     </>
   );
 }

@@ -32,7 +32,11 @@ export default function AdminLoginPage() {
   return (
     <section className="section">
       <h2 className="section-title">Admin Login</h2>
-      <form onSubmit={handleSubmit} className="card mt-md" style={{ maxWidth: "400px" }}>
+      <form
+        onSubmit={handleSubmit}
+        className="card mt-md"
+        style={{ maxWidth: "400px" }}
+      >
         {error && <p style={{ color: "red" }}>{error}</p>}
         <div>
           <label htmlFor="username">Username</label>

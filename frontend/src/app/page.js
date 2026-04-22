@@ -176,7 +176,14 @@ export default async function HomePage() {
             flexWrap: "wrap",
           }}
         >
-          <div style={{ flex: "1", minWidth: "300px", maxWidth: "600px" }}>
+          <div
+            style={{
+              flex: "1",
+              minWidth: "300px",
+              maxWidth: "600px",
+              marginTop: "-43px",
+            }}
+          >
             <AppointmentSection />
           </div>
 
@@ -185,11 +192,14 @@ export default async function HomePage() {
               flex: "1",
               minWidth: "300px",
               maxWidth: "600px",
-              height: "500px",
+              height: "470px",
+
+              marginLeft: "30px",
+              marginRight: "30px",
               borderRadius: "12px",
               overflow: "hidden",
               boxShadow: "0 8px 16px rgba(0, 0, 0, 0.15)",
-              border: "1px solid #e2e8f0",
+              border: "1px solid #04234b",
             }}
           >
             <iframe
