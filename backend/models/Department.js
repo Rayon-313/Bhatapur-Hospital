@@ -12,6 +12,7 @@ const DepartmentSchema = new mongoose.Schema({
   name: { type: String, required: true },
   description: { type: String },
   image: { type: String },
+  imageIcon: {type: String},
   contactNumber: { type: String },
   email: { type: String },
   // Changed from doctor: String to doctors: [DoctorSchema]

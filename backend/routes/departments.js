@@ -34,6 +34,9 @@ const processDepartmentData = (req) => {
   const mainImage = req.files?.find((f) => f.fieldname === "image");
   if (mainImage) updateData.image = `/images/${mainImage.filename}`;
 
+const iconImage = req.files?.find((f) => f.fieldname === "imageIcon");
+  if (iconImage) updateData.imageIcon = `/images/${iconImage.filename}`;
+
   // Doctor Images
   if (Array.isArray(updateData.doctors)) {
     updateData.doctors = updateData.doctors.map((doc, index) => {
