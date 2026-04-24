@@ -106,9 +106,9 @@ const styles = {
     display: 'inline-block',
     marginBottom: '20px'
   },
-  header: { marginBottom: '20px' },
+  header: { marginBottom: '20px',  },
   title: { 
-    fontSize: 'clamp(1.5rem, 5.5vw, 1.75rem)', 
+    fontSize: "clamp(0.5rem, 5vw, 2.5rem)",
     margin: 0, 
     color: '#111827',
     fontWeight: '800'

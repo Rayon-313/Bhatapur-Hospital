@@ -18,6 +18,7 @@ export default function AdminDepartments() {
     name: "",
     description: "",
     image: "",
+    imageIcon: "",
     contactNumber: "",
     email: "",
     doctors: [],
@@ -26,6 +27,7 @@ export default function AdminDepartments() {
     name: "",
     description: "",
     image: "",
+    imageIcon: "",
     contactNumber: "",
     email: "",
     doctors: [],
@@ -69,11 +71,15 @@ export default function AdminDepartments() {
     fd.append("contactNumber", data.contactNumber || "");
     fd.append("email", data.email || "");
     if (data.image instanceof File) fd.append("image", data.image);
+    if (data.imageIcon instanceof File) {
+      fd.append("imageIcon", data.imageIcon); // The key MUST be "imageIcon"
+    }
 
     const docMeta = data.doctors.map((d) => ({
       name: d.name,
       description: d.description,
       image: typeof d.image === "string" ? d.image : "",
+      imageIcon: typeof d.imageIcon === "string" ? d.imageIcon : "",
     }));
     fd.append("doctors", JSON.stringify(docMeta));
 
@@ -101,6 +107,7 @@ export default function AdminDepartments() {
         name: "",
         description: "",
         image: "",
+        imageIcon: "",
         contactNumber: "",
         email: "",
         doctors: [],
@@ -126,12 +133,19 @@ export default function AdminDepartments() {
       ) : (
         <div style={styles.formCard}>
           <h3>Add New</h3>
-          <label>Department Name</label>
+          <label>Department Nam</label>
           <input
             style={styles.input}
             placeholder="Name"
             value={newDept.name}
             onChange={(e) => setNewDept({ ...newDept, name: e.target.value })}
+          />
+          <label>Department Image Icon</label>
+          <input
+            type="file"
+            onChange={(e) =>
+              setNewDept({ ...newDept, imageIcon: e.target.files[0] })
+            }
           />
 
           {/* <label>Phone</label>
@@ -205,6 +219,13 @@ export default function AdminDepartments() {
                   value={editForm.name}
                   onChange={(e) =>
                     setEditForm({ ...editForm, name: e.target.value })
+                  }
+                />
+                <label>Department Image Icon</label>
+                <input
+                  type="file"
+                  onChange={(e) =>
+                    setNewDept({ ...editForm, imageIcon: e.target.files[0] })
                   }
                 />
 

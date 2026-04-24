@@ -57,7 +57,45 @@ export default function DepartmentSection({ departments = [] }) {
                   }}
                 />
 
-                <h3 style={{ margin: "0 0 10px 0" }}>{dept.name}</h3>
+                <div
+                    style={{
+                      marginLeft: "3px",
+                      display: "flex",
+                      flexDirection: "row", // Keeps items side-by-side initially
+                      flexWrap: "wrap", // CRITICAL: Allows text to move downward if long
+                      alignItems: "flex-start", // Sticks the icon to the TOP left
+                      gap: "12px", // Spacing between icon and text
+                      overflowWrap: "anywhere", // Prevents very long words from breaking layout
+                    }}
+                  >
+                    {dept.imageIcon && (
+                      <img
+                        src={dept.imageIcon}
+                        alt={dept.name}
+                        style={{
+                          width: "40px",
+                          height: "40px",
+                          objectFit:
+                            "contain" /* Use contain for icons so they don't crop */,
+                          borderRadius: "9px",
+                          flexShrink: 0 /* Prevents the image from squishing */,
+                          // marginTop: "4px", // Optional: aligns icon with the first line of text
+                        }}
+                      />
+                    )}
+                    <h3
+                      style={{
+                        margin: 0,
+                        fontSize: "clamp(0.9rem, 1.3vw, 2rem)",
+
+                        color: "var(--primary-color)",
+                        flex: "1",
+                        textAlign: "left",
+                      }}
+                    >
+                      {dept.name}
+                    </h3>
+                  </div>
 
                 <p style={{ fontSize: "0.9rem", color: "#666" }}>
                   {dept.description?.substring(0, 100)}...
