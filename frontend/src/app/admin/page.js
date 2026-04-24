@@ -36,7 +36,7 @@ export default function AdminDashboardPage() {
           <p>Answer common visitor questions.</p>
         </div>
         <div className="card">
-          <h3>Site Settings</h3>
+          <h3>Feed Backs</h3>
           <p>Update contact info, video, and global preferences.</p>
         </div>
       </div>

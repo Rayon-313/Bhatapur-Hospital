@@ -116,7 +116,7 @@ export default function HealthPackagesPage() {
     <>
       <style>{`
         .hp-outer { min-height: 100vh; background: linear-gradient(135deg, #f0f9ff 0%, #e6f7ff 100%); padding: 2rem 1rem; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; box-sizing: border-box; }
-        .hp-container { max-width: 1200px; margin: 0 auto; padding: 2rem; background-color: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; box-sizing: border-box; }
+        .hp-container { max-width: 1300px; margin: 0 auto; padding: 2rem; background-color: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; box-sizing: border-box; }
         .hp-header { text-align: center; margin-bottom: 3rem; padding: 2rem; background: linear-gradient(135deg, #0b7ac4 0%, #1e40af 100%); border-radius: 15px; color: white; box-shadow: 0 5px 15px rgba(11,122,196,0.3); }
         .hp-header h1 { font-size: 3rem; font-weight: 700; margin-bottom: 0.5rem; text-shadow: 0 2px 4px rgba(0,0,0,0.3); margin-top: 0; }
         .hp-header p { font-size: 1.3rem; opacity: 0.9; max-width: 600px; margin: 0.5rem auto 0; }

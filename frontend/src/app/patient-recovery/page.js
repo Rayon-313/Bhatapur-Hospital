@@ -9,13 +9,15 @@ const FALLBACK_STORIES = [
     _id: "fb1",
     title: "Back to Normal Life After Cardiac Surgery",
     patient: "Mr. A",
-    summary: "After undergoing successful cardiac surgery at our hospital, Mr. A has returned to his normal daily activities.",
+    summary:
+      "After undergoing successful cardiac surgery at our hospital, Mr. A has returned to his normal daily activities.",
   },
   {
     _id: "fb2",
     title: "Quick Recovery from Orthopedic Injury",
     patient: "Ms. B",
-    summary: "Ms. B made an excellent recovery with the help of our orthopedic and physiotherapy team.",
+    summary:
+      "Ms. B made an excellent recovery with the help of our orthopedic and physiotherapy team.",
   },
 ];
 
@@ -23,9 +25,6 @@ function PageHeader() {
   return (
     <div className={styles.header}>
       <h2 className={styles.title}>Patient Recovery Stories</h2>
-      <p className={styles.subtitle}>
-        Read inspiring recovery stories from our patients.
-      </p>
     </div>
   );
 }
@@ -77,7 +76,7 @@ export default function PatientRecoveryPage() {
     fetchStories();
   }, []);
 
-  // Preventing Hydration Mismatch: 
+  // Preventing Hydration Mismatch:
   // Do not render the dynamic part until the client has mounted.
   if (!mounted) {
     return (
@@ -100,7 +99,7 @@ export default function PatientRecoveryPage() {
               Note: Showing fallback stories due to error: {error}
             </div>
           )}
-          
+
           <div className={styles.storiesGrid}>
             {stories.length > 0 ? (
               stories.map((story) => (

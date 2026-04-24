@@ -3,13 +3,11 @@ import ServicesSection from "@/components/home/ServicesSection";
 import WhyChooseUsSection from "@/components/home/WhyChooseUsSection";
 import AppointmentSection from "@/components/home/AppointmentSection";
 import DepartmentSection from "@/components/home/DepartmentSection";
-
 import { getHomeContent } from "@/lib/api/homeContent";
 import { getDepartments as fetchDepartmentList } from "@/lib/api/departments";
 
 async function loadPageData() {
   try {
-    // Fetch both simultaneously
     const [homeData, deptData] = await Promise.all([
       getHomeContent(),
       fetchDepartmentList(),
@@ -25,8 +23,10 @@ async function loadPageData() {
   }
 }
 
-function HomeVideoSection({ videoPath }) {
+//for video and floating text
+function HomeVideoSection({ videoPath, content }) {
   const validVideoPath = videoPath || "videos/hospital-tour.MOV";
+
   return (
     <section className="section">
       <div style={{ marginTop: "-3.1rem" }}>
@@ -35,7 +35,6 @@ function HomeVideoSection({ videoPath }) {
           style={{ width: "100%", position: "relative" }}
         >
           <video
-            controls
             autoPlay
             muted
             loop
@@ -50,10 +49,10 @@ function HomeVideoSection({ videoPath }) {
           <div
             style={{
               position: "absolute",
-              bottom: "10px", // ✅ FIXED: Lowered the text (was 50px)
+              bottom: "10px",
               left: 0,
               width: "100%",
-              background: "rgba(11, 243, 27, 0.6)",
+              background: "rgba(28, 67, 164, 0.96)",
               color: "#fff",
               padding: "8px 0",
               overflow: "hidden",
@@ -73,8 +72,11 @@ function HomeVideoSection({ videoPath }) {
                 color: "white",
               }}
             >
-              Bhaktapur international hospital, 24/7 free ambulance, radiology,
-              SSF
+              {/* ✅ Simplified logic: If content has a title, use it. Otherwise, use fallback. */}
+              <span>
+                {content?.videoHeroTitle || 
+                 "Bhaktapur International Hospital 24/7 free ambulance, radiology"}
+              </span>
             </div>
           </div>
 
@@ -97,7 +99,6 @@ function HomeVideoSection({ videoPath }) {
 export default async function HomePage() {
   const { content, departments } = await loadPageData();
 
-  // Helper to process services without crashing
   const services = Array.isArray(content?.services)
     ? content.services.map((s) => ({
         title: s.title || s,
@@ -108,25 +109,26 @@ export default async function HomePage() {
 
   return (
     <>
+      {/* ✅ Pass BOTH videoPath AND content to the component */}
+      <HomeVideoSection 
+        videoPath={content?.videoPath || "/videos/hospital-tour.mp4"} 
+        content={content} 
+      />
+
       {content ? (
         <>
-          <HomeVideoSection videoPath={content.videoPath} />
-
           <section className="section" style={{ textAlign: "center" }}>
             <h2 className="hero-section-title">
-              {content.heroTitle ||
-                "Welcome to Bhaktapur International Hospital"}
+              {content.heroTitle || "Welcome to Bhaktapur International Hospital"}
             </h2>
             <p className="hero-section-subtitle">{content.heroSubtitle}</p>
           </section>
 
           <ServicesSection services={services} />
-
-          {/* Corrected: Use the departments fetched from the department API */}
           <DepartmentSection departments={departments} />
 
           <section className="section">
-            <h2 className="section-title">Why Choose Us</h2>
+            <h2 className="section-title">Why Choose Us ?</h2>
             <ul className="bullet-list">
               {Array.isArray(content.whyChooseUs) ? (
                 content.whyChooseUs.map((reason, i) => (
@@ -140,7 +142,6 @@ export default async function HomePage() {
         </>
       ) : (
         <>
-          <HomeVideoSection videoPath="/videos/hospital-tour.mp4" />
           <HeroSection />
           <ServicesSection />
           <DepartmentSection departments={departments} />
@@ -193,9 +194,7 @@ export default async function HomePage() {
               minWidth: "300px",
               maxWidth: "600px",
               height: "470px",
-
-              marginLeft: "30px",
-              marginRight: "30px",
+              margin: "0 30px",
               borderRadius: "12px",
               overflow: "hidden",
               boxShadow: "0 8px 16px rgba(0, 0, 0, 0.15)",
@@ -203,7 +202,7 @@ export default async function HomePage() {
             }}
           >
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3533.5123456789!2d85.4297!3d27.6710!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjfCsDQwJzE1LjYiTiA4NcKwMjUnNDYuOSJF!5e0!3m2!1sen!2snp!4v1234567890"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3533.344445672234!2d85.3725!3d27.675!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjfCsDQwJzMwLjAiTiA4NcKwMjInMjEuMCJF!5e0!3m2!1sen!2snp!4v1610000000000!5m2!1sen!2snp"
               width="100%"
               height="100%"
               style={{ border: 0 }}

@@ -599,3 +599,72 @@ export const deleteStory = async (id) => {
 //     throw error;
 //   }
 // };
+
+// Get all questions
+export const getFeedBacks = async () => {
+  try {
+    // Check if your backend endpoint is actually '/feedbacks' 
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api'}/feedbacks`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching feedbacks:', error);
+    throw error;
+  }};
+
+
+
+// Update a question (for adding answers)
+export const updateFeedBack = async (id, updateData) => {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api'}/feedbacks/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updateData),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error updating question:', error);
+    throw error;
+  }
+};
+
+// Delete a question
+export const deleteFeedBack = async (id) => {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api'}/feedbacks/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error deleting question:', error);
+    throw error;
+  }
+};

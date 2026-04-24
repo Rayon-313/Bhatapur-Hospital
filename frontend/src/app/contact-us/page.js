@@ -14,7 +14,19 @@ export default function ContactUsPage() {
 
         {/* CONTACT INFO */}
         <section className="section infoSection">
-          <h2>Get In Touch</h2>
+          <h2 style={{ 
+    textAlign: "center", 
+    width: "100%",
+    maxWidth: "800px",       /* Prevents lines from being too long */
+    margin: "0 auto 2.5rem", /* Centers the block and adds bottom spacing */
+    fontSize: "clamp(0.7rem, 2.5vw, 1.5rem)", /* Min, Preferred, Max */
+    lineHeight: "1.5",       /* Adds breathing room between lines */
+    color: "#1e40af" 
+  }}>
+            
+            We would love to hear from you! Please fill in the required details
+            and our team will get in touch with you
+          </h2>
 
           <div className="grid">
             <div className="card">
@@ -48,16 +60,38 @@ export default function ContactUsPage() {
                 <div className="value">info@bihospital.com.np</div>
               </div>
             </div>
+
+            {/* <div className="card">
+              <div className="icon">
+                <img className="phone" src="/images/phone.png" />
+              </div>
+              <div>
+                <div className="label">Working Days/hOURS</div>
+                <div className="value">24 hours/ 7 days a week</div>
+              </div>
+            </div> */}
           </div>
         </section>
 
         {/* APPOINTMENT */}
-        <section className="section appointment">
-          <h2>Book an Appointment</h2>
-          <div className="appointmentBox">
-            <AppointmentSection />
-          </div>
-        </section>
+        <section className="section-appointment">
+  <h2
+    style={{
+      textAlign: "center",
+      fontSize: "clamp(1.3rem, 2.2vw, 2.5rem)",
+      marginBottom: "2rem",
+      color: "#1e40af", /* Kept consistent with your other headings */
+    }}
+  >
+    Book an Appointment
+  </h2>
+  <div className="appointmentBox">
+    {/* This wrapper div ensures the inner component centers itself */}
+    <div style={{ width: "100%", maxWidth: "800px" }}>
+       <AppointmentSection />
+    </div>
+  </div>
+</section>
 
         {/* MAP */}
         <section className="section map">
@@ -73,21 +107,7 @@ export default function ContactUsPage() {
           </div>
         </section>
 
-        {/* FEEDBACK
-        <section className="section feedback">
-          <h2>Feedback Form</h2>
-
-          <div className="feedbackBox">
-            <form className="form">
-              <input type="text" placeholder="Enter your name" />
-              <input type="email" placeholder="Enter your email" />
-              <input type="text" placeholder="Enter subject" />
-              <textarea rows={5} placeholder="Share your feedback" />
-
-              <button type="submit">Send Message</button>
-            </form>
-          </div>
-        </section> */}
+        
       </div>
     </div>
   );

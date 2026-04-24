@@ -49,10 +49,10 @@ export default function DepartmentSection({ departments = [] }) {
                   src={dept.image || "/placeholder-dept.jpg"}
                   alt={dept.name}
                   style={{
-                    width: "80px",
-                    height: "80px",
+                    width: "90%",
+                    height: "150px",
                     objectFit: "cover",
-                    borderRadius: "50%",
+                    borderRadius: "12px",
                     marginBottom: "1rem",
                   }}
                 />
