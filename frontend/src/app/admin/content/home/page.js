@@ -7,6 +7,7 @@ import { uploadHomeImage } from "@/lib/api/imageUpload";
 
 // Default content (fallback if none in DB)
 const DEFAULT_HOME_CONTENT = {
+  videoHeroTitle: " Bhaktapur International hospital 24/7 emergency and free ambulance ",
   heroTitle: "Welcome to Bhaktapur International Hospital",
   heroSubtitle:
     "We provide comprehensive medical care with state-of-the-art facilities and a team of experienced specialists dedicated to your well-being.",
@@ -314,6 +315,19 @@ export default function EditHomePage() {
   return (
     <section className="admin-container">
       <h2>Edit Home Page</h2>
+
+      {/* video hero section*/}
+      <div className="card">
+        <h3> Video Hero Section</h3>
+        <div className="mt-sm">
+          <label>Title</label>
+          <input
+            type="text"
+            value={content.videoHeroTitle}
+            onChange={(e) => handleChange("videoHeroTitle", e.target.value)}
+          />
+        </div>
+      </div>
 
       {/* Hero Section */}
       <div className="card">

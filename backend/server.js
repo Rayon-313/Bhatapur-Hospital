@@ -14,6 +14,7 @@ const questionsRoutes = require("./routes/questions");
 const faqsRoutes = require("./routes/faqs");
 const storiesRoutes = require("./routes/stories");
 const departmentsRoutes = require("./routes/departments");
+const feedbacksRotes = require("./routes/feedbacks");
 
 dotenv.config();
 
@@ -49,6 +50,7 @@ app.use("/api/questions", questionsRoutes);
 app.use("/api/faqs", faqsRoutes);
 app.use("/api/stories", storiesRoutes);
 app.use("/api/departments", departmentsRoutes);
+app.use("/api/feedbacks", feedbacksRotes);
 
 // test route
 app.get("/", (req, res) => {

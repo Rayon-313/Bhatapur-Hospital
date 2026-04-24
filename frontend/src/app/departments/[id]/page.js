@@ -2,8 +2,8 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { getDepartmentById } from '@/lib/api/departments';
-// FIXED: Corrected import to match our new specialized form
-import DeptSpecificAppointment from "./DeptSpecificAppointment";import Link from 'next/link';
+import DeptSpecificAppointment from "./DeptSpecificAppointment";
+import Link from 'next/link';
 
 export default function DepartmentDetailPage() {
   const params = useParams();
@@ -15,7 +15,6 @@ export default function DepartmentDetailPage() {
 
   useEffect(() => {
     if (!id) return;
-
     const fetchDetails = async () => {
       try {
         setLoading(true);
@@ -33,7 +32,6 @@ export default function DepartmentDetailPage() {
         setLoading(false);
       }
     };
-
     fetchDetails();
   }, [id]);
 
@@ -42,46 +40,47 @@ export default function DepartmentDetailPage() {
   if (error || !dept) return (
     <div style={styles.errorContainer}>
       <h1>Department Not Found</h1>
-      <p>We couldn't retrieve the details for this department ID: <strong>{id}</strong></p>
       <Link href="/departments" style={styles.backLink}>← Return to All Departments</Link>
     </div>
   );
 
   return (
     <div style={styles.wrapper}>
-      <Link href="/departments" style={styles.backLink}>← Back to List</Link>
+      <Link href="/departments" style={styles.backLink}>← Back </Link>
       
+      {/* 1. Department Name at the top */}
       <header style={styles.header}>
-                <div style={styles.headerText}>
-          <h1 style={styles.title}>{dept.name}</h1>
-          {/* <p style={styles.contact}><strong>Contact:</strong> {dept.contactNumber}</p>
-          <p style={styles.contact}><strong>Email:</strong> {dept.email}</p> */}
-        </div>
+        <h1 style={styles.title}>{dept.name}</h1>
       </header>
-      <img src={dept.image} alt={dept.name} style={styles.mainImg} />
 
+      {/* 2. Department Photo */}
+      <div style={styles.imageContainer}>
+        <img src={dept.image} alt={dept.name} style={styles.mainImg} />
+      </div>
+
+      {/* 3. About Department */}
       <section style={styles.section}>
-        <h2>About Department</h2>
+        <h2 style={styles.subHeading}>About Department</h2>
         <p style={styles.desc}>{dept.description}</p>
       </section>
 
       {/* Specialist Doctors Grid */}
       {dept.doctors && dept.doctors.length > 0 && (
         <section style={styles.section}>
-          <h2>Specialists</h2>
+          <h2 style={styles.subHeading}>Our Specialists</h2>
           <div style={styles.docGrid}>
             {dept.doctors.map((doc, i) => (
               <div key={i} style={styles.docCard}>
                 <img src={doc.image} alt={doc.name} style={styles.docImg} />
-                <h4>{doc.name}</h4>
-                <p>{doc.description}</p>
+                <h4 style={styles.docName}>{doc.name}</h4>
+                <p style={styles.docDesc}>{doc.description}</p>
               </div>
             ))}
           </div>
         </section>
       )}
 
-      {/* FIXED: Moved Appointment Form out of the Doctors Grid so it looks better and functions correctly */}
+      {/* Appointment Section */}
       <section style={styles.appointmentSection}>
         <DeptSpecificAppointment departmentName={dept.name} />
       </section>
@@ -90,20 +89,91 @@ export default function DepartmentDetailPage() {
 }
 
 const styles = {
-  loader: { padding: '100px', textAlign: 'center', fontSize: '1.5rem' },
-  errorContainer: { padding: '100px', textAlign: 'center' },
-  wrapper: { maxWidth: '1000px', margin: '0 auto', padding: '40px 20px', fontFamily: 'Inter, sans-serif' },
-  backLink: { color: '#0b7ac4', textDecoration: 'none', fontWeight: '600' },
-  header: { display: 'flex', gap: '30px', marginTop: '20px', flexWrap: 'wrap' },
-  mainImg: { width: '100%', maxWidth: '400px', borderRadius: '12px', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' },
-  headerText: { flex: 1, minWidth: '300px' },
-  title: { fontSize: '2.5rem', margin: '0 0 15px 0', color: '#111827' },
-  contact: { margin: '5px 0', color: '#4b5563' },
-  section: { marginTop: '40px', borderTop: '1px solid #e5e7eb', paddingTop: '30px' },
-  desc: { lineHeight: '1.8', color: '#374151', fontSize: '1.1rem' },
-  docGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '20px', marginTop: '20px' },
-  docCard: { textAlign: 'center', padding: '15px', border: '1px solid #f3f4f6', borderRadius: '12px' },
-  docImg: { width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover', marginBottom: '10px' },
-  // ADDED STYLE:
-  appointmentSection: { marginTop: '50px', borderTop: '2px solid #0b7ac4', paddingTop: '40px' }
+  loader: { padding: '80px 20px', textAlign: 'center', fontSize: '1.2rem', color: '#666' },
+  errorContainer: { padding: '80px 20px', textAlign: 'center' },
+  wrapper: { 
+    width:'70%',
+    margin: '0 auto', 
+    padding: '20px', 
+    fontFamily: '"Inter", sans-serif', 
+    backgroundColor: '#e4ecc416',
+  },
+  backLink: { 
+    color: '#0b7ac4', 
+    textDecoration: 'none', 
+    fontWeight: '600',
+    fontSize: '0.9rem',
+    display: 'inline-block',
+    marginBottom: '20px'
+  },
+  header: { marginBottom: '20px' },
+  title: { 
+    fontSize: 'clamp(1.5rem, 5.5vw, 1.75rem)', 
+    margin: 0, 
+    color: '#111827',
+    fontWeight: '800'
+  },
+  imageContainer: {
+    width: '85%',
+    borderRadius: '16px',
+    display:'flex',
+    // justifyContent: 'center',
+    // alignItems: 'center',    
+    overflow: 'hidden',
+    marginBottom: '30px',
+    // boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)'
+  },
+  mainImg: { 
+    width: '40%', 
+    height: 'auto', 
+    maxHeight: '400px',
+    objectFit: 'cover',
+    display: 'block'
+  },
+  subHeading: {
+    fontSize: '1.30rem',
+    color: '#1f2937',
+    marginBottom: '15px'
+  },
+  section: { 
+    marginBottom: '40px' 
+  },
+  desc: { 
+    lineHeight: '1.8', 
+    color: '#4b5563', 
+    fontSize: '1rem',
+    whiteSpace: 'pre-line' // Respects line breaks in description
+  },
+  docGrid: { 
+    display: 'grid', 
+    gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', 
+    gap: '20px', 
+    marginTop: '20px' 
+  },
+  docCard: { 
+    textAlign: 'center', 
+    padding: '20px', 
+    border: '1px solid #f3f4f6', 
+    borderRadius: '16px',
+    backgroundColor: '#fff',
+    transition: 'transform 0.2s ease',
+    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)'
+  },
+  docImg: { 
+    width: '120px', 
+    height: '120px', 
+    // borderRadius: '50%', // Circular portraits look great for specialists
+    objectFit: 'cover',
+    marginBottom: '15px',
+   
+  },
+  docName: { margin: '10px 0 5px', color: '#111827' },
+  docDesc: { fontSize: '0.9rem', color: '#6b7280', margin: 0 },
+  appointmentSection: { 
+    marginTop: '60px', 
+    padding: '40px 20px',
+    backgroundColor: '#f9fafb',
+
+    border: '1px solid #e5e7eb'
+  }
 };

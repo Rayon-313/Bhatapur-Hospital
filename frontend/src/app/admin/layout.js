@@ -99,9 +99,9 @@ export default function AdminLayout({ children }) {
               </Link>
             </li>
             <li style={{ marginBottom: "0.5rem", borderRadius: "6px", overflow: "hidden" }}>
-              <Link href="/admin/settings" style={{ display: "block", padding: "0.75rem 1rem", textDecoration: "none", color: "#e0f2fe", borderRadius: "6px", transition: "all 0.2s ease", display: "flex", alignItems: "center" }} onMouseEnter={(e) => e.target.style.backgroundColor = "#3b82f6"} onMouseLeave={(e) => e.target.style.backgroundColor = "transparent"}>
+              <Link href="/admin/content/feed-backs" style={{ display: "block", padding: "0.75rem 1rem", textDecoration: "none", color: "#e0f2fe", borderRadius: "6px", transition: "all 0.2s ease", display: "flex", alignItems: "center" }} onMouseEnter={(e) => e.target.style.backgroundColor = "#3b82f6"} onMouseLeave={(e) => e.target.style.backgroundColor = "transparent"}>
                 <span style={{ marginRight: "0.75rem", fontSize: "1.1rem" }}>⚙️</span>
-                Site Settings
+                Feed Backs
               </Link>
             </li>
           <li style={{ marginBottom: "0.5rem", borderRadius: "6px", overflow: "hidden" }}>

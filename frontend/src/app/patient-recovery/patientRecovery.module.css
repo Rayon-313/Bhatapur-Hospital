@@ -25,7 +25,7 @@
 .header::after {
   content: "";
   display: block;
-  width: 60px;
+  width: 100%;
   height: 3px;
   background: linear-gradient(90deg, #2e7d6b, #4caf93);
   margin: 1rem auto 0;
@@ -82,7 +82,9 @@
   border: 1px solid rgba(46, 125, 107, 0.1);
   display: flex;
   flex-direction: column;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .storyCard:hover {
@@ -154,7 +156,10 @@
 
 /* Desktop spacing adjustment */
 @media (min-width: 768px) {
-  .storyTitle, .storyPatient, .storySummary, .storyContent {
+  .storyTitle,
+  .storyPatient,
+  .storySummary,
+  .storyContent {
     margin-left: 1.25rem;
     margin-right: 1.25rem;
   }
@@ -184,7 +189,9 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .error {
@@ -200,6 +207,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .storyCard { transition: none; }
-  .loading::before { animation: none; }
+  .storyCard {
+    transition: none;
+  }
+  .loading::before {
+    animation: none;
+  }
 }

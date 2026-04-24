@@ -96,7 +96,7 @@ export default function ServicesPage() {
                 />
               )}
               <h3 style={{ margin: '0.5rem 0' }}>{service.title}</h3>
-              <p style={{ margin: '0.5rem 0' }}>{service.description}</p>
+              <p style={{ margin: '0.5rem 0', }}>{service.description}</p>
               <div style={{ fontSize: '0.8rem', color: '#999', marginTop: '0.5rem' }}>Index: {index}</div>
             </div>
           ))}

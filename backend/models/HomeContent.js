@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const homeContentSchema = new mongoose.Schema({
+  videoHeroTitle: { type: String },
   heroTitle: String,
   heroSubtitle: String,
   services: [mongoose.Schema.Types.Mixed],  // Array of service objects with title, description, imageUrl, and detailedContent

@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { getHomeContent } from "@/lib/api/homeContent";
 import { usePathname } from "next/navigation";
 
@@ -15,6 +15,15 @@ export default function MainLayout({ children }) {
 
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // --- NEW FEEDBACK STATE ---
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+  const [status, setStatus] = useState("");
 
   useEffect(() => {
     const fetchPhrases = async () => {
@@ -41,6 +50,34 @@ export default function MainLayout({ children }) {
     return () => clearInterval(interval);
   }, [phrases]);
 
+  // --- NEW HANDLESUBMIT FUNCTION ---
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus("Sending...");
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api"}/feedbacks`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        },
+      );
+
+      // Check if status is 200 or 201
+      if (response.status === 200 || response.status === 201) {
+        setStatus("Success! Feedback sent.");
+        setFormData({ name: "", email: "", subject: "", message: "" });
+      } else {
+        // If it got to the database but returned something else
+        setStatus("Sent (Check Admin)");
+        console.log("Response Status:", response.status);
+      }
+    } catch (error) {
+      setStatus("Server error.");
+    }
+  };
+
   const handleLogoError = () => console.log("Logo failed to load");
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
@@ -64,7 +101,9 @@ export default function MainLayout({ children }) {
                 onError={handleLogoError}
               />
               <div className="logo-text">
-                <h1>Bhaktapur International Hospital</h1>
+                  <Link href="/" onClick={closeMobileMenu}>
+                    <h1>Bhaktapur International Hospital</h1>
+                  </Link>
 
                 <p className="rotating-text">{currentPhrase}</p>
               </div>
@@ -85,7 +124,6 @@ export default function MainLayout({ children }) {
                     Home
                   </Link>
                 </b>
-
                 <b>
                   <Link href="/departments" onClick={closeMobileMenu}>
                     Departments
@@ -96,7 +134,6 @@ export default function MainLayout({ children }) {
                     Health Packages
                   </Link>
                 </b>
-
                 <b>
                   <Link href="/contact-us" onClick={closeMobileMenu}>
                     Contact Us
@@ -112,7 +149,6 @@ export default function MainLayout({ children }) {
                     About Us
                   </Link>
                 </b>
-
                 <b>
                   <Link href="/patient-recovery" onClick={closeMobileMenu}>
                     Patient Recovery
@@ -124,7 +160,6 @@ export default function MainLayout({ children }) {
         </header>
       )}
 
-      {/* Main content now stretches to 100% of the screen edge */}
       <main className="site-main" style={{ width: "100%", minHeight: "80vh" }}>
         {children}
       </main>
@@ -193,7 +228,7 @@ export default function MainLayout({ children }) {
                       width: "25px",
                       height: "25px",
                       position: "relative",
-                      top: "2px", // 👈 pushes image downward
+                      top: "2px", //  pushes image downward
                     }}
                   />
                   9801202550
@@ -211,7 +246,7 @@ export default function MainLayout({ children }) {
                       width: "25px",
                       height: "25px",
                       position: "relative",
-                      top: "2px", // 👈 pushes image downward
+                      top: "2px", //  pushes image downward
                     }}
                   />
                   015178645
@@ -224,15 +259,15 @@ export default function MainLayout({ children }) {
                   }}
                 >
                   <img
-                    src="/images/footerpostbox.png"
+                    src="/images/ambulance.png"
                     style={{
                       width: "25px",
                       height: "25px",
                       position: "relative",
-                      top: "2px", // 👈 pushes image downward
+                      top: "2px", //  pushes image downward
                     }}
                   />
-                  P.O.Box 11796
+                  02349234
                 </p>
                 <p
                   style={{
@@ -272,16 +307,71 @@ export default function MainLayout({ children }) {
                 </p>
               </div>
 
-              <div style={{ display: "flex", gap: "10px" }}>
-                {["f", "ig", "in", "x"].map((icon) => (
-                  <div key={icon} style={socialIconStyle}>
-                    {icon}
-                  </div>
-                ))}
+              {/*  SOCIAL ICONS WITH WHITE CIRCULAR BACKGROUNDS */}
+              <div style={{ display: "flex", gap: "15px", marginTop: "0.1rem" }}>
+                <a href="#" target="_blank" rel="noopener noreferrer">
+                  <img
+                    src="/images/linkedin.png"
+                    alt="LinkedIn"
+                    style={{
+                      width: "35px", // Adjusted size slightly larger to account for padding
+                      height: "35px",
+                      backgroundColor: "white", //  White background
+                      borderRadius: "50%", // Circular shape
+                      padding: "6px", //  Spacing around the logo
+                      display: "block", //  Ensures correct alignment within <a> tag
+                    }}
+                  />
+                </a>
+
+                <a href="#" target="_blank" rel="noopener noreferrer">
+                  <img
+                    src="/images/ig.png"
+                    alt="Instagram"
+                    style={{
+                      width: "35px",
+                      height: "35px",
+                      backgroundColor: "white",
+                      borderRadius: "50%",
+                      padding: "6px",
+                      display: "block",
+                    }}
+                  />
+                </a>
+
+                <a href="#" target="_blank" rel="noopener noreferrer">
+                  <img
+                    src="/images/twitter.png"
+                    alt="Twitter"
+                    style={{
+                      width: "35px",
+                      height: "35px",
+                      backgroundColor: "white",
+                      borderRadius: "50%",
+                      padding: "6px",
+                      display: "block",
+                    }}
+                  />
+                </a>
+
+                <a href="#" target="_blank" rel="noopener noreferrer">
+                  <img
+                    src="/images/fb.png"
+                    alt="Facebook"
+                    style={{
+                      width: "35px",
+                      height: "35px",
+                      backgroundColor: "white",
+                      borderRadius: "50%",
+                      padding: "6px",
+                      display: "block",
+                    }}
+                  />
+                </a>
               </div>
             </div>
 
-            {/* 2. FEEDBACK FORM: Now on the RIGHT side of the container */}
+            {/* FEEDBACK FORM */}
             <div style={{ flex: "0 1 550px", minWidth: "300px" }}>
               <h2
                 style={{
@@ -300,7 +390,10 @@ export default function MainLayout({ children }) {
                   border: "1px solid rgba(255, 255, 255, 0.1)",
                 }}
               >
-                <form style={{ display: "grid", gap: "1rem" }}>
+                <form
+                  onSubmit={handleSubmit}
+                  style={{ display: "grid", gap: "1rem" }}
+                >
                   <label
                     htmlFor="name"
                     style={{ color: "var(--hftext-color)", fontSize: "0.9rem" }}
@@ -310,9 +403,14 @@ export default function MainLayout({ children }) {
                   <input
                     type="text"
                     placeholder="Name"
+                    value={formData.name}
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
                     style={footerInputStyle}
                     required
                   />
+
                   <label
                     htmlFor="email"
                     style={{ color: "var(--hftext-color)", fontSize: "0.9rem" }}
@@ -322,9 +420,14 @@ export default function MainLayout({ children }) {
                   <input
                     type="email"
                     placeholder="Email"
+                    value={formData.email}
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
                     style={footerInputStyle}
                     required
                   />
+
                   <label
                     htmlFor="subject"
                     style={{ color: "var(--hftext-color)", fontSize: "0.9rem" }}
@@ -334,9 +437,14 @@ export default function MainLayout({ children }) {
                   <input
                     type="text"
                     placeholder="Subject"
+                    value={formData.subject}
+                    onChange={(e) =>
+                      setFormData({ ...formData, subject: e.target.value })
+                    }
                     style={footerInputStyle}
                     required
                   />
+
                   <label
                     htmlFor="message"
                     style={{ color: "var(--hftext-color)", fontSize: "0.9rem" }}
@@ -346,30 +454,44 @@ export default function MainLayout({ children }) {
                   <textarea
                     placeholder="Message"
                     rows={3}
+                    value={formData.message}
+                    onChange={(e) =>
+                      setFormData({ ...formData, message: e.target.value })
+                    }
                     style={footerInputStyle}
                     required
                   ></textarea>
+
                   <button type="submit" style={footerButtonStyle}>
                     Send Message
                   </button>
+                  {status && (
+                    <p
+                      style={{
+                        color: "white",
+                        marginTop: "10px",
+                        fontSize: "0.9rem",
+                      }}
+                    >
+                      {status}
+                    </p>
+                  )}
                 </form>
               </div>
             </div>
           </div>
 
-          {/* BOTTOM BAR */}
           <div
             style={{
               width: "100%",
               marginTop: "4rem",
               borderTop: "1px solid rgba(255,255,255,0.1)",
-              padding: "1.5rem 2rem 1.5rem 2rem",
+              padding: "1.5rem 2rem",
               textAlign: "center",
               fontSize: "0.9rem",
               backgroundColor: "rgba(0,0,0,0.1)",
             }}
           >
-            <p>Privacy Policy | Terms and Conditions</p>
             <p>
               © {new Date().getFullYear()} Bhaktapur International Hospital Pvt.
               Ltd. | All rights reserved.
@@ -381,7 +503,6 @@ export default function MainLayout({ children }) {
   );
 }
 
-// HELPER STYLES
 const footerInputStyle = {
   width: "100%",
   padding: "0.7rem",
@@ -401,7 +522,6 @@ const footerButtonStyle = {
   border: "none",
   fontWeight: "bold",
   cursor: "pointer",
-  transition: "transform 0.2s ease, opacity 0.2s ease",
 };
 
 const socialIconStyle = {
