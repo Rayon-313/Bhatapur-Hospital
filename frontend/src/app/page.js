@@ -5,7 +5,7 @@ import AppointmentSection from "@/components/home/AppointmentSection";
 import DepartmentSection from "@/components/home/DepartmentSection";
 import { getHomeContent } from "@/lib/api/homeContent";
 import { getDepartments as fetchDepartmentList } from "@/lib/api/departments";
-
+import "./page.css";
 async function loadPageData() {
   try {
     const [homeData, deptData] = await Promise.all([
@@ -45,7 +45,6 @@ function HomeVideoSection({ videoPath, content }) {
             Your browser does not support the video tag.
           </video>
 
-          {/* --- MOVING TEXT OVERLAY --- */}
           <div
             style={{
               position: "absolute",
@@ -72,10 +71,9 @@ function HomeVideoSection({ videoPath, content }) {
                 color: "white",
               }}
             >
-              {/* ✅ Simplified logic: If content has a title, use it. Otherwise, use fallback. */}
               <span>
-                {content?.videoHeroTitle || 
-                 "Bhaktapur International Hospital 24/7 free ambulance, radiology"}
+                {content?.videoHeroTitle ||
+                  "Bhaktapur International Hospital 24/7 free ambulance, radiology"}
               </span>
             </div>
           </div>
@@ -109,17 +107,17 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* ✅ Pass BOTH videoPath AND content to the component */}
-      <HomeVideoSection 
-        videoPath={content?.videoPath || "/videos/hospital-tour.mp4"} 
-        content={content} 
+      <HomeVideoSection
+        videoPath={content?.videoPath || "/videos/hospital-tour.mp4"}
+        content={content}
       />
 
       {content ? (
         <>
           <section className="section" style={{ textAlign: "center" }}>
             <h2 className="hero-section-title">
-              {content.heroTitle || "Welcome to Bhaktapur International Hospital"}
+              {content.heroTitle ||
+                "Welcome to Bhaktapur International Hospital"}
             </h2>
             <p className="hero-section-subtitle">{content.heroSubtitle}</p>
           </section>
@@ -169,6 +167,7 @@ export default async function HomePage() {
         >
           Book an Appointment
         </h2>
+
         <div
           style={{
             display: "flex",
@@ -180,9 +179,10 @@ export default async function HomePage() {
           <div
             style={{
               flex: "1",
-              minWidth: "300px",
+              minWidth: "500px",
               maxWidth: "600px",
               marginTop: "-43px",
+              marginLeft: "80px",
             }}
           >
             <AppointmentSection />
@@ -211,6 +211,27 @@ export default async function HomePage() {
               title="Map"
             />
           </div>
+        </div>
+
+        {/* ✅ IMAGE ADDED BELOW MAP (ONLY ADDITION) */}
+        <div className="contact-row">
+          {/* Phone */}
+          <a href="tel:987654" className="contact-item">
+            <img src="/images/phone.png" alt="Phone" />
+            <span>987654</span>
+          </a>
+
+          {/* Telephone */}
+          <a href="tel:012345678" className="contact-item">
+            <img src="/images/telephone.png" alt="Telephone" />
+            <span>012345678</span>
+          </a>
+
+          {/* Ambulance */}
+          <a href="tel:102" className="contact-item">
+            <img src="/images/ambulance.png" alt="Ambulance" />
+            <span>Ambulance</span>
+          </a>
         </div>
       </section>
     </>

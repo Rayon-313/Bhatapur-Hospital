@@ -101,9 +101,9 @@ export default function MainLayout({ children }) {
                 onError={handleLogoError}
               />
               <div className="logo-text">
-                  <Link href="/" onClick={closeMobileMenu}>
-                    <h1>Bhaktapur International Hospital</h1>
-                  </Link>
+                <Link href="/" onClick={closeMobileMenu}>
+                  <h1>Bhaktapur International Hospital</h1>
+                </Link>
 
                 <p className="rotating-text">{currentPhrase}</p>
               </div>
@@ -308,7 +308,9 @@ export default function MainLayout({ children }) {
               </div>
 
               {/*  SOCIAL ICONS WITH WHITE CIRCULAR BACKGROUNDS */}
-              <div style={{ display: "flex", gap: "15px", marginTop: "0.1rem" }}>
+              <div
+                style={{ display: "flex", gap: "15px", marginTop: "0.1rem" }}
+              >
                 <a href="#" target="_blank" rel="noopener noreferrer">
                   <img
                     src="/images/linkedin.png"
@@ -388,6 +390,7 @@ export default function MainLayout({ children }) {
                   backgroundColor: "rgba(255, 255, 255, 0.05)",
                   borderRadius: "var(--radius-md)",
                   border: "1px solid rgba(255, 255, 255, 0.1)",
+                  marginRight: "40px",
                 }}
               >
                 <form

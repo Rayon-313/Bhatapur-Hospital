@@ -44,6 +44,7 @@ export default function AppointmentSection() {
           display: "grid",
           gap: "0.75rem",
           maxWidth: "480px",
+          padding: "0rem 3rem 0rem 0rem ",
         }}
         onSubmit={handleSubmit}
       >
