@@ -92,15 +92,15 @@ export default function AdminLayout({ children }) {
                 Manage Questions
               </Link>
             </li>
-            <li style={{ marginBottom: "0.5rem", borderRadius: "6px", overflow: "hidden" }}>
+            {/* <li style={{ marginBottom: "0.5rem", borderRadius: "6px", overflow: "hidden" }}>
               <Link href="/admin/content/contact" style={{ display: "block", padding: "0.75rem 1rem", textDecoration: "none", color: "#e0f2fe", borderRadius: "6px", transition: "all 0.2s ease", display: "flex", alignItems: "center" }} onMouseEnter={(e) => e.target.style.backgroundColor = "#3b82f6"} onMouseLeave={(e) => e.target.style.backgroundColor = "transparent"}>
                 <span style={{ marginRight: "0.75rem", fontSize: "1.1rem" }}>📞</span>
                 Edit Contact Page
               </Link>
-            </li>
+            </li> */}
             <li style={{ marginBottom: "0.5rem", borderRadius: "6px", overflow: "hidden" }}>
               <Link href="/admin/content/feed-backs" style={{ display: "block", padding: "0.75rem 1rem", textDecoration: "none", color: "#e0f2fe", borderRadius: "6px", transition: "all 0.2s ease", display: "flex", alignItems: "center" }} onMouseEnter={(e) => e.target.style.backgroundColor = "#3b82f6"} onMouseLeave={(e) => e.target.style.backgroundColor = "transparent"}>
-                <span style={{ marginRight: "0.75rem", fontSize: "1.1rem" }}>⚙️</span>
+                <span style={{ marginRight: "0.75rem", fontSize: "1.1rem" }}>🤩</span>
                 Feed Backs
               </Link>
             </li>

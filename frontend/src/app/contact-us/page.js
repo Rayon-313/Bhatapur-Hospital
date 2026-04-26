@@ -14,16 +14,19 @@ export default function ContactUsPage() {
 
         {/* CONTACT INFO */}
         <section className="section infoSection">
-          <h2 style={{ 
-    textAlign: "center", 
-    width: "100%",
-    maxWidth: "800px",       /* Prevents lines from being too long */
-    margin: "0 auto 2.5rem", /* Centers the block and adds bottom spacing */
-    fontSize: "clamp(0.7rem, 2.5vw, 1.5rem)", /* Min, Preferred, Max */
-    lineHeight: "1.5",       /* Adds breathing room between lines */
-    color: "#1e40af" 
-  }}>
-            
+          <h2
+            style={{
+              textAlign: "center",
+              width: "100%",
+              maxWidth: "800px" /* Prevents lines from being too long */,
+              margin:
+                "0 auto 2.5rem" /* Centers the block and adds bottom spacing */,
+              fontSize:
+                "clamp(0.7rem, 2.5vw, 1.5rem)" /* Min, Preferred, Max */,
+              lineHeight: "1.5" /* Adds breathing room between lines */,
+              color: "#1e40af",
+            }}
+          >
             We would love to hear from you! Please fill in the required details
             and our team will get in touch with you
           </h2>
@@ -61,37 +64,49 @@ export default function ContactUsPage() {
               </div>
             </div>
 
-            {/* <div className="card">
+            {/* To direct  uer to facebook */}
+            <a href="https://www.google.com/search?q=facebok&ie=UTF-8" target="_blank" rel="noopener noreferrer"><div className="card">
               <div className="icon">
-                <img className="phone" src="/images/phone.png" />
+                <img className="socialMedia" src="/images/fb.png" />
               </div>
               <div>
-                <div className="label">Working Days/hOURS</div>
-                <div className="value">24 hours/ 7 days a week</div>
+                <div className="label">Facebook</div>
+                <div className="value">Find us on Facebook</div>
               </div>
-            </div> */}
-          </div>
+            </div></a>
+          
+
+          <a href="https://www.google.com/search?q=instagram&sxsrf=ANbL-n709acrv1sJClBn1rwgMJiaOESvKQ%3A1777213955709" target="_blank" rel="noopener noreferrer"><div className="card">
+              <div className="icon">
+                <img className="socialMedia" src="/images/ig.png" />
+              </div>
+              <div>
+                <div className="label">Instagram</div>
+                <div className="value">Find us on Instagram</div>
+              </div>
+            </div></a>
+            </div>
         </section>
 
         {/* APPOINTMENT */}
         <section className="section-appointment">
-  <h2
-    style={{
-      textAlign: "center",
-      fontSize: "clamp(1.3rem, 2.2vw, 2.5rem)",
-      marginBottom: "2rem",
-      color: "#1e40af", /* Kept consistent with your other headings */
-    }}
-  >
-    Book an Appointment
-  </h2>
-  <div className="appointmentBox">
-    {/* This wrapper div ensures the inner component centers itself */}
-    <div style={{ width: "100%", maxWidth: "800px" }}>
-       <AppointmentSection />
-    </div>
-  </div>
-</section>
+          <h2
+            style={{
+              textAlign: "center",
+              fontSize: "clamp(1.3rem, 2.2vw, 2.5rem)",
+              marginBottom: "2rem",
+              color: "#1e40af" /* Kept consistent with your other headings */,
+            }}
+          >
+            Book an Appointment
+          </h2>
+          <div className="appointmentBox">
+            {/* This wrapper div ensures the inner component centers itself */}
+            <div style={{ width: "100%", maxWidth: "800px" }}>
+              <AppointmentSection />
+            </div>
+          </div>
+        </section>
 
         {/* MAP */}
         <section className="section map">
@@ -106,8 +121,6 @@ export default function ContactUsPage() {
             />
           </div>
         </section>
-
-        
       </div>
     </div>
   );
