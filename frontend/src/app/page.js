@@ -1,3 +1,4 @@
+
 import HeroSection from "@/components/home/HeroSection";
 import ServicesSection from "@/components/home/ServicesSection";
 import WhyChooseUsSection from "@/components/home/WhyChooseUsSection";
@@ -5,7 +6,9 @@ import AppointmentSection from "@/components/home/AppointmentSection";
 import DepartmentSection from "@/components/home/DepartmentSection";
 import { getHomeContent } from "@/lib/api/homeContent";
 import { getDepartments as fetchDepartmentList } from "@/lib/api/departments";
+import DynamicHomeBanner from "@/components/home/HomeBanner";
 import "./page.css";
+import { use } from "react";
 async function loadPageData() {
   try {
     const [homeData, deptData] = await Promise.all([
@@ -123,6 +126,7 @@ export default async function HomePage() {
           </section>
 
           <ServicesSection services={services} />
+          <DynamicHomeBanner bannerImages={content.bannerImages} />
           <DepartmentSection departments={departments} />
 
           <section className="section">
@@ -142,6 +146,7 @@ export default async function HomePage() {
         <>
           <HeroSection />
           <ServicesSection />
+          <DynamicHomeBanner />
           <DepartmentSection departments={departments} />
           <WhyChooseUsSection />
         </>

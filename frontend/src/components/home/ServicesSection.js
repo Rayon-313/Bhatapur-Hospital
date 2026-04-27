@@ -1,88 +1,248 @@
 "use client";
 
+import { useRef, useEffect } from "react";
 import Link from "next/link";
 import "../../app/globals.css";
-import { TemplateContext } from "next/dist/shared/lib/app-router-context.shared-runtime";
-// Helper function to create URL-friendly service title
+
 const createUrlFriendlyTitle = (title) => {
   return encodeURIComponent(
     title
       .toLowerCase()
-      .replace(/[^a-zA-Z0-9 ]/g, " ") // Replace special chars with spaces
-      .replace(/\s+/g, "-"), // Replace spaces with hyphens
+      .replace(/[^a-zA-Z0-9 ]/g, " ")
+      .replace(/\s+/g, "-"),
   );
 };
 
-export default function ServicesSection({ services = [] }) {
+function ServiceRow({ services, scrollRef }) {
   return (
-    <section className="section" >
-      <h2 className="section-title" >Our Services</h2>
-      <div className="services-grid" style={{display:"grid",
-        gridTemplateColumns:"repeat(auto-fill, minmax(280px, 1fr))",
-        gap:"2rem",
-        maxWidth:"1500px", 
-        margin:"0 auto"
-        }}>
-        {services.map((service, index) => (
-          <Link
-            href={`/services/${createUrlFriendlyTitle(service.title)}`}
-            key={index}
+    <div
+      ref={scrollRef}
+      className="service-row"
+      style={{
+        display: "flex",
+        gap: "1.2rem",
+        overflowX: "auto",
+        scrollBehavior: "smooth",
+        padding: "0.5rem 9px",
+        scrollbarWidth: "none",
+        msOverflowStyle: "none",
+        scrollSnapType: "x mandatory",
+      }}
+    >
+      {services.map((service, index) => (
+        <Link
+          href={`/services/${createUrlFriendlyTitle(service.title)}`}
+          key={index}
+          className="service-card-link"
+          style={{
+            textDecoration: "none",
+            color: "inherit",
+            flexShrink: 0,
+            scrollSnapAlign: "start",
+          }}
+        >
+          <div
+            className="service-card"
             style={{
-              display: "block",
-              textDecoration: "none",
-              color: "inherit",
-              
+              cursor: "pointer",
+              padding: "1.5rem",
+              border: "1.5px solid #080c67",
+              borderRadius: "12px",
+              transition: "transform 0.3s, box-shadow 0.2s, border-color 0.3s",
+              textAlign: "center",
+              backgroundColor: "white",
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "flex-start",
+              boxSizing: "border-box",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translateY(-5px)";
+              e.currentTarget.style.boxShadow = "0 6px 12px rgba(0,0,0,0.1)";
+              e.currentTarget.style.borderColor = "#18b730";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.boxShadow = "none";
+              e.currentTarget.style.borderColor = "#080c67";
             }}
           >
-            <div //homepage-service-box
+            {service.imageUrl && (
+              <img
+                src={service.imageUrl}
+                alt={service.title}
+                style={{
+                  width: "100%",
+                  height: "140px",
+                  objectFit: "cover",
+                  marginBottom: "0.8rem",
+                  borderRadius: "8px",
+                }}
+              />
+            )}
+            <h3
               style={{
-                cursor: "pointer",
-                transition: "transform 0.2s, box-shadow 0.2s",
-                padding: "1rem",
-                border: "1px solid #e0e0e0",
-                borderRadius: "9px",
-                borderColor: " #080c67",
-                borderStyle: "solid",
-                borderWidth: "2.5px",
-                transitionDuration: "0.8s",
-                width: "100%",              textAlign: "center",
-                backgroundColor: "white",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-6px)";
-                e.currentTarget.style.boxShadow =
-                  "0 4px 6px rgba(0, 0, 0, 0.15)";
-                e.currentTarget.style.borderColor = " #18b730";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "0 2px 4px rgba(0,0,0,0.05)";
-                e.currentTarget.style.borderColor = " #1f168b";
+                fontSize: "1rem",
+                margin: "0.3rem 0",
+                fontWeight: "bold",
               }}
             >
-              {service.imageUrl && (
-                <img
-                  src={service.imageUrl}
-                  alt={service.title}
-                  style={{
-                    width: "90%",
-                    height: "150px",
-                    objectFit: "cover",
-                    marginBottom: "1rem",
-                    borderRadius: "12px",
-                    // display: "block",
-                    marginBottom: "1rem",
-                  }}
-                />
-              )}
-              <h3 style={{ margin: "0.5rem 0" }}>{service.title}</h3>
-              <p style={{ margin: "0.5rem 0", 
+              {service.title}
+            </h3>
+            <p
+              style={{
+                fontSize: "0.8rem",
+                margin: "0.3rem 0",
                 overflow: "hidden",
-              }}>{service.description}</p>
-            </div>
-          </Link>
-        ))}
+                display: "-webkit-box",
+                WebkitLineClamp: 3,
+                WebkitBoxOrient: "vertical",
+                color: "#555",
+              }}
+            >
+              {service.description}
+            </p>
+          </div>
+        </Link>
+      ))}
+    </div>
+  );
+}
+
+export default function ServicesSection({ services = [] }) {
+  const row1Ref = useRef(null);
+  const row2Ref = useRef(null);
+  const timerRef = useRef(null);
+  const pausedRef = useRef(false);
+
+  const midpoint = Math.ceil(services.length / 2);
+  const row1 = services.slice(0, midpoint);
+  const row2 = services.slice(midpoint);
+
+  const scrollBothRows = (direction) => {
+    [row1Ref, row2Ref].forEach((ref) => {
+      const el = ref.current;
+      if (!el) return;
+
+      const maxScroll = el.scrollWidth - el.clientWidth;
+      const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 2; // 2px tolerance
+      const atStart = el.scrollLeft <= 2;
+
+      let next;
+      if (direction === "right") {
+        next = atEnd ? 0 : el.scrollLeft + el.clientWidth;
+      } else {
+        next = atStart ? maxScroll : el.scrollLeft - el.clientWidth;
+      }
+
+      el.scrollTo({ left: next, behavior: "smooth" });
+    });
+  };
+
+  const startTimer = () => {
+    clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => {
+      if (!pausedRef.current) {
+        scrollBothRows("right");
+      }
+    }, 5000);
+  };
+
+  useEffect(() => {
+    startTimer();
+    return () => clearInterval(timerRef.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleManualScroll = (direction) => {
+    scrollBothRows(direction);
+    startTimer();
+  };
+
+  return (
+    <section
+      className="section"
+      style={{ position: "relative", padding: "3rem 0" }}
+    >
+      <h2 className="section-title">Our Services</h2>
+
+      <div
+        style={{ maxWidth: "1200px", margin: "0 auto", position: "relative" }}
+        onMouseEnter={() => {
+          pausedRef.current = true;
+        }}
+        onMouseLeave={() => {
+          pausedRef.current = false;
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            top: "50%",
+            transform: "translateY(-50%)",
+            width: "100%",
+            display: "flex",
+            justifyContent: "space-between",
+            zIndex: 10,
+            pointerEvents: "none",
+            padding: "0 5px",
+            boxSizing: "border-box",
+          }}
+        >
+          <button onClick={() => handleManualScroll("left")} style={arrowStyle}>
+            ❮
+          </button>
+          <button
+            onClick={() => handleManualScroll("right")}
+            style={arrowStyle}
+          >
+            ❯
+          </button>
+        </div>
+
+        <div
+          style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}
+        >
+          <ServiceRow services={row1} scrollRef={row1Ref} />
+          {row2.length > 0 && (
+            <ServiceRow services={row2} scrollRef={row2Ref} />
+          )}
+        </div>
       </div>
+
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+            .service-row::-webkit-scrollbar { display: none; }
+            .service-card-link { width: calc((100% - 2 * 1.2rem) / 3); min-width: 260px; }
+            @media (max-width: 1024px) {
+              .service-card-link { width: calc((100% - 1.2rem) / 2); min-width: 220px; }
+            }
+            @media (max-width: 640px) {
+              .service-card-link { width: calc(100vw - 48px); padding: 0rem 0rem 0rem 2rem; min-width: unset; }
+              .service-card { padding: 1rem !important; }
+            }
+          `,
+        }}
+      />
     </section>
   );
 }
+
+const arrowStyle = {
+  pointerEvents: "auto",
+  background: "rgba(11, 122, 196, 0.9)",
+  color: "white",
+  border: "none",
+  borderRadius: "50%",
+  width: "45px",
+  height: "45px",
+  fontSize: "18px",
+  cursor: "pointer",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  boxShadow: "0 4px 10px rgba(0,0,0,0.2)",
+  transition: "all 0.3s ease",
+};

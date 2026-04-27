@@ -94,12 +94,14 @@ export default function MainLayout({ children }) {
         <header className="site-header" style={{ width: "100%" }}>
           <div className="header-container">
             <div className="logo-section">
-              <img
-                src="/images/logo.png"
-                alt="Bhaktapur International Hospital Logo"
-                className="logo-image"
-                onError={handleLogoError}
-              />
+              <a href="/">
+                <img
+                  src="/images/logo.png"
+                  alt="Bhaktapur International Hospital Logo"
+                  className="logo-image"
+                  onError={handleLogoError}
+                />
+              </a>
               <div className="logo-text">
                 <Link href="/" onClick={closeMobileMenu}>
                   <h1>Bhaktapur International Hospital</h1>

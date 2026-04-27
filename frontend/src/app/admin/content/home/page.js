@@ -11,6 +11,7 @@ const DEFAULT_HOME_CONTENT = {
   heroTitle: "Welcome to Bhaktapur International Hospital",
   heroSubtitle:
     "We provide comprehensive medical care with state-of-the-art facilities and a team of experienced specialists dedicated to your well-being.",
+    bannerImages: [],
   services: [
     {
       title: "24/7 Emergency Services",
@@ -180,6 +181,7 @@ export default function EditHomePage() {
   const [isSaving, setIsSaving] = useState(false);
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef(null);
+  const bannerInputRef = useRef(null);
 
   // Load content from backend on mount
   useEffect(() => {
@@ -251,6 +253,30 @@ export default function EditHomePage() {
       alert("Failed to save content.");
     }
     setIsSaving(false);
+  };
+
+  // --- NEW: BANNER IMAGE HANDLERS ---
+  const handleBannerUpload = async (file) => {
+    if (!file.type.startsWith("image/")) {
+      alert("Please upload an image file.");
+      return;
+    }
+    try {
+      const result = await uploadHomeImage(file);
+      const currentBanners = content.bannerImages || [];
+      if (currentBanners.length >= 50) {
+        alert("Maximum 50 banner images allowed.");
+        return;
+      }
+      handleChange("bannerImages", [...currentBanners, result.imagePath]);
+    } catch (error) {
+      alert("Image upload failed.");
+    }
+  };
+
+  const removeBannerImage = (index) => {
+    const updatedBanners = content.bannerImages.filter((_, i) => i !== index);
+    handleChange("bannerImages", updatedBanners);
   };
 
   // Drag & Drop Handlers
@@ -824,6 +850,44 @@ export default function EditHomePage() {
         >
           + Add Service
         </button>
+      </div>
+
+        {/* for banner image */}
+
+      <div className="card">
+        <h3>Homepage Banner Gallery (Max 50)</h3>
+        <p className="description">These images will rotate every 10 seconds on the homepage.</p>
+        
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', margin: '15px 0' }}>
+          {content.bannerImages?.map((url, index) => (
+            <div key={index} style={{ position: 'relative', width: '120px', height: '80px' }}>
+              <img src={url} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }} />
+              <button 
+                onClick={() => removeBannerImage(index)}
+                style={{ position: 'absolute', top: '-5px', right: '-5px', background: 'red', color: 'white', border: 'none', borderRadius: '50%', cursor: 'pointer' }}
+              >
+                ×
+              </button>
+            </div>
+          ))}
+        </div>
+
+        {(!content.bannerImages || content.bannerImages.length < 50) && (
+          <div 
+            className="image-upload-area" 
+            onClick={() => bannerInputRef.current.click()}
+            style={{ border: '2px dashed #ccc', padding: '20px', textAlign: 'center', cursor: 'pointer' }}
+          >
+            <p>Click to add Banner Image ({50 - (content.bannerImages?.length || 0)} left)</p>
+            <input 
+              type="file" 
+              ref={bannerInputRef} 
+              hidden 
+              accept="image/*" 
+              onChange={(e) => handleBannerUpload(e.target.files[0])} 
+            />
+          </div>
+        )}
       </div>
 
       {/* Why Choose Us */}
