@@ -66,6 +66,19 @@ export default function EditContactPage() {
               />
             </div>
           </div>
+
+          <div className="info-box">
+            <span className="icon">
+              <img className="socialMedia" src="/images/fb.png" />
+            </span>
+            <div className="field">
+              <label>Facebook</label>
+              <input
+                value={contactInfo.socialMedia}
+                onChange={(e) => handleInputChange("socialMedia", e.target.value)}
+              />
+            </div>
+          </div>
         </div>
       </div>
 
