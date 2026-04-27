@@ -1,6 +1,15 @@
 const mongoose = require('mongoose');
 
 const homeContentSchema = new mongoose.Schema({
+  bannerImages: {
+    type: [String],
+    validate: {
+      validator: function(v) {
+        return v.length <= 50;
+      },
+      message: props => `you can only upload up to 50 banner images. You tried ${props.value}.`  
+    }
+  },
   videoHeroTitle: { type: String },
   heroTitle: String,
   heroSubtitle: String,
