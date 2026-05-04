@@ -32,6 +32,10 @@ export default function AdminDashboardPage() {
           <p>Share inspiring recovery journeys.</p>
         </div>
         <div className="card">
+          <h3>Edit Reports Page</h3>
+          <p>Share inspiring recovery journeys.</p>
+        </div>
+        <div className="card">
           <h3>Edit FAQs</h3>
           <p>Answer common visitor questions.</p>
         </div>

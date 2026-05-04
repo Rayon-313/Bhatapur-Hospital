@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { getHomeContent } from "@/lib/api/homeContent";
+import { reportApi } from "@/lib/api/reports"; // Import the reports API
 import { usePathname } from "next/navigation";
 
 export default function MainLayout({ children }) {
@@ -16,7 +17,12 @@ export default function MainLayout({ children }) {
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // --- NEW FEEDBACK STATE ---
+  // --- NEW REPORTS VISIBILITY STATE ---
+  const [reportConfig, setReportConfig] = useState({
+    shouldShow: false,
+    navLabel: "Reports",
+  });
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -25,22 +31,27 @@ export default function MainLayout({ children }) {
   });
   const [status, setStatus] = useState("");
 
+  // Fetch rotating phrases and Report visibility status
   useEffect(() => {
-    const fetchPhrases = async () => {
+    const fetchData = async () => {
       try {
-        const data = await getHomeContent();
-        if (
-          data &&
-          data.rotatingTextPhrases &&
-          data.rotatingTextPhrases.length > 0
-        ) {
-          setPhrases(data.rotatingTextPhrases);
+        // Fetch Home Content
+        const homeData = await getHomeContent();
+        if (homeData?.rotatingTextPhrases?.length > 0) {
+          setPhrases(homeData.rotatingTextPhrases);
         }
+
+        // Fetch Report Visibility
+        const repData = await reportApi.getReports();
+        setReportConfig({
+          shouldShow: repData.shouldShow,
+          navLabel: repData.navLabel || "Reports",
+        });
       } catch (error) {
-        console.error("Failed to fetch rotating text phrases:", error);
+        console.error("Failed to fetch layout data:", error);
       }
     };
-    fetchPhrases();
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -50,7 +61,6 @@ export default function MainLayout({ children }) {
     return () => clearInterval(interval);
   }, [phrases]);
 
-  // --- NEW HANDLESUBMIT FUNCTION ---
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus("Sending...");
@@ -64,14 +74,11 @@ export default function MainLayout({ children }) {
         },
       );
 
-      // Check if status is 200 or 201
       if (response.status === 200 || response.status === 201) {
         setStatus("Success! Feedback sent.");
         setFormData({ name: "", email: "", subject: "", message: "" });
       } else {
-        // If it got to the database but returned something else
         setStatus("Sent (Check Admin)");
-        console.log("Response Status:", response.status);
       }
     } catch (error) {
       setStatus("Server error.");
@@ -79,7 +86,6 @@ export default function MainLayout({ children }) {
   };
 
   const handleLogoError = () => console.log("Logo failed to load");
-  const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   const currentPhrase = phrases[currentPhraseIndex];
@@ -94,19 +100,16 @@ export default function MainLayout({ children }) {
         <header className="site-header" style={{ width: "100%" }}>
           <div className="header-container">
             <div className="logo-section">
-              <a href="/">
-                <img
-                  src="/images/logo.png"
-                  alt="Bhaktapur International Hospital Logo"
-                  className="logo-image"
-                  onError={handleLogoError}
-                />
-              </a>
+              <img
+                src="/images/logo.png"
+                alt="Bhaktapur International Hospital Logo"
+                className="logo-image"
+                onError={handleLogoError}
+              />
               <div className="logo-text">
                 <Link href="/" onClick={closeMobileMenu}>
                   <h1>Bhaktapur International Hospital</h1>
                 </Link>
-
                 <p className="rotating-text">{currentPhrase}</p>
               </div>
             </div>
@@ -131,6 +134,7 @@ export default function MainLayout({ children }) {
                     Departments
                   </Link>
                 </b>
+
                 <b>
                   <Link href="/health-packages" onClick={closeMobileMenu}>
                     Health Packages
@@ -156,6 +160,15 @@ export default function MainLayout({ children }) {
                     Patient Recovery
                   </Link>
                 </b>
+
+                {/* DYNAMIC REPORTS LINK[cite: 2] */}
+                {reportConfig.shouldShow && (
+                  <b>
+                    <Link href="/reports" onClick={closeMobileMenu}>
+                      {reportConfig.navLabel}
+                    </Link>
+                  </b>
+                )}
               </nav>
             </div>
           </div>
@@ -507,7 +520,6 @@ export default function MainLayout({ children }) {
     </>
   );
 }
-
 const footerInputStyle = {
   width: "100%",
   padding: "0.7rem",
