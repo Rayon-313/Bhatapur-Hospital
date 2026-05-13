@@ -115,7 +115,7 @@ export default function HealthPackagesPage() {
   return (
     <>
       <style>{`
-        .hp-outer { min-height: 100vh; background: linear-gradient(135deg, #f0f9ff 0%, #e6f7ff 100%); padding: 2rem 1rem; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; box-sizing: border-box; }
+        .hp-outer { min-height: 100vh; background: linear-gradient(135deg, #f0f9ff 0%, #e6f7ff 100%); padding: 5rem 3rem; margin: 5px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; box-sizing: border-box; }
         .hp-container { max-width: 1300px; margin: 0 auto; padding: 2rem; background-color: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; box-sizing: border-box; }
         .hp-header { text-align: center; margin-bottom: 3rem; padding: 2rem; background: linear-gradient(135deg, #0b7ac4 0%, #1e40af 100%); border-radius: 15px; color: white; box-shadow: 0 5px 15px rgba(11,122,196,0.3); }
         .hp-header h1 { font-size: 3rem; font-weight: 700; margin-bottom: 0.5rem; text-shadow: 0 2px 4px rgba(0,0,0,0.3); margin-top: 0; }
@@ -145,15 +145,13 @@ export default function HealthPackagesPage() {
         .hp-form input, .hp-form textarea { width: 100%; padding: 0.8rem; border-radius: 8px; border: 2px solid #e5e7eb; font-size: 1rem; transition: border-color 0.3s ease; background-color: #ffffff; box-sizing: border-box; }
         .hp-confirm-btn { background-color: #10b981; color: white; padding: 1rem; border-radius: 8px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease; margin-top: 1rem; width: 100%; }
         @media (max-width: 768px) {
-          .hp-outer { padding: 1rem 0.5rem; }
-          .hp-container { padding: 1rem; border-radius: 12px; }
           .hp-header h1 { font-size: 2rem; }
           .hp-grid { grid-template-columns: 1fr; gap: 1.25rem; }
         }
       `}</style>
 
       <div className="hp-outer">
-        <div className="hp-container">
+        
           <div className="hp-header">
             <h1>Health Packages</h1>
             <p>
@@ -209,7 +207,7 @@ export default function HealthPackagesPage() {
               </article>
             ))}
           </div>
-        </div>
+        
 
         {showBookingModal && selectedPackage && (
           <div
