@@ -1,0 +1,151 @@
+/* =========================
+   PAGE BACKGROUND
+========================= */
+.section {
+  padding: 40px 5%; /* CHANGED: from 150px to 5% for responsiveness */
+  min-height: 100vh;
+  background: linear-gradient(135deg, #eef2ff, #f8fafc);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* =========================
+   TITLES
+========================= */
+.section-title {
+  text-align: center;
+  font-size: 2.1rem;
+  color: #2c3e50;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 3px solid #3498db;
+  margin-top: -30px;
+  
+}
+
+.section-subtitle {
+  text-align: center;
+  color: #000000;
+  margin-bottom: 30px;
+  font-size: clamp(16px, 2vw, 20px);
+}
+
+/* =========================
+   GRID (RESPONSIVE)
+========================= */
+.services-grid {
+  display: grid;
+  /* CHANGED: auto-fit creates columns based on available space */
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 22px;
+  width: 100%;
+  max-width: 1300px; /* Limits width on ultra-wide screens */
+  margin: 0 auto;
+}
+
+/* =========================
+   SERVICE CARD
+========================= */
+.service-box {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+  backdrop-filter: blur(6px);
+  padding: 16px;
+  transition: all 0.35s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  height: 100%; /* Changed from fixed 260px to 100% for flex growth */
+  min-height: 350px;
+  box-sizing: border-box;
+  margin-top: -20px;
+}
+
+.service-box:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+  border-color: #3b82f6;
+}
+
+/* =========================
+   HEADER TITLE / SUBTITLE
+========================= */
+.header-title-subtitle {
+  /* background: linear-gradient(135deg, #0b7ac4 0%, #1e40af 100%); */
+  width: 100%;
+  max-width: 1400px;
+  box-sizing: border-box;
+  margin-bottom: 8 px;
+  /* margin-left: 20px; */
+}
+
+.department-container{
+  background-color: white;
+  padding: 2rem;
+  width: 100%;
+  max-width: 1300px;
+  border-radius: 20px;;
+  margin: 0 auto;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+  border: 1px solid #e2e8f0; 
+  box-sizing: border-box; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;}
+/* =========================
+   MOBILE RESPONSIVE (KEEPING YOUR EXISTING QUERIES)
+========================= */
+@media (max-width: 768px) {
+  .section {
+    padding: 20px 15px;
+  }
+
+
+  .department-container{
+     padding: 20px 15px;
+  }
+  .services-grid {
+    grid-template-columns: 1fr;
+    margin-top:-20px; /* Single column on mobile */
+  }
+
+  .header-title-subtitle {
+    padding: 1.5rem 1rem;
+  }
+}
+
+/* =========================
+   Description Text
+========================= */
+
+.paragraph {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--muted-text);
+  line-height: 1.6;
+  text-align: left;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+  color: #000000;
+}
+
+@media (min-width:1000px){
+  .services-grid {
+    
+    margin-top:30px; /* Single column on mobile */
+  }
+  .section-title{
+    font-size: 40px;
+     border-bottom: 3px solid #3498db;
+
+  }
+  
+}
