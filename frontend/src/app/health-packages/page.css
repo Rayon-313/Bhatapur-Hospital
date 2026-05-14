@@ -15,17 +15,31 @@
   border: 1px solid #e2e8f0;
 }
 
-.header {
+.header-title {
   text-align: center;
-  margin-bottom: 3rem;
-  padding: 2rem 0;
-  background: linear-gradient(135deg, #0b7ac4 0%, #1e40af 100%);
-  border-radius: 15px;
-  color: white;
+  font-size: 2.1rem;
+  color: #2c3e50;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 3px solid #3498db;
+
 }
 
-.header h1 {
-  font-size: 3rem;
+.header-subtitle {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  border-bottom: 3px solid #3498db;
+  width: 90%;
+  margin: 0 auto;
+  /* margin-top: -30px; */
+}
+
+
+
+.header h2 {
+  font-size: 1.92rem;
   font-weight: 700;
 }
 
@@ -193,3 +207,17 @@
   padding: 100px;
 }
 
+.hp-features-list-container{
+  overflow: hidden; 
+  height: 70px;
+  overflow: auto;
+}
+
+.health-package-card-description {
+color: #6b7280;
+ line-height: 1.6;
+  margin: 0;
+  height: 100px;
+  overflow: hidden;
+  font-size: 16px !important;
+}
