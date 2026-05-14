@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { getHealthPackages, bookHealthPackage } from "@/lib/api/healthPackages";
-import styles from "./page.css";
+import "./page.css";
 
 export default function HealthPackagesPage() {
   const [packages, setPackages] = useState([]);
@@ -115,24 +115,27 @@ export default function HealthPackagesPage() {
   return (
     <>
       <style>{`
-        .header { min-height: 100vh;   justify-content: center; align-items: center; max-width:100%; margin: 0 auto; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; box-sizing: border-box; }
+
+        .header { min-height: auto; width: 100%; max-width: 1400px; justify-content: center; align-items: center; margin: 0 auto;  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; box-sizing: border-box; }
         .hp-container { max-width: 1300px; margin: 0 auto; padding: 2rem; background-color: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; box-sizing: border-box; }
         .hp-header { text-align: center; margin-bottom: 3rem; padding: 2rem; background: linear-gradient(135deg, #0b7ac4 0%, #1e40af 100%); border-radius: 15px; color: white; box-shadow: 0 5px 15px rgba(11,122,196,0.3); }
         .hp-header h1 { font-size: 3rem; font-weight: 700; margin-bottom: 0.5rem; text-shadow: 0 2px 4px rgba(0,0,0,0.3); margin-top: 0; }
         .hp-header p { font-size: 1.3rem; opacity: 0.9; max-width: 600px; margin: 0.5rem auto 0; }
-        .health-package-grid { display: grid; align-items: center; margin-bottom: 2rem;margin-top: 2rem; justify-content: center; width: 100%; grid-template-columns: repeat(3, minmax(200px, 1fr)); gap: 2rem; padding: 0 4.5rem;   overflow: hidden; }
-        .hp-card { background-color: white; width: 100%; border-radius: 15px; padding: 2rem; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; transition: transform 0.3s ease, box-shadow 0.3s ease; position: relative; overflow: hidden; box-sizing: border-box; max-height:900px;  }
+        .health-package-grid { display: grid; align-items: stretch; margin: 2rem auto; justify-content: center; width: 100%; max-width: 1200px; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1rem, 2vw, 2rem); padding: 0; overflow: visible; }
+        .hp-card { background-color: white; width: 100%; min-width: 0; border-radius: 15px; padding: clamp(1.2rem, 2.2vw, 2rem); box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; transition: transform 0.3s ease, box-shadow 0.3s ease; position: relative; overflow: hidden; box-sizing: border-box; max-height: none; display: flex; flex-direction: column; }
         .hp-card:hover { transform: translateY(-10px); box-shadow: 0 15px 35px rgba(0,0,0,0.15); }
         .hp-badge { position: absolute; top: 0.7rem; right: 1rem; color: white; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.8rem; font-weight: bold; z-index: 1; }
         .hp-card-body { text-align: center; margin-bottom: 1.3rem;}
-        .hp-card-body h3 { font-size: 1.8rem; color: #1e40af; margin-bottom: 0.3rem; font-weight: 700;  }
+        .hp-card-body h3 { font-size: clamp(1.25rem, 2vw, 1.8rem); line-height: 1.25; color: #1e40af; margin-bottom: 0.3rem; font-weight: 700; overflow-wrap: anywhere; }
         .hp-card-price { font-size: 1.3rem; font-weight: bold; color: #0b7ac4; margin-bottom: 0.8rem; }
         .hp-card-desc { color: #6b7280; line-height: 1.6; margin: 0 auto; height: 100px; overflow: hidden; font-size: 0.1rem; }
+        .health-package-card-description { height: auto; min-height: 5rem; overflow: visible; overflow-wrap: anywhere; }
         .hp-features-title { font-size: 1.2rem; color: #1e40af; margin-bottom: 0.6rem; font-weight: 600; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.1rem; margin-top: 0; }
         .hp-features-list { list-style: none; padding: 0; margin: 0; overflow:auto;  }
-        .hp-features-list li { display: flex; align-items: center; margin-bottom: 0.75rem; color: #4b5563;  }
+        .hp-features-list-container { max-height: 100px; overflow-y: auto; }
+        .hp-features-list li { display: flex; align-items: flex-start; margin-bottom: 0.75rem; color: #4b5563; overflow-wrap: anywhere; }
         .hp-check { color: #10b981; margin-right: 0.5rem; font-size: 1.2rem; flex-shrink: 0; }
-        .hp-book-btn { width: 100%; background-color: #0b7ac4; color: white; padding: 1rem; border-radius: 8px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease; margin-top: 1rem; box-sizing: border-box; }
+        .hp-book-btn { width: 100%; background-color: #0b7ac4; color: white; padding: 1rem; border-radius: 8px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease; margin-top: auto; box-sizing: border-box; }
         .hp-book-btn:hover { background-color: #09609d; }
         .hp-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 1000; padding: 1rem; box-sizing: border-box; }
         .hp-modal { background-color: white; border-radius: 15px; padding: 2rem; width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.3); box-sizing: border-box; }
@@ -144,12 +147,31 @@ export default function HealthPackagesPage() {
         .hp-form label { display: block; font-weight: 600; margin-bottom: 0.5rem; color: #1e40af; }
         .hp-form input, .hp-form textarea { width: 100%; padding: 0.8rem; border-radius: 8px; border: 2px solid #e5e7eb; font-size: 1rem; transition: border-color 0.3s ease; background-color: #ffffff; box-sizing: border-box; }
         .hp-confirm-btn { background-color: #10b981; color: white; padding: 1rem; border-radius: 8px; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease; margin-top: 1rem; width: 100%; }
+        @media (max-width: 1100px) {
+          .health-package-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 820px; }
+        }
         @media (max-width: 768px) {
+          .header { padding: 1rem 0; }
+          .header-subtitle { width: 100%; margin-bottom: 1.25rem;  }
+          .header h2 { font-size: 1.6rem; line-height: 1.25; }
           .hp-header h1 { font-size: 2rem; }
-          .hp-grid { grid-template-columns: 1fr; gap: 1.25rem; }
+          .health-package-grid { grid-template-columns: 1fr; max-width: 520px; gap: 1.25rem; margin: 1.25rem auto; }
+          .hp-card:hover { transform: none; }
+          .hp-badge { position: static; align-self: flex-end; margin-bottom: 0.75rem; }
+          .health-package-card-description { min-height: 0; }
+          .hp-modal-overlay { align-items: flex-start; padding: 0.75rem; overflow-y: auto; }
+          .hp-modal { padding: 1.25rem; max-height: none; margin-top: 1rem; }
+          .hp-modal-header h3 { font-size: 1.25rem; }
+        }
+        @media (max-width: 420px) {
+        .header { padding:  0; }
+                  .header h2 { font-size: 1.5rem;  }
+          .hp-card { padding: 1rem; border-radius: 12px; }
+          .hp-card-price { font-size: 1.1rem; }
+          .hp-book-btn, .hp-confirm-btn { padding: 0.85rem; font-size: 1rem; }
         }
       `}</style>
-      <div className="section-container">
+      <div className="section-container hp-page">
         <div className="header">
         <div className="header-subtitle">
 
