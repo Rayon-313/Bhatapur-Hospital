@@ -75,7 +75,9 @@ export default function AboutPage() {
         <div className={styles.hospitalProfileContent}>
           <div className={styles.hospitalContent}>
             <img 
-              src={aboutContent?.hospitalPhoto || '/images/hospital-default.jpg'} 
+              src={    aboutContent?.hospitalPhoto
+      ? `http://localhost:4000${aboutContent.hospitalPhoto}`
+      : "/images/hospital-default.jpg"} 
               alt="Hospital" 
               className={styles.hospitalPhotoInline}
               onError={(e) => {
@@ -95,7 +97,8 @@ export default function AboutPage() {
         <div className={styles.messageWithPhoto}>
           <div className={styles.messagePhotoContainer}>
             <img 
-              src={aboutContent?.chairmanPhoto || '/images/chairman-default.jpg'} 
+              src={aboutContent?.chairmanPhoto  ? `http://localhost:4000${aboutContent.chairmanPhoto}`
+      :  "/images/chairman-default.jpg"} 
               alt="Chairman" 
               className={styles.messagePhoto}
               onError={(e) => {
@@ -122,7 +125,8 @@ export default function AboutPage() {
             ? aboutContent.boardOfDirectors.map((director, index) => (
                 <div key={index} className={styles.directorCard}>
                   <img 
-                    src={director.photo || '/images/director-default.jpg'} 
+                    src={director.photo  ? `http://localhost:4000${director.photo}`
+      :  '/images/director-default.jpg'} 
                     alt={director.name || `Director ${index + 1}`}
                     className={styles.directorPhoto}
                     onError={(e) => {
@@ -167,7 +171,7 @@ export default function AboutPage() {
         <div className={styles.messageWithPhoto}>
           <div className={styles.messagePhotoContainer}>
             <img 
-              src={aboutContent?.medicalDirectorPhoto || '/images/medical-director-default.jpg'} 
+              src={aboutContent?.medicalDirectorPhoto ? `http://localhost:4000${aboutContent.medicalDirectorPhoto } ` : '/images/medical-director-default.jpg'} 
               alt="Medical Director" 
               className={styles.messagePhoto}
               onError={(e) => {
@@ -194,7 +198,7 @@ export default function AboutPage() {
             ? aboutContent.managementTeam.map((member, index) => (
                 <div key={index} className={styles.directorCard}>
                   <img 
-                    src={member.photo || '/images/team-member-default.jpg'} 
+                    src={member.photo  ? `http://localhost:4000${member.photo } ` : '/images/team-member-default.jpg'} 
                     alt={member.name || `Team Member ${index + 1}`}
                     className={styles.directorPhoto}
                     onError={(e) => {
@@ -241,7 +245,7 @@ export default function AboutPage() {
             ? aboutContent.awards.map((award, index) => (
                 <div key={index} className={styles.awardItem}>
                   <img 
-                    src={award.photo || '/images/award-default.jpg'} 
+                    src={award.photo ? `http://localhost:4000${award.photo } ` : '/images/award-default.jpg'} 
                     alt={award.title || `Award ${index + 1}`}
                     className={styles.awardPhotoRow}
                     onError={(e) => {
