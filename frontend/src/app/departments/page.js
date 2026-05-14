@@ -104,7 +104,7 @@ export default function DepartmentsPage() {
                 >
                   {dept.image && ( //display department image
                     <img
-                      src={dept.image}
+src={`http://localhost:4000${dept.image}`}
                       alt={dept.name}
                       style={{
                         width: "100%", // Changed from 300px to 100%
@@ -128,7 +128,8 @@ export default function DepartmentsPage() {
                   >
                     {dept.imageIcon && (
                       <img
-                        src={dept.imageIcon}
+                       src={`http://localhost:4000${dept.imageIcon}`}
+
                         alt={dept.name}
                         style={{
                           width: "40px",

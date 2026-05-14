@@ -55,7 +55,7 @@ export default function DepartmentDetailPage() {
 
       {/* 2. Department Photo */}
       <div style={styles.imageContainer}>
-        <img src={dept.image} alt={dept.name} style={styles.mainImg} />
+        <img src={`http://localhost:4000${dept.image}`} alt={dept.name} style={styles.mainImg} />
       </div>
 
       {/* 3. About Department */}

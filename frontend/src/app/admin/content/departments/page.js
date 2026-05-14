@@ -225,7 +225,7 @@ export default function AdminDepartments() {
                 <input
                   type="file"
                   onChange={(e) =>
-                    setNewDept({ ...editForm, imageIcon: e.target.files[0] })
+                    setEditForm({ ...editForm, imageIcon: e.target.files[0] })
                   }
                 />
 
@@ -296,7 +296,7 @@ export default function AdminDepartments() {
             ) : (
               <div>
                 <img
-                  src={dept.image}
+                  src={`http://localhost:4000${dept.image}`}
                   style={{ width: "100%", height: "150px", objectFit: "cover" }}
                   alt=""
                 />
