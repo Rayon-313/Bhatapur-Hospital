@@ -127,7 +127,7 @@
   margin: 0;
   font-size: 1rem;
   color: var(--muted-text);
-  line-height: 1.6;
+  height: 6em; /* Approx. 3 lines of text */
   text-align: left;
   display: -webkit-box;
   -webkit-line-clamp: 3;
