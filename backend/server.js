@@ -40,7 +40,7 @@ app.use(
 
 app.use(
   "/videos",
-  express.static(path.join(__dirname, "../frontend/public/videos")),
+  express.static(path.join(__dirname, "public/videos")),
 );
 
 // Import Routes

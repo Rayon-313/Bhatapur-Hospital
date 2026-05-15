@@ -9,6 +9,16 @@ import { getDepartments as fetchDepartmentList } from "@/lib/api/departments";
 import DynamicHomeBanner from "@/components/home/HomeBanner";
 import "./page.css";
 import { use } from "react";
+
+const BACKEND_MEDIA_HOST = "http://localhost:4000";
+const resolveBackendMediaUrl = (url) => {
+  if (!url) return url;
+  if (/^https?:\/\//i.test(url)) return url;
+  if (url.startsWith("//")) return `http:${url}`;
+  if (url.startsWith("/")) return `${BACKEND_MEDIA_HOST}${url}`;
+  return url;
+};
+
 async function loadPageData() {
   try {
     const [homeData, deptData] = await Promise.all([
@@ -28,7 +38,7 @@ async function loadPageData() {
 
 //for video and floating text
 function HomeVideoSection({ videoPath, content }) {
-  const validVideoPath = videoPath || "videos/hospital-tour.MOV";
+  const validVideoPath = resolveBackendMediaUrl(videoPath || "/videos/hospital-tour.mp4");
 
   return (
     <section className="section">
@@ -104,14 +114,14 @@ export default async function HomePage() {
     ? content.services.map((s) => ({
         title: s.title || s,
         description: s.description || "",
-        imageUrl: s.imageUrl || "",
+        imageUrl: resolveBackendMediaUrl(s.imageUrl || ""),
       }))
     : [];
 
   return (
     <>
       <HomeVideoSection
-        videoPath={content?.videoPath || "/videos/hospital-tour.mp4"}
+        videoPath={resolveBackendMediaUrl(content?.videoPath || "/videos/hospital-tour.mp4")}
         content={content}
       />
 
@@ -126,7 +136,7 @@ export default async function HomePage() {
           </section>
 
           <ServicesSection services={services} />
-          <DynamicHomeBanner bannerImages={content.bannerImages} />
+          <DynamicHomeBanner bannerImages={content.bannerImages?.map(resolveBackendMediaUrl)} />
           <DepartmentSection departments={departments} />
 
           <section className="section">
