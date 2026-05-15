@@ -10,3 +10,5 @@ frontend/.next/
 # Ignore environment variables
 .env
 .env.local
+*.mp4
+videos/

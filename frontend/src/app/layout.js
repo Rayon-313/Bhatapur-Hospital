@@ -131,21 +131,21 @@ export default function RootLayout({ children }) {
   }, [pathname]);
 
   // ✅ Reload on window resize
-  // useEffect(() => {
-  //   let timeout;
-  //   const handleResize = () => {
-  //     clearTimeout(timeout);
-  //     timeout = setTimeout(() => {
-  //       window.location.reload();
-  //     }, 500);
-  //   };
+  useEffect(() => {
+    let timeout;
+    const handleResize = () => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        window.location.reload();
+      }, 500);
+    };
 
-  //   window.addEventListener("resize", handleResize);
-  //   return () => {
-  //     window.removeEventListener("resize", handleResize);
-  //     clearTimeout(timeout);
-  //   };
-  // }, []);
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      clearTimeout(timeout);
+    };
+  }, []);
 
   return (
     <html lang="en">

@@ -15,15 +15,18 @@
 ========================= */
 .section-title {
   text-align: center;
-  font-size: clamp(24px, 5vw, 32px); /* Responsive font size */
-  font-weight: 800;
-  color: #ffffff;
-  letter-spacing: 0.5px;
+  font-size: 2.1rem;
+  color: #2c3e50;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 3px solid #3498db;
+  margin-top: -30px;
+  
 }
 
 .section-subtitle {
   text-align: center;
-  color: #ffffff;
+  color: #000000;
   margin-bottom: 30px;
   font-size: clamp(16px, 2vw, 20px);
 }
@@ -34,7 +37,7 @@
 .services-grid {
   display: grid;
   /* CHANGED: auto-fit creates columns based on available space */
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 22px;
   width: 100%;
   max-width: 1300px; /* Limits width on ultra-wide screens */
@@ -55,11 +58,12 @@
   transition: all 0.35s ease;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
   height: 100%; /* Changed from fixed 260px to 100% for flex growth */
-  min-height: 280px;
+  min-height: 350px;
   box-sizing: border-box;
+  margin-top: -20px;
 }
 
 .service-box:hover {
@@ -72,13 +76,11 @@
    HEADER TITLE / SUBTITLE
 ========================= */
 .header-title-subtitle {
-  background: linear-gradient(135deg, #0b7ac4 0%, #1e40af 100%);
+  /* background: linear-gradient(135deg, #0b7ac4 0%, #1e40af 100%); */
   width: 100%;
-  max-width: 1200px;
-  padding: 2rem;
-  border-radius: 20px;
+  max-width: 1400px;
   box-sizing: border-box;
-  margin-bottom: 40px;
+  margin-bottom: 8 px;
   /* margin-left: 20px; */
 }
 
@@ -108,10 +110,42 @@
      padding: 20px 15px;
   }
   .services-grid {
-    grid-template-columns: 1fr; /* Single column on mobile */
+    grid-template-columns: 1fr;
+    margin-top:-20px; /* Single column on mobile */
   }
 
   .header-title-subtitle {
     padding: 1.5rem 1rem;
   }
+}
+
+/* =========================
+   Description Text
+========================= */
+
+.paragraph {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--muted-text);
+  height: 6em; /* Approx. 3 lines of text */
+  text-align: left;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+  color: #000000;
+}
+
+@media (min-width:1000px){
+  .services-grid {
+    
+    margin-top:30px; /* Single column on mobile */
+  }
+  .section-title{
+    font-size: 40px;
+     border-bottom: 3px solid #3498db;
+
+  }
+  
 }

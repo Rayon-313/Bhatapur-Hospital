@@ -71,12 +71,10 @@ export default function DepartmentsPage() {
 
   return (
     <section className="section">
-      <div className="department-container">
+      
         <div className="header-title-subtitle">
           <h2 className="section-title">Departments</h2>
-          <p className="section-subtitle">
-            We offer a range of departments to cover your healthcare needs.
-          </p>
+          
         </div>
 
         <div className="services-grid">
@@ -155,15 +153,7 @@ src={`http://localhost:4000${dept.image}`}
                       {dept.name}
                     </h3>
                   </div>
-                  <p
-                    style={{
-                      margin: "0",
-                      fontSize: "1rem",
-                      color: "var(--muted-text)",
-                      lineHeight: "1.6",
-                      flex: "1",
-                    }}
-                  >
+                  <p className="paragraph" >
                     {dept.description}
                   </p>
 
@@ -196,7 +186,7 @@ src={`http://localhost:4000${dept.image}`}
               </Link>
             ))}
         </div>
-      </div>{" "}
+      
     </section>
   );
 }
