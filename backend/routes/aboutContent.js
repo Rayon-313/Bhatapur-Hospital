@@ -8,15 +8,43 @@ const path = require('path');
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     if (file.fieldname === 'image') {
-      cb(null, path.join(__dirname, '../../frontend/public/images'));
+      cb(null, path.join(__dirname, '../public/images'));
     } else {
-      cb(null, path.join(__dirname, '../../frontend/public/uploads'));
+      cb(null, path.join(__dirname, '../public/uploads'));
     }
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + '-' + file.originalname);
   }
 });
+
+const isHeicFile = (file) => {
+  const ext = path.extname(file.originalname || file.filename).toLowerCase();
+  return (
+    ext === ".heic" ||
+    ext === ".heif" ||
+    file.mimetype === "image/heic" ||
+    file.mimetype === "image/heif"
+  );
+};
+
+const getPublicImagePath = async (file) => {
+  if (!isHeicFile(file)) return `/images/${file.filename}`;
+
+  const sourcePath = file.path;
+  const jpgFilename = `${path.parse(file.filename).name}.jpg`;
+  const jpgPath = path.join(imagesDir, jpgFilename);
+  const inputBuffer = await fs.readFile(sourcePath);
+  const outputBuffer = await heicConvert({
+    buffer: inputBuffer,
+    format: "JPEG",
+    quality: 0.92,
+  });
+
+  await fs.writeFile(jpgPath, outputBuffer);
+  await fs.unlink(sourcePath).catch(() => {});
+  return `/images/${jpgFilename}`;
+};
 
 const upload = multer({ storage });
 

@@ -3,10 +3,42 @@ const router = express.Router();
 const Department = require("../models/Department");
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs/promises");
+const heicConvert = require("heic-convert");
+
+const imagesDir = path.join(__dirname, "../public/images");
+
+const isHeicFile = (file) => {
+  const ext = path.extname(file.originalname || file.filename).toLowerCase();
+  return (
+    ext === ".heic" ||
+    ext === ".heif" ||
+    file.mimetype === "image/heic" ||
+    file.mimetype === "image/heif"
+  );
+};
+
+const getPublicImagePath = async (file) => {
+  if (!isHeicFile(file)) return `/images/${file.filename}`;
+
+  const sourcePath = file.path;
+  const jpgFilename = `${path.parse(file.filename).name}.jpg`;
+  const jpgPath = path.join(imagesDir, jpgFilename);
+  const inputBuffer = await fs.readFile(sourcePath);
+  const outputBuffer = await heicConvert({
+    buffer: inputBuffer,
+    format: "JPEG",
+    quality: 0.92,
+  });
+
+  await fs.writeFile(jpgPath, outputBuffer);
+  await fs.unlink(sourcePath).catch(() => {});
+  return `/images/${jpgFilename}`;
+};
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "../../frontend/public/images"));
+    cb(null, imagesDir);
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + "-" + file.originalname);
@@ -16,7 +48,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // --- DATA PROCESSOR ---
-const processDepartmentData = (req) => {
+const processDepartmentData = async (req) => {
   const updateData = { ...req.body };
 
   const safeParse = (val) => {
@@ -32,10 +64,10 @@ const processDepartmentData = (req) => {
 
   // Main Image
   const mainImage = req.files?.find((f) => f.fieldname === "image");
-  if (mainImage) updateData.image = `/images/${mainImage.filename}`;
+  if (mainImage) updateData.image = await getPublicImagePath(mainImage);
 
-const iconImage = req.files?.find((f) => f.fieldname === "imageIcon");
-  if (iconImage) updateData.imageIcon = `/images/${iconImage.filename}`;
+  const iconImage = req.files?.find((f) => f.fieldname === "imageIcon");
+  if (iconImage) updateData.imageIcon = await getPublicImagePath(iconImage);
 
   // Doctor Images
   if (Array.isArray(updateData.doctors)) {
@@ -43,9 +75,17 @@ const iconImage = req.files?.find((f) => f.fieldname === "imageIcon");
       const docFile = req.files?.find(
         (f) => f.fieldname === `doctor_image_${index}`,
       );
-      if (docFile) doc.image = `/images/${docFile.filename}`;
+      if (docFile) doc.image = docFile;
       return doc;
     });
+    updateData.doctors = await Promise.all(
+      updateData.doctors.map(async (doc) => {
+        if (doc.image && typeof doc.image === "object") {
+          doc.image = await getPublicImagePath(doc.image);
+        }
+        return doc;
+      }),
+    );
   }
 
   return updateData;
@@ -69,7 +109,7 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", upload.any(), async (req, res) => {
   try {
-    const data = processDepartmentData(req);
+    const data = await processDepartmentData(req);
     const newDept = new Department(data);
     await newDept.save();
     res.status(201).json(newDept);
@@ -80,7 +120,7 @@ router.post("/", upload.any(), async (req, res) => {
 
 router.put("/:id", upload.any(), async (req, res) => {
   try {
-    const data = processDepartmentData(req);
+    const data = await processDepartmentData(req);
     const updated = await Department.findByIdAndUpdate(req.params.id, data, {
       new: true,
     });
@@ -91,8 +131,60 @@ router.put("/:id", upload.any(), async (req, res) => {
 });
 
 router.delete("/:id", async (req, res) => {
-  await Department.findByIdAndDelete(req.params.id);
-  res.json({ message: "Deleted" });
+  try {
+    const dept = await Department.findById(req.params.id);
+
+    if(!dept) {
+      return res.status(404).json({
+        error: "Department Not Found",
+      });
+    }
+
+    if(dept.image) {
+      const imagePath = path.join(
+        __dirname,
+        "../public",
+        dept.image.replace("/images/", "images/"),
+      );
+
+      await fs.unlink(imagePath).catch(() => {});
+    }
+
+    if (dept.imageIcon) {
+      const iconPath = path.join(
+        __dirname,
+        "../public",
+        dept.imageIcon.replace("/images/", "images/"),
+      );
+
+      await fs.unlink(iconPath).catch(() => {});
+    }
+
+    if (Array.isArray(dept.doctors)) {
+      for (const doc of dept.doctors) {
+        if (doc.image) {
+          const doctorImagePath = path.join(
+            __dirname,
+            "../public",
+            doc.image.replace("/images/", "images/"),
+          );
+
+          await fs.unlink(doctorImagePath).catch(() => {});
+        }
+      }
+    }
+ await Department.findByIdAndDelete(req.params.id);
+
+    res.json({
+      message: "Department and associated images deleted successfully",
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      error: err.message,
+    });
+  }
 });
 
 module.exports = router;

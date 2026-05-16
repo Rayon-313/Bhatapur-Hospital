@@ -1,5 +1,6 @@
 "use client";
 
+
 import { bookAppointment } from "@/lib/api/healthPackages";
 
 export default function AppointmentSection() {

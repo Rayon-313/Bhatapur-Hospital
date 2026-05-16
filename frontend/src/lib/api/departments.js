@@ -1,12 +1,13 @@
 // This file contains API functions for interacting with the backend department endpoints. It includes functions to fetch all departments, fetch a single department by ID, create a new department, update an existing department, and delete a department. Each function handles errors gracefully and logs them for debugging purposes.
-const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api/departments').replace(/\/$/, '');
+// const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api/departments').replace(/\/$/, '');
+const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
 
 /**
  * Fetch all departments
  */
 export const getDepartments = async () => {
   try {
-    const response = await fetch(`${API_BASE_URL}`);
+    const response = await fetch(`${backendUrl}/api/departments`);
     if (!response.ok) throw new Error('Failed to fetch departments');
     return await response.json();
   } catch (error) {
@@ -21,7 +22,7 @@ export const getDepartments = async () => {
 export const getDepartmentById = async (id) => {
   if (!id) return null;
   try {
-    const response = await fetch(`${API_BASE_URL}/${id}`);
+    const response = await fetch(`${backendUrl}/api/departments/${id}`);
     if (!response.ok) {
       if (response.status === 404) console.warn(`Department ${id} not found`);
       return null; 
@@ -59,7 +60,7 @@ export const createDepartment = async (formData) => {
  */
 export const updateDepartment = async (id, formData) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/${id}`, {
+    const response = await fetch(`${backendUrl}/api/departments/${id}`, {
       method: 'PUT',
       body: formData,
     });
@@ -79,7 +80,7 @@ export const updateDepartment = async (id, formData) => {
  */
 export const deleteDepartment = async (id) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/${id}`, {
+    const response = await fetch(`${backendUrl}/api/departments/${id}`, {
       method: 'DELETE',
     });
     if (!response.ok) throw new Error('Failed to delete department');

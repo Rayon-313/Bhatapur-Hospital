@@ -183,6 +183,14 @@ export default function EditHomePage() {
   const fileInputRef = useRef(null);
   const bannerInputRef = useRef(null);
 
+  const resolveBackendMediaUrl = (url) => {
+    if (!url) return url;
+    if (/^https?:\/\//i.test(url)) return url;
+    if (url.startsWith("//")) return `http:${url}`;
+    if (url.startsWith("/")) return `http://localhost:4000${url}`;
+    return url;
+  };
+
   // Load content from backend on mount
   useEffect(() => {
     const loadContent = async () => {
@@ -500,7 +508,7 @@ export default function EditHomePage() {
                       {service.detailedContent?.image1Path ? (
                         <div>
                           <img
-                            src={service.detailedContent.image1Path}
+                            src={resolveBackendMediaUrl(service.detailedContent.image1Path)}
                             alt="Service 1"
                           />
                           <p>Click to replace</p>
@@ -575,7 +583,7 @@ export default function EditHomePage() {
                       {service.detailedContent?.image2Path ? (
                         <div>
                           <img
-                            src={service.detailedContent.image2Path}
+                            src={resolveBackendMediaUrl(service.detailedContent.image2Path)}
                             alt="Service 2"
                           />
                           <p>Click to replace</p>
@@ -834,7 +842,7 @@ export default function EditHomePage() {
             >
               {service.imageUrl ? (
                 <div>
-                  <img src={service.imageUrl} alt="Service" />
+                  <img src={resolveBackendMediaUrl(service.imageUrl)} alt="Service" />
                   <p>Click or drag an image to replace</p>
                 </div>
               ) : (
@@ -861,7 +869,7 @@ export default function EditHomePage() {
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', margin: '15px 0' }}>
           {content.bannerImages?.map((url, index) => (
             <div key={index} style={{ position: 'relative', width: '120px', height: '80px' }}>
-              <img src={url} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }} />
+              <img src={resolveBackendMediaUrl(url)} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }} />
               <button 
                 onClick={() => removeBannerImage(index)}
                 style={{ position: 'absolute', top: '-5px', right: '-5px', background: 'red', color: 'white', border: 'none', borderRadius: '50%', cursor: 'pointer' }}
@@ -977,7 +985,7 @@ export default function EditHomePage() {
                 }}
               >
                 <video
-                  src={content.videoPath}
+                  src={resolveBackendMediaUrl(content.videoPath)}
                   controls
                   style={{
                     width: "100%",

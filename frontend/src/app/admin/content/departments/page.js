@@ -1,5 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
+const backendUrl = process.env.NEXT_PUBLIC_API_URL || '';
+
 import {
   getDepartments,
   updateDepartment,
@@ -133,7 +135,7 @@ export default function AdminDepartments() {
       ) : (
         <div style={styles.formCard}>
           <h3>Add New</h3>
-          <label>Department Nam</label>
+          <label>Department Name</label>
           <input
             style={styles.input}
             placeholder="Name"
@@ -225,7 +227,7 @@ export default function AdminDepartments() {
                 <input
                   type="file"
                   onChange={(e) =>
-                    setNewDept({ ...editForm, imageIcon: e.target.files[0] })
+                    setEditForm({ ...editForm, imageIcon: e.target.files[0] })
                   }
                 />
 
@@ -296,7 +298,7 @@ export default function AdminDepartments() {
             ) : (
               <div>
                 <img
-                  src={dept.image}
+                  src={`${backendUrl}${dept.image}`}
                   style={{ width: "100%", height: "150px", objectFit: "cover" }}
                   alt=""
                 />

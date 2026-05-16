@@ -1,6 +1,7 @@
 // src/lib/api/admin.js
+const backendUrl = process.env.NEXT_PUBLIC_API_URL || "";
 
-const API_BASE = "http://localhost:4000/api/admin";
+const API_BASE = `${backendUrl}/api/admin`;
 
 // Admin login
 export async function adminLogin(username, password) {

@@ -1,4 +1,5 @@
 "use client";
+const backendUrl = process.env.NEXT_PUBLIC_API_URL || '';
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { getDepartmentById } from '@/lib/api/departments';
@@ -55,7 +56,7 @@ export default function DepartmentDetailPage() {
 
       {/* 2. Department Photo */}
       <div style={styles.imageContainer}>
-        <img src={dept.image} alt={dept.name} style={styles.mainImg} />
+        <img src={`${backendUrl}${dept.image}`} alt={dept.name} style={styles.mainImg} />
       </div>
 
       {/* 3. About Department */}

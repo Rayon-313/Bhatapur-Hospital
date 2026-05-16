@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import styles from './about.module.css';
 import AppointmentSection from "@/components/home/AppointmentSection";
+const backendUrl = process.env.NEXT_PUBLIC_API_URL || '';
 
 export default function AboutPage() {
   const [aboutContent, setAboutContent] = useState(null);
@@ -11,7 +12,7 @@ export default function AboutPage() {
   useEffect(() => {
     const fetchAboutContent = async () => {
       try {
-        const res = await fetch('http://localhost:4000/api/about-content');
+        const res = await fetch(`${backendUrl}/api/about-content`);
         if (res.ok) {
           const data = await res.json();
           if (data) {
@@ -75,7 +76,9 @@ export default function AboutPage() {
         <div className={styles.hospitalProfileContent}>
           <div className={styles.hospitalContent}>
             <img 
-              src={aboutContent?.hospitalPhoto || '/images/hospital-default.jpg'} 
+              src={    aboutContent?.hospitalPhoto
+      ? `${backendUrl}${aboutContent.hospitalPhoto}`
+      : "/images/hospital-default.jpg"} 
               alt="Hospital" 
               className={styles.hospitalPhotoInline}
               onError={(e) => {
@@ -95,7 +98,8 @@ export default function AboutPage() {
         <div className={styles.messageWithPhoto}>
           <div className={styles.messagePhotoContainer}>
             <img 
-              src={aboutContent?.chairmanPhoto || '/images/chairman-default.jpg'} 
+              src={aboutContent?.chairmanPhoto  ? `${backendUrl}${aboutContent.chairmanPhoto}`
+      :  "/images/chairman-default.jpg"} 
               alt="Chairman" 
               className={styles.messagePhoto}
               onError={(e) => {
@@ -122,7 +126,8 @@ export default function AboutPage() {
             ? aboutContent.boardOfDirectors.map((director, index) => (
                 <div key={index} className={styles.directorCard}>
                   <img 
-                    src={director.photo || '/images/director-default.jpg'} 
+                    src={director.photo  ? `${backendUrl}${director.photo}`
+      :  '/images/director-default.jpg'} 
                     alt={director.name || `Director ${index + 1}`}
                     className={styles.directorPhoto}
                     onError={(e) => {
@@ -167,7 +172,7 @@ export default function AboutPage() {
         <div className={styles.messageWithPhoto}>
           <div className={styles.messagePhotoContainer}>
             <img 
-              src={aboutContent?.medicalDirectorPhoto || '/images/medical-director-default.jpg'} 
+              src={aboutContent?.medicalDirectorPhoto ? `${backendUrl}${aboutContent.medicalDirectorPhoto } ` : '/images/medical-director-default.jpg'} 
               alt="Medical Director" 
               className={styles.messagePhoto}
               onError={(e) => {
@@ -194,7 +199,7 @@ export default function AboutPage() {
             ? aboutContent.managementTeam.map((member, index) => (
                 <div key={index} className={styles.directorCard}>
                   <img 
-                    src={member.photo || '/images/team-member-default.jpg'} 
+                    src={member.photo  ? `${backendUrl}${member.photo } ` : '/images/team-member-default.jpg'} 
                     alt={member.name || `Team Member ${index + 1}`}
                     className={styles.directorPhoto}
                     onError={(e) => {
@@ -241,7 +246,7 @@ export default function AboutPage() {
             ? aboutContent.awards.map((award, index) => (
                 <div key={index} className={styles.awardItem}>
                   <img 
-                    src={award.photo || '/images/award-default.jpg'} 
+                    src={award.photo ? `${backendUrl}${award.photo } ` : '/images/award-default.jpg'} 
                     alt={award.title || `Award ${index + 1}`}
                     className={styles.awardPhotoRow}
                     onError={(e) => {
