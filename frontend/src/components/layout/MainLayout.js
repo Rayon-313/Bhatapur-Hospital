@@ -1,4 +1,5 @@
 "use client";
+const backendUrl = process.env.NEXT_PUBLIC_API_URL || "";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -67,7 +68,7 @@ export default function MainLayout({ children }) {
     setStatus("Sending...");
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || "/api"}/feedbacks`,
+        `${backendUrl}/api/feedbacks`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

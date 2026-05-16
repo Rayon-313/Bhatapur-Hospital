@@ -1,12 +1,12 @@
+const dotenv = require("dotenv");
+dotenv.config();
 const express = require("express");
 const cors = require("cors");
-const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const path = require("path");
 const fs = require("fs");
+const frontendUrl = process.env.NEXT_PUBLIC_APP_URL ;
 
-// Load environment variables
-dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 4000;
 // Middleware
 app.use(
   cors({
-    origin: process.env.NEXT_PUBLIC_APP_URL ,
+    origin: frontendUrl,
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
     exposedHeaders: ["Content-Disposition"], // This allows the frontend to see the filename for downloads

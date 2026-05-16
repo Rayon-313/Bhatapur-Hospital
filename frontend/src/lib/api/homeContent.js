@@ -1,6 +1,6 @@
 // src/lib/api/homeContent.js
-
-const API_BASE = "http://localhost:4000/api/home-content";
+const backendUrl = process.env.NEXT_PUBLIC_API_URL || "";
+const API_BASE = `${backendUrl}/api/home-content`;
 
 // Fetch homepage content from backend
 export async function getHomeContent() {

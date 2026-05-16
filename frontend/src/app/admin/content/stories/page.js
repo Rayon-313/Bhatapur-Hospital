@@ -4,11 +4,29 @@ import { useState, useEffect } from "react";
 import { getStories, createStory, updateStory, deleteStory } from '@/lib/api/healthPackages';
 import styles from './storiesAdmin.module.css';
 
-// Drag and drop helper function
+const backendUrl = process.env.NEXT_PUBLIC_API_URL || "";
+
+const getImageSrc = (image) => {
+  if (!image) return "";
+  if (/^(blob:|data:|https?:\/\/)/.test(image)) return image;
+  return `${backendUrl}${image}`;
+};
+
 const uploadImage = async (file) => {
-  // In a real implementation, you would upload to your server or a service like Cloudinary
-  // For now, returning a placeholder URL
-  return URL.createObjectURL(file);
+  const formData = new FormData();
+  formData.append('image', file);
+
+  const response = await fetch(`${backendUrl}/api/stories/upload-image`, {
+    method: 'POST',
+    body: formData,
+  });
+
+  if (!response.ok) {
+    throw new Error('Image upload failed');
+  }
+
+  const data = await response.json();
+  return data.imagePath;
 };
 
 export default function StoriesPage() {
@@ -190,8 +208,13 @@ export default function StoriesPage() {
                   e.currentTarget.classList.remove(styles.dragDropAreaActive);
                   const files = e.dataTransfer.files;
                   if (files.length > 0 && files[0].type.startsWith('image/')) {
-                    const imageUrl = await uploadImage(files[0]);
-                    setNewStory({...newStory, image: imageUrl});
+                    try {
+                      const imageUrl = await uploadImage(files[0]);
+                      setNewStory({...newStory, image: imageUrl});
+                    } catch (err) {
+                      console.error('Error uploading image:', err);
+                      alert('Image upload failed');
+                    }
                   }
                 }}
                 onClick={() => {
@@ -203,8 +226,13 @@ export default function StoriesPage() {
                     if (target && target.files && target.files.length > 0) {
                       const file = target.files[0];
                       if (file.type.startsWith('image/')) {
-                        const imageUrl = await uploadImage(file);
-                        setNewStory({...newStory, image: imageUrl});
+                        try {
+                          const imageUrl = await uploadImage(file);
+                          setNewStory({...newStory, image: imageUrl});
+                        } catch (err) {
+                          console.error('Error uploading image:', err);
+                          alert('Image upload failed');
+                        }
                       }
                     }
                   };
@@ -215,7 +243,7 @@ export default function StoriesPage() {
                 <p className={styles.dragDropSubtext}>Supports JPG, PNG, GIF</p>
                 {newStory.image && (
                   <div className="mt-2">
-                    <img src={newStory.image} alt="Preview" className={styles.imagePreview} />
+                    <img src={getImageSrc(newStory.image)} alt="Preview" className={styles.imagePreview} />
                   </div>
                 )}
               </div>
@@ -302,8 +330,13 @@ export default function StoriesPage() {
                     e.currentTarget.classList.remove(styles.dragDropAreaActive);
                     const files = e.dataTransfer.files;
                     if (files.length > 0 && files[0].type.startsWith('image/')) {
-                      const imageUrl = await uploadImage(files[0]);
-                      updateEditingStory('image', imageUrl);
+                      try {
+                        const imageUrl = await uploadImage(files[0]);
+                        updateEditingStory('image', imageUrl);
+                      } catch (err) {
+                        console.error('Error uploading image:', err);
+                        alert('Image upload failed');
+                      }
                     }
                   }}
                   onClick={() => {
@@ -315,8 +348,13 @@ export default function StoriesPage() {
                       if (target && target.files && target.files.length > 0) {
                         const file = target.files[0];
                         if (file.type.startsWith('image/')) {
-                          const imageUrl = await uploadImage(file);
-                          updateEditingStory('image', imageUrl);
+                          try {
+                            const imageUrl = await uploadImage(file);
+                            updateEditingStory('image', imageUrl);
+                          } catch (err) {
+                            console.error('Error uploading image:', err);
+                            alert('Image upload failed');
+                          }
                         }
                       }
                     };
@@ -327,7 +365,7 @@ export default function StoriesPage() {
                   <p className={styles.dragDropSubtext}>Supports JPG, PNG, GIF</p>
                   {editingStory.image && (
                     <div className="mt-2">
-                      <img src={editingStory.image} alt="Preview" className={styles.imagePreview} />
+                      <img src={getImageSrc(editingStory.image)} alt="Preview" className={styles.imagePreview} />
                     </div>
                   )}
                 </div>

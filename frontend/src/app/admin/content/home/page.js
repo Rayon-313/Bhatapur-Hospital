@@ -1,4 +1,5 @@
 "use client";
+const backendUrl = process.env.NEXT_PUBLIC_API_URL || "";
 
 import { useState, useEffect, useRef } from "react";
 import { getHomeContent, saveHomeContent } from "@/lib/api/homeContent";
