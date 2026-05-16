@@ -8,7 +8,7 @@
   --primary-light: hwb(165 90% 2%); /* For very soft section backgrounds */
 
   /* Secondary: The 'Action' Color */
-  --secondary-color: #000000; /* A clear, bright Orange/Amber */
+  --secondary-color: #f39c12; /* A clear, bright Orange/Amber */
   /* Logic: In a green/white environment, a sharp Orange is the 
      fastest color for a patient to find when they need 'Emergency' or 'Book' */
 
