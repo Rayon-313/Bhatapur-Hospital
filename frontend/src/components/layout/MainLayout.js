@@ -1,5 +1,4 @@
 "use client";
-const backendUrl = process.env.NEXT_PUBLIC_API_URL || "";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -7,6 +6,22 @@ import { getHomeContent } from "@/lib/api/homeContent";
 import { reportApi } from "@/lib/api/reports"; // Import the reports API
 import { usePathname } from "next/navigation";
 import "./layout.css";
+
+function RotatingText({ phrases }) {
+  const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
+
+  useEffect(() => {
+    if (!phrases.length) return;
+
+    const interval = setInterval(() => {
+      setCurrentPhraseIndex((prevIndex) => (prevIndex + 1) % phrases.length);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [phrases]);
+
+  return <p className="rotating-text">{phrases[currentPhraseIndex]}</p>;
+}
 
 export default function MainLayout({ children }) {
   const [phrases, setPhrases] = useState([
@@ -16,7 +31,7 @@ export default function MainLayout({ children }) {
     "Your trusted partner in health",
   ]);
 
-  const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
+  // const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // --- NEW REPORTS VISIBILITY STATE ---
@@ -56,19 +71,19 @@ export default function MainLayout({ children }) {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentPhraseIndex((prevIndex) => (prevIndex + 1) % phrases.length);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [phrases]);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setCurrentPhraseIndex((prevIndex) => (prevIndex + 1) % phrases.length);
+  //   }, 3000);
+  //   return () => clearInterval(interval);
+  // }, [phrases]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus("Sending...");
     try {
       const response = await fetch(
-        `${backendUrl}/api/feedbacks`,
+        `${process.env.NEXT_PUBLIC_API_URL || "/api"}/feedbacks`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -90,7 +105,7 @@ export default function MainLayout({ children }) {
   const handleLogoError = () => console.log("Logo failed to load");
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
-  const currentPhrase = phrases[currentPhraseIndex];
+  // const currentPhrase = phrases[0];
   const pathname = usePathname();
   const isAdminPanel = pathname && pathname.startsWith("/admin");
   const isServiceDetail =
@@ -112,7 +127,8 @@ export default function MainLayout({ children }) {
                 <Link href="/" onClick={closeMobileMenu}>
                   <h1>Bhaktapur International Hospital</h1>
                 </Link>
-                <p className="rotating-text">{currentPhrase}</p>
+                {/* <p className="rotating-text">{currentPhrase}</p> */}
+                <RotatingText phrases={phrases} />
               </div>
             </div>
 

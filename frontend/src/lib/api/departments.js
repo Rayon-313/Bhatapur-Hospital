@@ -39,7 +39,7 @@ export const getDepartmentById = async (id) => {
  */
 export const createDepartment = async (formData) => {
   try {
-    const response = await fetch(`${API_BASE_URL}`, {
+    const response = await fetch(`${backendUrl}/api/departments`, {
       method: 'POST',
       // Note: No 'Content-Type' header here. Browser sets it for FormData automatically.
       body: formData,
