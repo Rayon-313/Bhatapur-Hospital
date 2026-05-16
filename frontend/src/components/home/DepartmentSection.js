@@ -17,7 +17,7 @@ export default function DepartmentSection({ departments = [] }) {
     const card = container.querySelector(".deptCard");
     if (!card) return;
 
-    const gap = 24;
+    const gap = parseFloat(getComputedStyle(container).gap) || 0;
     const cardWidth = card.offsetWidth + gap;
     const maxScroll = container.scrollWidth - container.clientWidth;
 
@@ -195,6 +195,9 @@ export default function DepartmentSection({ departments = [] }) {
           fontSize: "34px",
           fontWeight: "700",
           padding: "0 2rem",
+          maxWidth: "1360px",
+          margin: "0 auto 1.5rem",
+          position: "relative",
         }}
       >
         Our Departments
@@ -202,18 +205,18 @@ export default function DepartmentSection({ departments = [] }) {
 
       <div
         style={{
-          maxWidth: "1200px",
+          maxWidth: "1360px",
           margin: "auto",
           position: "relative",
-          padding: "0 2rem",
+          padding: "0 3.5rem",
           boxSizing: "border-box",
         }}
       >
         <button className="arrow left" onClick={() => scrollBoth(-1)}>
-          ❮
+          &#10094;
         </button>
         <button className="arrow right" onClick={() => scrollBoth(1)}>
-          ❯
+          &#10095;
         </button>
 
         <Row data={row1} refObj={row1Ref} />
@@ -225,8 +228,8 @@ export default function DepartmentSection({ departments = [] }) {
           position: absolute;
           top: 50%;
           transform: translateY(-50%);
-          width: 42px;
-          height: 42px;
+          width: 45px;
+          height: 45px;
           border-radius: 50%;
           border: none;
           cursor: pointer;
@@ -234,10 +237,11 @@ export default function DepartmentSection({ departments = [] }) {
           color: white;
           background: rgba(11, 122, 196, 0.9);
           z-index: 50;
-        }
-
-        .arrow:hover {
-          background: #18b730;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+          transition: all 0.3s ease;
         }
 
         .left {
@@ -246,20 +250,6 @@ export default function DepartmentSection({ departments = [] }) {
 
         .right {
           right: 0px;
-        }
-
-        @media (max-width: 640px) {
-          .arrow {
-            width: 34px;
-            height: 34px;
-            font-size: 14px;
-          }
-          .left {
-            left: 4px;
-          }
-          .right {
-            right: 4px;
-          }
         }
       `}</style>
     </section>

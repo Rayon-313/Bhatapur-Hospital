@@ -9,7 +9,6 @@ export default function ContactUsPage() {
       <div className="wrapper">
         <div className="header">
           <h1>Contact Us</h1>
-          <p>Reach out to us for appointments, inquiries, or feedback.</p>
         </div>
 
         {/* CONTACT INFO */}
@@ -65,27 +64,38 @@ export default function ContactUsPage() {
             </div>
 
             {/* To direct  uer to facebook */}
-            <a href="https://www.google.com/search?q=facebok&ie=UTF-8" target="_blank" rel="noopener noreferrer"><div className="card">
-              <div className="icon">
-                <img className="socialMedia" src="/images/fb.png" />
+            <a
+              href="https://www.google.com/search?q=facebok&ie=UTF-8"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <div className="card">
+                <div className="icon">
+                  <img className="socialMedia" src="/images/fb.png" />
+                </div>
+                <div>
+                  <div className="label">Facebook</div>
+                  <div className="value">Find us on Facebook</div>
+                </div>
               </div>
-              <div>
-                <div className="label">Facebook</div>
-                <div className="value">Find us on Facebook</div>
-              </div>
-            </div></a>
-          
+            </a>
 
-          <a href="https://www.google.com/search?q=instagram&sxsrf=ANbL-n709acrv1sJClBn1rwgMJiaOESvKQ%3A1777213955709" target="_blank" rel="noopener noreferrer"><div className="card">
-              <div className="icon">
-                <img className="socialMedia" src="/images/ig.png" />
+            <a
+              href="https://www.google.com/search?q=instagram&sxsrf=ANbL-n709acrv1sJClBn1rwgMJiaOESvKQ%3A1777213955709"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <div className="card">
+                <div className="icon">
+                  <img className="socialMedia" src="/images/ig.png" />
+                </div>
+                <div>
+                  <div className="label">Instagram</div>
+                  <div className="value">Find us on Instagram</div>
+                </div>
               </div>
-              <div>
-                <div className="label">Instagram</div>
-                <div className="value">Find us on Instagram</div>
-              </div>
-            </div></a>
-            </div>
+            </a>
+          </div>
         </section>
 
         {/* APPOINTMENT */}
@@ -93,8 +103,9 @@ export default function ContactUsPage() {
           <h2
             style={{
               textAlign: "center",
-              fontSize: "clamp(1.3rem, 2.2vw, 2.5rem)",
+              fontSize: "clamp(1.5rem, 4vw, 2.5rem)",
               marginBottom: "2rem",
+              marginTop: "-4rem",
               color: "#1e40af" /* Kept consistent with your other headings */,
             }}
           >
@@ -102,7 +113,12 @@ export default function ContactUsPage() {
           </h2>
           <div className="appointmentBox">
             {/* This wrapper div ensures the inner component centers itself */}
-            <div style={{ width: "100%", maxWidth: "800px" }}>
+            <div
+              style={{
+                width: "clamp(400px, 80vw, 700px)",
+                marginLeft: "clamp(80px, 10vw, 40%)",
+              }}
+            >
               <AppointmentSection />
             </div>
           </div>
@@ -110,7 +126,16 @@ export default function ContactUsPage() {
 
         {/* MAP */}
         <section className="section map">
-          <h2>Find Us Here</h2>
+          <h2
+            style={{
+              textAlign: "center",
+              fontSize: "clamp(1.3rem, 4vw, 2.5rem)",
+              marginBottom: "2rem",
+              color: "#1e40af" /* Kept consistent with your other headings */,
+            }}
+          >
+            Find Us Here
+          </h2>
           <div className="mapBox">
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1766.6864772580295!2d85.3654504362405!3d27.67486566437954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb1b3eb720aa73%3A0xbd155722b5862ea1!2sBhaktapur%20International%20Hospital!5e0!3m2!1sne!2snp!4v1767370171204!5m2!1sne!2snp"

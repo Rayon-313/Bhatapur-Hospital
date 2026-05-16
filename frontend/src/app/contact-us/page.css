@@ -17,13 +17,8 @@
 }
 
 .wrapper {
-  max-width: 1300px;
+  max-width: 1250px;
   margin: 0 auto;
-  padding: clamp(1rem, 5vw, 2.5rem);
-  background-color: white;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e2e8f0;
 }
 
 /* Header Section */
@@ -31,14 +26,16 @@
   text-align: center;
   margin-bottom: 3rem;
   padding: 3rem 1.5rem;
-  background: linear-gradient(135deg, #0b7ac4 0%, #1e40af 100%);
-  border-radius: 15px;
-  color: white;
-  box-shadow: 0 5px 15px rgba(11, 122, 196, 0.3);
+  border-bottom: 3px solid #3498db;
+  color: #2c3e50;
+  margin-top: -75px;
+  margin-bottom: 0px;
+  height: 100px;
+  font-size: 2.5rem;
 }
 
 .header h1 {
-  font-size: clamp(2rem, 5vw, 3rem);
+  font-size: clamp(2rem, 4vw, 2.5rem);
   font-weight: 700;
   margin: 0 0 0.5rem 0;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -127,10 +124,10 @@
 .section-appointment {
   display: flex;
   flex-direction: column;
-  align-items: center;    /* Centers children horizontally */
+  align-items: center; /* Centers children horizontally */
   justify-content: center; /* Centers children vertically */
   width: 100%;
-  padding: 40px 0;        /* Vertical spacing */
+  padding: 40px 0; /* Vertical spacing */
   box-sizing: border-box;
 }
 /* Appointment Box — PERFECTLY CENTERED */
@@ -140,18 +137,17 @@
   border: 1px solid #c6d5e7;
   padding: 2.5rem 1.5rem;
   width: 100%;
-  max-width: 1000px;      /* Prevents the form from becoming too wide on desktop */
+  max-width: 1000px; /* Prevents the form from becoming too wide on desktop */
   display: flex;
   flex-direction: column;
-  align-items: center;    /* Horizontally centers the internal form */
+  align-items: center; /* Horizontally centers the internal form */
   justify-content: center;
-  margin: 0 auto;         /* Safety centering */
+  margin: 0 auto; /* Safety centering */
   overflow: hidden;
 }
 .appointmentBox > div {
   width: 100%;
   display: flex;
-  justify-content: center;
 }
 
 /* Map Section */
@@ -246,5 +242,33 @@
 
   .appointmentBox {
     padding: 1.5rem 1rem;
+  }
+  .mapBox {
+    margin-left: clamp(10px, 4vw, 0px);
+  }
+}
+@media (min-width: 1258px) {
+  .header {
+    text-align: center;
+    justify-content: center;
+    margin-bottom: 0rem;
+    padding: 3rem 1.5rem;
+    border-bottom: 3px solid #3498db;
+    color: #2c3e50;
+    margin-top: -75px;
+    height: 140px;
+    font-size: 2.5rem;
+  }
+}
+@media (min-width: 1000px) {
+  .header {
+    text-align: center;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+    border-bottom: 3px solid #3498db;
+    color: #2c3e50;
+    margin-top: -70px;
+    height: 120px;
+    font-size: 2.5rem;
   }
 }

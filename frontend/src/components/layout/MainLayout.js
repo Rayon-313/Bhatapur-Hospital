@@ -5,6 +5,7 @@ import Link from "next/link";
 import { getHomeContent } from "@/lib/api/homeContent";
 import { reportApi } from "@/lib/api/reports"; // Import the reports API
 import { usePathname } from "next/navigation";
+import "./layout.css";
 
 export default function MainLayout({ children }) {
   const [phrases, setPhrases] = useState([
@@ -66,7 +67,7 @@ export default function MainLayout({ children }) {
     setStatus("Sending...");
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api"}/feedbacks`,
+        `${process.env.NEXT_PUBLIC_API_URL || "/api"}/feedbacks`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -180,336 +181,132 @@ export default function MainLayout({ children }) {
       </main>
 
       {!isAdminPanel && !isServiceDetail && (
-        <footer
-          className="site-footer"
-          style={{
-            width: "100%",
-            backgroundColor: "var(--primary-dark)",
-            color: "var(--hftext-color)",
-            padding: "4rem 0 0 0",
-            marginTop: "auto",
-          }}
-        >
-          {/* INNER WRAPPER: Space-between ensures one is far left and one is far right */}
-          <div
-            style={{
-              width: "80%",
-              margin: "0 auto",
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
-              gap: "2rem",
-              padding: "0 2rem",
-            }}
-          >
-            {/* 1. CONTACT INFO: Now on the LEFT side of the container */}
-            <div
-              style={{
-                flex: "0 1 400px",
-                minWidth: "280px",
-                display: "flex",
-                flexDirection: "column",
-                gap: "1.5rem",
-                textAlign: "left",
-              }}
-            >
-              <img
-                src="/images/logo.png"
-                alt="Logo"
-                style={{ width: "80px", filter: "brightness(0) invert(1)" }}
-              />
-              <div style={{ fontSize: "1.1rem", lineHeight: "1.8" }}>
-                <p
-                  style={{
-                    fontWeight: "bold",
-                    fontSize: "1.3rem",
-                    marginBottom: "1.5rem",
-                    color: "white",
-                  }}
-                >
+        <footer className="site-footer">
+          <div className="footer-content">
+            {/* CONTACT INFO */}
+            <div className="footer-contact">
+              <img src="/images/logo.png" alt="Logo" className="footer-logo" />
+              <div className="footer-contact-info">
+                <p className="footer-hospital-name">
                   Bhaktapur International Hospital
                 </p>
-                <p
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                  }}
-                >
-                  <img
-                    src="/images/phone.png"
-                    style={{
-                      width: "25px",
-                      height: "25px",
-                      position: "relative",
-                      top: "2px", //  pushes image downward
-                    }}
-                  />
+                <p>
+                  <img src="/images/phone.png" className="footer-icon" />{" "}
                   9801202550
                 </p>
-                <p
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                  }}
-                >
-                  <img
-                    src="/images/telephone.png"
-                    style={{
-                      width: "25px",
-                      height: "25px",
-                      position: "relative",
-                      top: "2px", //  pushes image downward
-                    }}
-                  />
+                <p>
+                  <img src="/images/telephone.png" className="footer-icon" />{" "}
                   015178645
                 </p>
-                <p
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                  }}
-                >
-                  <img
-                    src="/images/ambulance.png"
-                    style={{
-                      width: "25px",
-                      height: "25px",
-                      position: "relative",
-                      top: "2px", //  pushes image downward
-                    }}
-                  />
+                <p>
+                  <img src="/images/ambulance.png" className="footer-icon" />{" "}
                   02349234
                 </p>
-                <p
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                  }}
-                >
+                <p>
                   <img
                     src="/images/footerhospital.png"
-                    style={{
-                      width: "25px",
-                      height: "25px",
-                      position: "relative",
-                      top: "2px", // 👈 pushes image downward
-                    }}
-                  />
-                  Bhaktapur,Nepal
+                    className="footer-icon"
+                  />{" "}
+                  Bhaktapur, Nepal
                 </p>
-                <p
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                  }}
-                >
-                  <img
-                    src="/images/email.png"
-                    style={{
-                      width: "25px",
-                      height: "25px",
-                      position: "relative",
-                      top: "2px", // 👈 pushes image downward
-                    }}
-                  />
+                <p>
+                  <img src="/images/email.png" className="footer-icon" />{" "}
                   info@bihospital.com
                 </p>
               </div>
-
-              {/*  SOCIAL ICONS WITH WHITE CIRCULAR BACKGROUNDS */}
-              <div
-                style={{ display: "flex", gap: "15px", marginTop: "0.1rem" }}
-              >
+              <div className="footer-socials">
                 <a href="#" target="_blank" rel="noopener noreferrer">
                   <img
                     src="/images/linkedin.png"
                     alt="LinkedIn"
-                    style={{
-                      width: "35px", // Adjusted size slightly larger to account for padding
-                      height: "35px",
-                      backgroundColor: "white", //  White background
-                      borderRadius: "50%", // Circular shape
-                      padding: "6px", //  Spacing around the logo
-                      display: "block", //  Ensures correct alignment within <a> tag
-                    }}
+                    className="social-icon"
                   />
                 </a>
-
                 <a href="#" target="_blank" rel="noopener noreferrer">
                   <img
                     src="/images/ig.png"
                     alt="Instagram"
-                    style={{
-                      width: "35px",
-                      height: "35px",
-                      backgroundColor: "white",
-                      borderRadius: "50%",
-                      padding: "6px",
-                      display: "block",
-                    }}
+                    className="social-icon"
                   />
                 </a>
-
                 <a href="#" target="_blank" rel="noopener noreferrer">
                   <img
                     src="/images/twitter.png"
                     alt="Twitter"
-                    style={{
-                      width: "35px",
-                      height: "35px",
-                      backgroundColor: "white",
-                      borderRadius: "50%",
-                      padding: "6px",
-                      display: "block",
-                    }}
+                    className="social-icon"
                   />
                 </a>
-
                 <a href="#" target="_blank" rel="noopener noreferrer">
                   <img
                     src="/images/fb.png"
                     alt="Facebook"
-                    style={{
-                      width: "35px",
-                      height: "35px",
-                      backgroundColor: "white",
-                      borderRadius: "50%",
-                      padding: "6px",
-                      display: "block",
-                    }}
+                    className="social-icon"
                   />
                 </a>
               </div>
             </div>
 
             {/* FEEDBACK FORM */}
-            <div style={{ flex: "0 1 550px", minWidth: "300px" }}>
-              <h2
-                style={{
-                  color: "white",
-                  marginBottom: "1.5rem",
-                  fontSize: "1.8rem",
-                }}
-              >
-                Feedback Form
-              </h2>
-              <div
-                style={{
-                  padding: "1.5rem",
-                  backgroundColor: "rgba(255, 255, 255, 0.05)",
-                  borderRadius: "var(--radius-md)",
-                  border: "1px solid rgba(255, 255, 255, 0.1)",
-                  marginRight: "40px",
-                }}
-              >
-                <form
-                  onSubmit={handleSubmit}
-                  style={{ display: "grid", gap: "1rem" }}
-                >
-                  <label
-                    htmlFor="name"
-                    style={{ color: "var(--hftext-color)", fontSize: "0.9rem" }}
-                  >
-                    Name
-                  </label>
+            <div className="feedback-form">
+              <h2 className="feedback-header">Feedback Form</h2>
+              <div className="feedback-div">
+                <form onSubmit={handleSubmit}>
+                  <label htmlFor="name">Name</label>
                   <input
+                    className="footerinput"
+                    id="name"
                     type="text"
                     placeholder="Name"
                     value={formData.name}
                     onChange={(e) =>
                       setFormData({ ...formData, name: e.target.value })
                     }
-                    style={footerInputStyle}
                     required
                   />
-
-                  <label
-                    htmlFor="email"
-                    style={{ color: "var(--hftext-color)", fontSize: "0.9rem" }}
-                  >
-                    Email
-                  </label>
+                  <label htmlFor="email">Email</label>
                   <input
+                    className="footerinput"
+                    id="email"
                     type="email"
                     placeholder="Email"
                     value={formData.email}
                     onChange={(e) =>
                       setFormData({ ...formData, email: e.target.value })
                     }
-                    style={footerInputStyle}
                     required
                   />
-
-                  <label
-                    htmlFor="subject"
-                    style={{ color: "var(--hftext-color)", fontSize: "0.9rem" }}
-                  >
-                    Subject
-                  </label>
+                  <label htmlFor="subject">Subject</label>
                   <input
+                    className="footerinput"
+                    id="subject"
                     type="text"
                     placeholder="Subject"
                     value={formData.subject}
                     onChange={(e) =>
                       setFormData({ ...formData, subject: e.target.value })
                     }
-                    style={footerInputStyle}
                     required
                   />
-
-                  <label
-                    htmlFor="message"
-                    style={{ color: "var(--hftext-color)", fontSize: "0.9rem" }}
-                  >
-                    Message
-                  </label>
+                  <label htmlFor="message">Message</label>
                   <textarea
+                    className="footerinput"
+                    id="message"
                     placeholder="Message"
                     rows={3}
                     value={formData.message}
                     onChange={(e) =>
                       setFormData({ ...formData, message: e.target.value })
                     }
-                    style={footerInputStyle}
                     required
-                  ></textarea>
-
-                  <button type="submit" style={footerButtonStyle}>
-                    Send Message
-                  </button>
-                  {status && (
-                    <p
-                      style={{
-                        color: "white",
-                        marginTop: "10px",
-                        fontSize: "0.9rem",
-                      }}
-                    >
-                      {status}
-                    </p>
-                  )}
+                  />
+                  <button type="submit">Send Message</button>
+                  {status && <p className="footer-status">{status}</p>}
                 </form>
               </div>
             </div>
           </div>
 
-          <div
-            style={{
-              width: "100%",
-              marginTop: "4rem",
-              borderTop: "1px solid rgba(255,255,255,0.1)",
-              padding: "1.5rem 2rem",
-              textAlign: "center",
-              fontSize: "0.9rem",
-              backgroundColor: "rgba(0,0,0,0.1)",
-            }}
-          >
+          <div className="footer-bottom">
             <p>
               © {new Date().getFullYear()} Bhaktapur International Hospital Pvt.
               Ltd. | All rights reserved.

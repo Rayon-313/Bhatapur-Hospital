@@ -12,3 +12,10 @@ frontend/.next/
 .env.local
 *.mp4
 videos/
+
+node_modules/
+.next/
+.env
+
+frontend/node_modules/
+frontend/.next/

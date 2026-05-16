@@ -1,117 +1,252 @@
-/* HEADER */
-.site-header {
-  background-color: #325bb3;
-  padding: 10px 20px;
-  border-radius: 0 0 10px 10px;
-  color: white;
-}
-
-/* HEADER LAYOUT */
-.header-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/* LOGO */
-.logo-section {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.logo-image {
-  width: 50px;
-  height: 50px;
-  object-fit: contain;
-}
-
-/* TEXT */
-.logo-text h1 {
-  font-size: 18px;
-  margin: 0;
-  color: white;
-}
-
-/* ROTATING TEXT */
-.site-header-subtitle {
-  font-size: 14px;
-  color: white;
-}
-
-/* extra class (optional but clean) */
-.rotating-text {
-  color: white;
-}
-
-/* NAV */
-.nav-container {
-  display: flex;
-  align-items: center;
-}
-
-.site-subnav {
-  display: flex;
-  gap: 15px;
-}
-
-.site-subnav a {
-  text-decoration: none;
-  color: white;
-  font-size: 16px;
-}
-
-.site-subnav a:hover {
-  color: #dbeafe;
-}
-
-/* MOBILE BUTTON */
-.mobile-menu-button {
-  display: none;
-  font-size: 24px;
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-}
-
-/* MAIN */
-.site-main {
-  min-height: 80vh;
-  padding: 20px;
-  width: 100%;
-}
-
-/* FOOTER */
+/* =============================================
+   FOOTER
+   ============================================= */
 .site-footer {
-  text-align: center;
-  padding: 15px;
-  font-size: 14px;
-  border-top: 1px solid #e5e5e5;
+  width: 100%;
+  background-color: var(--primary-dark);
+  color: var(--hftext-color);
+  padding: 4rem 0 0 0;
+  margin-top: auto;
 }
 
-/* MOBILE */
-@media (max-width: 768px) {
-  .site-subnav {
-    display: none;
-    flex-direction: column;
-    position: absolute;
-    right: 10px;
-    top: 70px;
-    background: #0d3fab;
-    padding: 10px;
-    border-radius: 5px;
-  }
-
-  .site-subnav.mobile-menu-open {
-    display: flex;
-  }
-
-  .mobile-menu-button {
-    display: block;
-  }
+.footer-content {
+  width: min(1180px, 90%);
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 3rem;
 }
-.rotating-text {
+
+/* --- Contact Column --- */
+.footer-contact {
+  flex: 1 1 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.footer-logo {
+  width: 80px;
+  filter: brightness(0) invert(1);
+}
+
+.footer-contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.footer-hospital-name {
+  font-weight: bold;
+  font-size: 1.2rem;
   color: white;
-  opacity: 80%;
+  margin-bottom: 0.5rem;
+}
+
+.footer-contact-info p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.footer-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  position: relative;
+  top: 1px;
+}
+
+.footer-socials {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.social-icon {
+  width: 35px;
+  height: 35px;
+  background-color: white;
+  border-radius: 50%;
+  padding: 6px;
+  display: block;
+  box-sizing: border-box;
+}
+
+/* --- Feedback Form Column --- */
+.feedback-form {
+  flex: 1 1 280px;
+}
+
+.feedback-header {
+  color: white;
+  font-size: 1.6rem;
+  margin-bottom: 1.25rem;
+}
+
+.feedback-div {
+  padding: 1.5rem;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.feedback-div form {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.feedback-div label {
+  color: var(--hftext-color);
+  font-size: 0.9rem;
+}
+
+.feedback-div input,
+.feedback-div textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.7rem;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.feedback-div textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.feedback-div button {
+  width: 100%;
+  background-color: var(--secondary-color);
+  color: white;
+  padding: 0.8rem;
+  border-radius: var(--radius-md);
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.footer-status {
+  color: white;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.footerinput::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* --- Footer Bottom Bar --- */
+.footer-bottom {
+  width: 100%;
+  margin-top: 4rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.5rem 2rem;
+  text-align: center;
+  font-size: 0.9rem;
+  background-color: rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+/* =============================================
+   TABLET — 768px to 1099px
+   ============================================= */
+@media (min-width: 768px) and (max-width: 1099px) {
+  .footer-content {
+    width: 95%;
+    gap: 2rem;
+  }
+
+  .footer-contact {
+    flex: 1 1 260px;
+  }
+
+  .feedback-form {
+    flex: 1 1 320px;
+  }
+
+  .feedback-header {
+    font-size: 1.35rem;
+  }
+}
+
+/* =============================================
+   MOBILE — up to 767px
+   ============================================= */
+@media (max-width: 767px) {
+  .site-footer {
+    padding: 2.5rem 0 0rem 0;
+  }
+
+  .footer-content {
+    width: 100%;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 0 1.25rem;
+    box-sizing: border-box;
+  }
+
+  .footer-contact,
+  .feedback-form {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+
+  .footer-contact-info {
+    font-size: 0.95rem;
+  }
+
+  .feedback-header {
+    font-size: 1.3rem;
+  }
+
+  .feedback-div {
+    padding: 1rem;
+  }
+
+  .footer-bottom {
+    margin-top: 2.5rem;
+    padding: 1.25rem 1rem;
+  }
+}
+
+/* =============================================
+   SMALL MOBILE — up to 420px
+   ============================================= */
+@media (max-width: 420px) {
+  .footer-content {
+    padding: 0 1rem;
+    gap: 1.5rem;
+  }
+
+  .footer-contact-info {
+    font-size: 0.88rem;
+  }
+
+  .footer-hospital-name {
+    font-size: 1.05rem;
+  }
+
+  .feedback-header {
+    font-size: 1.15rem;
+  }
+
+  .feedback-div {
+    padding: 0.85rem;
+  }
+
+  .footer-bottom {
+    font-size: 0.8rem;
+    padding: 1rem 0.85rem;
+  }
 }

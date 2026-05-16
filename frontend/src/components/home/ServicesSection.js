@@ -180,8 +180,9 @@ export default function ServicesSection({ services = [] }) {
           style={{
             position: "absolute",
             top: "50%",
+            left: "clamp(-48px, -4vw, -16px)",
+            right: "clamp(-48px, -4vw, -16px)",
             transform: "translateY(-50%)",
-            width: "100%",
             display: "flex",
             justifyContent: "space-between",
             zIndex: 10,

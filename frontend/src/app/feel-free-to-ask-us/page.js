@@ -65,7 +65,6 @@ export default function FeelFreeToAskUsPage() {
       <div className="container">
         <div className="header">
           <h1>Feel Free to Ask Us</h1>
-          <p>Browse common questions below or send us your own query.</p>
         </div>
 
         <div className="grid">

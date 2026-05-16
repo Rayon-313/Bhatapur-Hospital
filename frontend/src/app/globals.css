@@ -71,7 +71,7 @@ main {
   background: var(--primary-color);
   border-bottom: 1px solid var(--border-color);
   box-shadow: var(--shadow-sm);
-  padding: 1.25rem 2rem;
+  padding: 1.25rem 0;
   min-height: 90px;
 }
 
@@ -80,6 +80,10 @@ main {
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
+  margin-bottom: 20px;
+ 
+  width: 100%;
+  margin-left: 10px;
 }
 
 .logo-section {
@@ -131,6 +135,8 @@ main {
 .nav-container {
   display: flex;
   align-items: center;
+  text-align: center;
+
 }
 
 .mobile-menu-button {
