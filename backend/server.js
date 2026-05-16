@@ -3,6 +3,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const path = require("path");
+const fs = require("fs");
 
 // Load environment variables
 dotenv.config();
@@ -13,7 +14,8 @@ const PORT = process.env.PORT || 4000;
 // Middleware
 app.use(
   cors({
-    origin: "*",
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
     exposedHeaders: ["Content-Disposition"], // This allows the frontend to see the filename for downloads
   }),
@@ -21,7 +23,7 @@ app.use(
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
-// ✅ STATIC FILES CONFIGURATION
+// STATIC FILES CONFIGURATION
 // These lines allow the browser to access your local folders via URL
 app.use("/images", express.static(path.join(__dirname, "public/images")));
 
@@ -97,7 +99,6 @@ app.get("/api/reports/view/:filename", (req, res) => {
   res.setHeader("Content-Disposition", "inline");
 
   // Check public/uploads first, then root uploads
-  const fs = require("fs");
   if (fs.existsSync(publicPath)) {
     return res.sendFile(publicPath);
   } else if (fs.existsSync(rootPath)) {

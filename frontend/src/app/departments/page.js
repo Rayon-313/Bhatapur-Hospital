@@ -1,4 +1,5 @@
 "use client";
+const backendUrl = process.env.NEXT_PUBLIC_API_URL || "";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -71,122 +72,116 @@ export default function DepartmentsPage() {
 
   return (
     <section className="section">
-      
-        <div className="header-title-subtitle">
-          <h2 className="section-title">Departments</h2>
-          
-        </div>
+      <div className="header-title-subtitle">
+        <h2 className="section-title">Departments</h2>
+      </div>
 
-        <div className="services-grid">
-          {(departments || [])
-            .filter((dept) => dept?.isActive)
-            .map((dept) => (
-              <Link
-                href={`/departments/${dept._id}`}
-                key={dept._id}
+      <div className="services-grid">
+        {(departments || [])
+          .filter((dept) => dept?.isActive)
+          .map((dept) => (
+            <Link
+              href={`/departments/${dept._id}`}
+              key={dept._id}
+              style={{
+                textDecoration: "none",
+                color: "inherit",
+                display: "flex",
+              }}
+            >
+              <div //display department
+                className="service-box"
                 style={{
-                  textDecoration: "none",
-                  color: "inherit",
+                  cursor: "pointer",
+                  transition: "transform 0.3s ease, box-shadow 0.3s ease",
                   display: "flex",
+                  flexDirection: "column",
+                  width: "100%", // Ensures it fills the responsive grid cell
                 }}
               >
-                <div //display department
-                  className="service-box"
+                {dept.image && ( //display department image
+                  <img
+                    src={`${backendUrl}${dept.image}`}
+                    alt={dept.name}
+                    style={{
+                      width: "100%", // Changed from 300px to 100%
+                      height: "160px",
+                      objectFit: "cover",
+                      borderRadius: "10px",
+                      display: "block",
+                      marginBottom: "1rem",
+                    }}
+                  />
+                )}
+                <div
                   style={{
-                    cursor: "pointer",
-                    transition: "transform 0.3s ease, box-shadow 0.3s ease",
                     display: "flex",
-                    flexDirection: "column",
-                    width: "100%", // Ensures it fills the responsive grid cell
+                    flexDirection: "row", // Keeps items side-by-side initially
+                    flexWrap: "wrap", // CRITICAL: Allows text to move downward if long
+                    alignItems: "flex-start", // Sticks the icon to the TOP left
+                    gap: "12px", // Spacing between icon and text
+                    overflowWrap: "anywhere", // Prevents very long words from breaking layout
                   }}
                 >
-                  {dept.image && ( //display department image
+                  {dept.imageIcon && (
                     <img
-src={`http://localhost:4000${dept.image}`}
+                      src={`${backendUrl}${dept.imageIcon}`}
                       alt={dept.name}
                       style={{
-                        width: "100%", // Changed from 300px to 100%
-                        height: "160px",
-                        objectFit: "cover",
-                        borderRadius: "10px",
-                        display: "block",
-                        marginBottom: "1rem",
+                        width: "40px",
+                        height: "40px",
+                        objectFit:
+                          "contain" /* Use contain for icons so they don't crop */,
+                        borderRadius: "9px",
+                        flexShrink: 0 /* Prevents the image from squishing */,
+                        // marginTop: "4px", // Optional: aligns icon with the first line of text
                       }}
                     />
                   )}
-                  <div
+                  <h3
                     style={{
-                      display: "flex",
-                      flexDirection: "row", // Keeps items side-by-side initially
-                      flexWrap: "wrap", // CRITICAL: Allows text to move downward if long
-                      alignItems: "flex-start", // Sticks the icon to the TOP left
-                      gap: "12px", // Spacing between icon and text
-                      overflowWrap: "anywhere", // Prevents very long words from breaking layout
+                      margin: 0,
+                      fontSize: "clamp(0.9rem, 1.3vw, 2rem)",
+
+                      color: "var(--primary-color)",
+                      flex: "1",
+                      textAlign: "left",
                     }}
                   >
-                    {dept.imageIcon && (
-                      <img
-                       src={`http://localhost:4000${dept.imageIcon}`}
+                    {dept.name}
+                  </h3>
+                </div>
+                <p className="paragraph">{dept.description}</p>
 
-                        alt={dept.name}
-                        style={{
-                          width: "40px",
-                          height: "40px",
-                          objectFit:
-                            "contain" /* Use contain for icons so they don't crop */,
-                          borderRadius: "9px",
-                          flexShrink: 0 /* Prevents the image from squishing */,
-                          // marginTop: "4px", // Optional: aligns icon with the first line of text
-                        }}
-                      />
-                    )}
-                    <h3
+                {/* Contact info container */}
+                <div
+                  style={{
+                    marginTop: "10px",
+                    borderTop: "1px solid #f1f5f9",
+                    paddingTop: "10px",
+                  }}
+                >
+                  {dept.headDoctor && (
+                    <p
                       style={{
-                        margin: 0,
-                        fontSize: "clamp(0.9rem, 1.3vw, 2rem)",
-
-                        color: "var(--primary-color)",
-                        flex: "1",
-                        textAlign: "left",
+                        margin: "0",
+                        fontSize: "0.85rem",
+                        fontStyle: "italic",
                       }}
                     >
-                      {dept.name}
-                    </h3>
-                  </div>
-                  <p className="paragraph" >
-                    {dept.description}
-                  </p>
-
-                  {/* Contact info container */}
-                  <div
-                    style={{
-                      marginTop: "10px",
-                      borderTop: "1px solid #f1f5f9",
-                      paddingTop: "10px",
-                    }}
-                  >
-                    {dept.headDoctor && (
-                      <p
-                        style={{
-                          margin: "0",
-                          fontSize: "0.85rem",
-                          fontStyle: "italic",
-                        }}
-                      >
-                        Head: {dept.headDoctor}
-                      </p>
-                    )}
-                    {dept.contactNumber && (
-                      <p style={{ margin: "0", fontSize: "0.85rem" }}>
-                        {dept.contactNumber}
-                      </p>
-                    )}
-                  </div>
+                      Head: {dept.headDoctor}
+                    </p>
+                  )}
+                  {dept.contactNumber && (
+                    <p style={{ margin: "0", fontSize: "0.85rem" }}>
+                      {dept.contactNumber}
+                    </p>
+                  )}
                 </div>
-              </Link>
-            ))}
-        </div>
-      
+              </div>
+            </Link>
+          ))}
+      </div>
     </section>
   );
 }

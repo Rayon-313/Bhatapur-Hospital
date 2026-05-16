@@ -1,4 +1,5 @@
 "use client";
+const backendUrl = process.env.NEXT_PUBLIC_API_URL || '';
 
 import AppointmentSection from "@/components/home/AppointmentSection";
 import "./page.css";

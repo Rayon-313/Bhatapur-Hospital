@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { reportApi } from "@/lib/api/reports";
 import styles from "./UserReports.module.css";
+const backendUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 
 export default function UserReportsPage() {
   const [reports, setReports] = useState([]);
@@ -11,9 +12,9 @@ export default function UserReportsPage() {
   // FIX: Use file.fileId (the unique disk name) — NOT file.fileName.
   // The backend route is /api/reports/file/:fileId
   const getViewUrl = (fileId) =>
-    `http://localhost:4000/api/reports/file/${fileId}`;
+    `${backendUrl}/api/reports/file/${fileId}`;
   const getDownloadUrl = (fileId) =>
-    `http://localhost:4000/api/reports/file/${fileId}?download=true`;
+    `${backendUrl}/api/reports/file/${fileId}?download=true`;
 
   useEffect(() => {
     const fetchReports = async () => {

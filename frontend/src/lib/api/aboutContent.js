@@ -1,8 +1,8 @@
 // API functions for about content management
-
+const backendUrl = process.env.NEXT_PUBLIC_API_URL || '';
 export const getAboutContent = async () => {
   try {
-    const res = await fetch('http://localhost:4000/api/about-content');
+    const res = await fetch(`${backendUrl}/api/about-content`);
     if (!res.ok) {
       throw new Error(`HTTP error! status: ${res.status}`);
     }
@@ -39,7 +39,7 @@ export const getAboutContent = async () => {
 
 export const saveAboutContent = async (contentData) => {
   try {
-    const res = await fetch('http://localhost:4000/api/about-content', {
+    const res = await fetch(`${backendUrl}/api/about-content`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

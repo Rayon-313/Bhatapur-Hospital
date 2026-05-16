@@ -1,5 +1,6 @@
 "use client";
 
+const backendUrl = process.env.NEXT_PUBLIC_API_URL || "";
 import { useState, useEffect } from "react";
 import { getStories } from "@/lib/api/healthPackages";
 import styles from "./patientRecovery.module.css";
@@ -34,7 +35,7 @@ function StoryCard({ story }) {
     <div className={styles.storyCard}>
       {story.image && (
         <img
-          src={story.image}
+          src={`${backendUrl}${story.image}`}
           alt={story.title}
           className={styles.storyImage}
         />

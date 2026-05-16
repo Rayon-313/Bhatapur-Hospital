@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+const backendUrl = process.env.NEXT_PUBLIC_API_URL || '';
 const nextConfig = {
   // App directory is enabled by default in Next.js 13+
   // experimental: {
@@ -8,11 +9,15 @@ const nextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: 'http://localhost:4000/api/:path*',
+        destination: `${backendUrl}/api/:path*`,
       },
       {
         source: '/images/:path*',
-        destination: 'http://localhost:4000/images/:path*',
+        destination: `${backendUrl}/images/:path*`,
+      },
+      {
+        source: '/uploads/:path*',
+        destination: `${backendUrl}/uploads/:path*`,
       },
     ]
   },
