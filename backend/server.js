@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 4000;
 // Middleware
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: process.env.NEXT_PUBLIC_APP_URL ,
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
     exposedHeaders: ["Content-Disposition"], // This allows the frontend to see the filename for downloads

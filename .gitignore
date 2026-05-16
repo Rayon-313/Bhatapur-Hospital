@@ -8,14 +8,13 @@ backend/node_modules/
 frontend/.next/
 
 # Ignore environment variables
-.env
-.env.local
+
 *.mp4
 videos/
 
 node_modules/
 .next/
-.env
+
 
 frontend/node_modules/
 frontend/.next/
