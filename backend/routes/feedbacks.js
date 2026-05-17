@@ -7,6 +7,8 @@ const FeedBack = require('../models/FeedBack');
 // Submit a new FeedBack
 router.post('/', async (req, res) => {
   try {
+    console.log(req.body); // add this
+
     const { name, email, subject, message } = req.body;
     
     const newFeedBack = new FeedBack({
@@ -17,6 +19,7 @@ router.post('/', async (req, res) => {
     });
     
     const savedFeedBack = await newFeedBack.save();
+    console.log(savedFeedBack);
     
     // ✅ This will now work because sendFeedBack is imported
     // try {

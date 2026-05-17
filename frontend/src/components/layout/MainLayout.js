@@ -83,7 +83,7 @@ export default function MainLayout({ children }) {
     setStatus("Sending...");
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || "/api"}/feedbacks`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/feedbacks`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
